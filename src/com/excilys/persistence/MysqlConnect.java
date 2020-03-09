@@ -18,7 +18,6 @@ public class MysqlConnect {
         try {
             Class.forName(driver).newInstance();
             this.conn = (Connection)DriverManager.getConnection(url+dbName,userName,password);
-            System.out.println("lol");
         }
         catch (Exception sqle) {
             sqle.printStackTrace();

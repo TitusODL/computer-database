@@ -2,29 +2,34 @@ package com.excilys.model;
 
 
 public class Company {
- public int id;
- public char name;
+ public long id;
+ public String name;
 
- public Company(int id, char name) {
+ public Company(long id, String name) {
 	super();
 	this.id = id;
 	this.name = name;
 }
 
-public int getId() {
+public long getId() {
 	return id;
 }
 
-public void setId(int id) {
+public void setId(long id) {
 	this.id = id;
 }
 
-public char getName() {
+public String getName() {
 	return name;
 }
 
-public void setName(char name) {
+public void setName(String name) {
 	this.name = name;
+}
+
+@Override
+public String toString() {
+	return "id=" + id + ", name=" + name;
 }
 
  
