@@ -2,6 +2,7 @@ package com.excilys.ui;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
@@ -12,7 +13,9 @@ import com.excilys.ui.MenuofEntries;
 public class Main {
 
 	public static void main(String[] args) throws SQLException {
-		Scanner touche = new Scanner(System.in);
+
+		Scanner key = new Scanner(System.in);
+
 		DAOCompany shcompany = new DAOCompany();
 		DAOComputer shcomputer = new DAOComputer();
 		ArrayList<Computer> listComputers = new ArrayList<Computer>();
@@ -28,7 +31,7 @@ public class Main {
 		System.out.println("6 - Delete a computer");
 		System.out.println("7 - Quit");
 
-		int choice = touche.nextInt();
+		int choice = key.nextInt();
 		switch(MenuofEntries.entry(choice)) {
 		case LISTCOMPUTERS : 
 			System.out.println("You choose the list of computers :");
@@ -45,7 +48,18 @@ public class Main {
 			break;
 
 		case COMPUTERDETAILS :
+			System.out.println("You choose the detail of a computer \n Please enter the id of the computer :");
+			Scanner key2 =new Scanner(System.in);
+			int choice2 = key2.nextInt();
+			Optional<Computer> chosenComputer = shcomputer.getComputerDetail(choice2);
+			
+			if ( chosenComputer.isPresent() ) {
+				System.out.println(chosenComputer.get().toString());
+			}
 
+			else {
+				System.out.println("Id not found!");
+			}
 			break;
 
 		case ADDCOMPUTER : 
