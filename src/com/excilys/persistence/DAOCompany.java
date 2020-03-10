@@ -8,6 +8,19 @@ import com.excilys.model.Company;
 
 public class DAOCompany  {
 
+	private static volatile DAOCompany instance = null;
+
+	public final static DAOCompany getInstance() {
+		if (DAOCompany.instance == null) {
+			synchronized (DAOCompany.class) {
+				if (DAOCompany.instance == null) {
+					DAOCompany.instance = new DAOCompany();
+					DAOCompany.instance = new DAOCompany();
+				}
+			}
+		}
+		return DAOCompany.instance;
+	}
 	
 	MysqlConnect msc = MysqlConnect.getDbCon();	
 	private final static String requete = "SELECT id, name FROM company";

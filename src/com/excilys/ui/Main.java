@@ -14,7 +14,7 @@ public class Main {
 
 	public static void main(String[] args) throws SQLException {
 
-		Scanner key = new Scanner(System.in);
+		
 
 		DAOCompany shcompany = new DAOCompany();
 		DAOComputer shcomputer = new DAOComputer();
@@ -30,7 +30,7 @@ public class Main {
 		System.out.println("5 - Update a computer");
 		System.out.println("6 - Delete a computer");
 		System.out.println("7 - Quit");
-
+		Scanner key = new Scanner(System.in);
 		int choice = key.nextInt();
 		switch(MenuofEntries.entry(choice)) {
 		case LISTCOMPUTERS : 
@@ -63,8 +63,8 @@ public class Main {
 			break;
 
 		case ADDCOMPUTER : 
-
-			// code block
+			//Computer computer = new Computer(575,"test",null,null,5);
+			//DAOComputer.getInstance().addComputer(computer);
 			break;
 
 		case UPDATECOMPUTER: 

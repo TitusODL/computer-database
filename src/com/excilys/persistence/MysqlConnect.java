@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 
 
 public class MysqlConnect {
-    public Connection conn;
+	
+	private static volatile MysqlConnect instance = null;
+    public static Connection conn;
     private Statement statement;
     public static MysqlConnect db;
     String url= "jdbc:mysql://localhost:3306/";
@@ -13,6 +15,20 @@ public class MysqlConnect {
     String driver = "com.mysql.cj.jdbc.Driver";
     String userName = "admincdb";
     String password = "qwerty1234";
+    
+	
+	public final static MysqlConnect getInstance() {
+		if (MysqlConnect.instance == null) {
+			synchronized (MysqlConnect.class) {
+				if (MysqlConnect.instance == null) {
+					MysqlConnect.instance = new MysqlConnect();
+					MysqlConnect.instance = new MysqlConnect();
+				}
+			}
+		}
+		return MysqlConnect.instance;
+	}
+	
     private MysqlConnect() {
 
         try {
@@ -23,10 +39,7 @@ public class MysqlConnect {
             sqle.printStackTrace();
         }
     }
-    /**
-     *
-     * @return MysqlConnect Database connection object
-     */
+   
     public static synchronized MysqlConnect getDbCon() {
         if ( db == null ) {
             db = new MysqlConnect();
