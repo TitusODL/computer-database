@@ -30,14 +30,13 @@ public class MenuofActions {
 		return MenuofActions.instance;
 	}
 
-
 	public Scanner scan = new Scanner(System.in);
 	DAOComputer daocomputer = new DAOComputer();
 	DAOCompany daocompany = new DAOCompany();
 
 
 	public void showDetails() throws SQLException {
-		System.out.println("You choose the detail of a computer \n Please enter the id of the computer :");
+		System.out.println("You choose the detail of a computer \n Please enter the ID of the computer :");
 		int choice2 = scan.nextInt();
 		Optional<Computer> chosenComputer = daocomputer.getComputerDetail(choice2);
 		if ( chosenComputer.isPresent() ) {
@@ -47,7 +46,27 @@ public class MenuofActions {
 			System.out.println("Id not found!");
 		}
 	}
-
+	public void updateComputer() throws SQLException {
+		System.out.println("You choose to update a computer :");
+		System.out.println("Enter ID to modify :");
+        int updId = scan.nextInt();
+        scan.nextLine();
+        Optional<Computer> optionDetails = DAOComputer.getInstance().getComputerDetail(updId);
+        System.out.println(optionDetails.toString());
+        Computer computer = new Computer();
+		System.out.println("Enter new name");
+		computer.setName(scan.nextLine());
+		System.out.println("Enter new introduction date (yyyy-MM-dd):");
+		computer.setIntroduced((MapperComputer.transString(scan.nextLine())));
+		System.out.println("Enter new date of Termination (yyyy-MM-dd):");
+		computer.setDiscontinued((MapperComputer.transString(scan.nextLine())));
+		System.out.println("Enter new company ID:");
+		Company company = daocompany.getCompanybyId(scan.nextInt());
+		computer.setCompany(company);
+		daocomputer.updateComputer(computer,updId);
+		
+	}
+	
 	public void createComputer() throws SQLException {
 		Computer computer = new Computer();
 		System.out.println("Enter name");
@@ -62,6 +81,13 @@ public class MenuofActions {
 		daocomputer.addComputer(computer);
 
 	}
+    public void deleteComputer() throws SQLException {
+        System.out.println("Entrer un ID");
+         int suppId = scan.nextInt();
+         daocomputer.deleteComputer(suppId);
+    }
+
+
 	public void listCompanies() throws SQLException {
 		DAOCompany shcompany = new DAOCompany();
 		ArrayList<Company> listCompanies = new ArrayList<Company>();

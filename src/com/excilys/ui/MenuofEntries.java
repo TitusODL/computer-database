@@ -17,9 +17,9 @@ public enum MenuofEntries {
 		case 4:
 			return ADDCOMPUTER;
 		case 5:
-			return UPDATECOMPUTER ;
+			return DELETECOMPUTER ;
 		case 6:
-			return DELETECOMPUTER;
+			return UPDATECOMPUTER;
 		case 7:
 			return QUIT;
 		default:

@@ -7,7 +7,7 @@ import com.excilys.ui.MenuofEntries;
 public class Main {
 
 	public static void main(String[] args) throws SQLException {
-		
+		System.out.println("***********************************************************************************************************************");
 		System.out.println("Choose one of the options below :");
 		System.out.println("1 - List computers");
 		System.out.println("2 - List companies");
@@ -16,20 +16,21 @@ public class Main {
 		System.out.println("5 - Delete a computer");
 		System.out.println("6 - Update a computer");
 		System.out.println("7 - Quit");
+		System.out.println("***********************************************************************************************************************");
 	
 		Scanner key = new Scanner(System.in);
 		int choice = key.nextInt();
+		
 		switch(MenuofEntries.entry(choice)) {
+		
 		case LISTCOMPUTERS : 
 			MenuofActions.getInstance().listComputers();
 			break;
 		case LISTCOMPANIES: 
-			
 			MenuofActions.getInstance().listCompanies();
 			break;
 
 		case COMPUTERDETAILS :
-			
 			MenuofActions.getInstance().showDetails();
 			break;
 
@@ -38,22 +39,20 @@ public class Main {
 			break;
 		
 		case DELETECOMPUTER: 
-			// code block
+			MenuofActions.getInstance().deleteComputer();
 			break;
 	
 		case UPDATECOMPUTER: 
-			// code block
+			MenuofActions.getInstance().updateComputer();
 			break;
 				
 		case QUIT:
-
+			System.out.println("Game over");
 			break;
 
 		default:
-			System.out.println("Game over");
+			break;
+			
 		}
-
 	}
-
-
 }

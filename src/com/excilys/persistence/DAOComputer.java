@@ -42,6 +42,32 @@ public class DAOComputer {
 			System.out.println(e.getMessage());
 		}
 	}
+		public void deleteComputer(int intId) throws SQLException {
+			
+			String compDel = "DELETE FROM computer WHERE id = ?";
+
+			try (PreparedStatement pstmt = MysqlConnect.conn.prepareStatement(compDel)) {
+				pstmt.setLong(1, intId);
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+	}
+		public void updateComputer(Computer computer,long intId) throws SQLException {
+
+			String updAdd = "UPDATE computer SET computer.name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE computer.id= ?;";
+
+			try (PreparedStatement pstmt = MysqlConnect.conn.prepareStatement(updAdd)) {
+				pstmt.setString(1, computer.name);
+				pstmt.setDate(2, computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null);
+				pstmt.setDate(3, computer.getDiscontinued() != null ? Date.valueOf(computer.getDiscontinued()) : null);
+				pstmt.setLong(4, computer.getCompany().getId());
+				pstmt.setLong(5,intId);
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
 
 	private final static String listComputer = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer LEFT JOIN company ON company.id";
 	private final static String computerById = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer LEFT JOIN company ON company_id WHERE computer.id =?; ";
