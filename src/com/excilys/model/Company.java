@@ -6,9 +6,11 @@ public class Company {
  public String name;
 
  public Company(long id, String name) {
-	super();
 	this.id = id;
 	this.name = name;
+}
+
+public Company() {
 }
 
 public long getId() {

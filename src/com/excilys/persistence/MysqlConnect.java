@@ -4,7 +4,7 @@ import java.sql.*;
 import java.sql.DriverManager;
 
 
-public class MysqlConnect {
+public class MysqlConnect implements AutoCloseable {
 	
 	private static volatile MysqlConnect instance = null;
     public static Connection conn;
@@ -22,8 +22,7 @@ public class MysqlConnect {
 			synchronized (MysqlConnect.class) {
 				if (MysqlConnect.instance == null) {
 					MysqlConnect.instance = new MysqlConnect();
-					MysqlConnect.instance = new MysqlConnect();
-				}
+								}
 			}
 		}
 		return MysqlConnect.instance;
@@ -33,7 +32,7 @@ public class MysqlConnect {
 
         try {
             Class.forName(driver).newInstance();
-            this.conn = (Connection)DriverManager.getConnection(url+dbName,userName,password);
+            conn = (Connection)DriverManager.getConnection(url+dbName,userName,password);
         }
         catch (Exception sqle) {
             sqle.printStackTrace();
@@ -47,30 +46,13 @@ public class MysqlConnect {
         return db;
  
     }
-    /**
-     *
-     * @param query String The query to be executed
-     * @return a ResultSet object containing the results or null if not available
-     * @throws SQLException
-     */
-    public ResultSet query(String query) throws SQLException{
-        statement = db.conn.createStatement();
-        ResultSet res = statement.executeQuery(query);
-        return res;
-    }
-    /**
-     * @desc Method to insert data to a table
-     * @param insertQuery String The Insert query
-     * @return boolean
-     * @throws SQLException
-     */
-    public int insert(String insertQuery) throws SQLException {
-        statement = db.conn.createStatement();
-        int result = statement.executeUpdate(insertQuery);
-        return result;
- 
-        
-        
-    }
+
+
+	@Override
+	public void close() throws Exception {
+		conn.close();
+		db.close();
+		
+	}
  
 }

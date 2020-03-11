@@ -8,6 +8,7 @@ import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.persistence.DAOCompany;
 import com.excilys.persistence.DAOComputer;
+import com.excilys.persistence.MysqlConnect;
 import com.excilys.ui.MenuofEntries;
 
 public class Main {
@@ -15,13 +16,6 @@ public class Main {
 	public static void main(String[] args) throws SQLException {
 
 		
-
-		DAOCompany shcompany = new DAOCompany();
-		DAOComputer shcomputer = new DAOComputer();
-		ArrayList<Computer> listComputers = new ArrayList<Computer>();
-		listComputers = shcomputer.getComputer();
-		ArrayList<Company> listCompanies = new ArrayList<Company>();
-		listCompanies = shcompany.getCompany();
 		System.out.println("Choose one of the options below :");
 		System.out.println("1 - List computers");
 		System.out.println("2 - List companies");
@@ -30,6 +24,13 @@ public class Main {
 		System.out.println("5 - Update a computer");
 		System.out.println("6 - Delete a computer");
 		System.out.println("7 - Quit");
+		DAOCompany shcompany = new DAOCompany();
+		DAOComputer shcomputer = new DAOComputer();
+		ArrayList<Computer> listComputers = new ArrayList<Computer>();
+		listComputers = shcomputer.getComputer();
+		ArrayList<Company> listCompanies = new ArrayList<Company>();
+		listCompanies = shcompany.getCompany();
+
 		Scanner key = new Scanner(System.in);
 		int choice = key.nextInt();
 		switch(MenuofEntries.entry(choice)) {
@@ -48,23 +49,14 @@ public class Main {
 			break;
 
 		case COMPUTERDETAILS :
-			System.out.println("You choose the detail of a computer \n Please enter the id of the computer :");
-			Scanner key2 =new Scanner(System.in);
-			int choice2 = key2.nextInt();
-			Optional<Computer> chosenComputer = shcomputer.getComputerDetail(choice2);
 			
-			if ( chosenComputer.isPresent() ) {
-				System.out.println(chosenComputer.get().toString());
-			}
-
-			else {
-				System.out.println("Id not found!");
-			}
+			MenuofActions.getInstance().showDetails();
 			break;
 
 		case ADDCOMPUTER : 
-			//Computer computer = new Computer(575,"test",null,null,5);
-			//DAOComputer.getInstance().addComputer(computer);
+			Company company = new Company();
+			Computer computer = new Computer(275,"test",null,null,company);
+			DAOComputer.getInstance().addComputer(computer);
 			break;
 
 		case UPDATECOMPUTER: 
