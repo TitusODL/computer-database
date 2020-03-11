@@ -1,11 +1,11 @@
 package com.excilys.persistence;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Optional;
 
 import com.excilys.model.Company;
-import com.excilys.model.Computer;
 
 
 public class DAOCompany  {

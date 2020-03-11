@@ -1,12 +1,13 @@
 package com.excilys.persistence;
 
-import java.sql.*;
-import java.time.LocalDate;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import com.excilys.mapper.MapperComputer;
-import com.excilys.model.Company;
 import com.excilys.model.Computer;
 
 public class DAOComputer {
@@ -77,7 +78,7 @@ public class DAOComputer {
 			pstmComputerDetail.setLong(1,id);
 			ResultSet resComputer = pstmComputerDetail.executeQuery();
 			if (resComputer.first()) {
-				comput = MapperComputer.getComputerResultSet(resComputer);
+				comput = MapperComputer.ComputerDetailMapper(resComputer);
 				
 			}
 			
@@ -95,7 +96,7 @@ public class DAOComputer {
 		try (PreparedStatement pstmComputerDetail =MysqlConnect.conn.prepareStatement(listComputer);){
 			ResultSet resComputer = pstmComputerDetail.executeQuery();
 			while (resComputer.next()) {
-			Computer comp = MapperComputer.getComputers(resComputer);
+			Computer comp = MapperComputer.ComputersMapper(resComputer);
 				listComputers.add(comp);
 			}
 		}

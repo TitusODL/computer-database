@@ -1,6 +1,6 @@
 package com.excilys.persistence;
 
-import java.sql.*;
+import java.sql.Connection;
 import java.sql.DriverManager;
 
 
@@ -8,7 +8,6 @@ public class MysqlConnect implements AutoCloseable {
 	
 	private static volatile MysqlConnect instance = null;
     public static Connection conn;
-    private Statement statement;
     public static MysqlConnect db;
     String url= "jdbc:mysql://localhost:3306/";
     String dbName = "computer-database-db";

@@ -11,7 +11,7 @@ import com.excilys.persistence.DAOCompany;
 
 public class MapperComputer { 
 
-	public static Computer getComputerResultSet(ResultSet resDetailcomputer) throws SQLException {
+	public static Computer ComputerDetailMapper(ResultSet resDetailcomputer) throws SQLException {
 
 		Computer computer;
 		long computerId = (resDetailcomputer.getLong("computer.id"));
@@ -25,7 +25,7 @@ public class MapperComputer {
 		computer = new Computer(computerId,computerName,introduced,discontinued,company);
 		return computer;
 	}
-	public static Computer getComputers(ResultSet resDetailcomputer) throws SQLException {
+	public static Computer ComputersMapper(ResultSet resDetailcomputer) throws SQLException {
 
 		long computerId = (resDetailcomputer.getLong("computer.id"));
 		String computerName = (resDetailcomputer.getString("computer.name"));
