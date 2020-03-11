@@ -1,9 +1,11 @@
 package com.excilys.ui;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.excilys.mapper.MapperComputer;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.persistence.DAOCompany;
@@ -38,11 +40,9 @@ public class MenuofActions {
 		System.out.println("You choose the detail of a computer \n Please enter the id of the computer :");
 		int choice2 = scan.nextInt();
 		Optional<Computer> chosenComputer = daocomputer.getComputerDetail(choice2);
-
 		if ( chosenComputer.isPresent() ) {
 			System.out.println(chosenComputer.get().toString());
 		}
-
 		else {
 			System.out.println("Id not found!");
 		}
@@ -53,16 +53,32 @@ public class MenuofActions {
 		System.out.println("Enter name");
 		computer.setName(scan.nextLine());
 		System.out.println("Introduction date (yyyy-MM-dd):");
-		computer.setIntroduced((scan.nextLine()));
+		computer.setIntroduced((MapperComputer.transString(scan.nextLine())));
 		System.out.println("Date of Termination (yyyy-MM-dd)");
-		computer.setDiscontinued((scan.nextLine()));
+		computer.setDiscontinued((MapperComputer.transString(scan.nextLine())));
 		System.out.println("The ID of the Company");
 		Company company = daocompany.getCompanybyId(scan.nextInt());
-		computer.setCompany(company.getId());
+		computer.setCompany(company);
 		daocomputer.addComputer(computer);
 
 	}
-
-
+	public void listCompanies() throws SQLException {
+		DAOCompany shcompany = new DAOCompany();
+		ArrayList<Company> listCompanies = new ArrayList<Company>();
+		listCompanies = shcompany.getCompany();
+		System.out.println("You choose the list of companies :");
+		for (Company hm : listCompanies) {
+			System.out.println(hm.toString());
+		}
+	}
+	public void listComputers() throws SQLException {
+		DAOComputer shcomputer = new DAOComputer();
+		ArrayList<Computer> listComputers = new ArrayList<Computer>();
+		listComputers = shcomputer.getComputer();
+		System.out.println("You choose the list of computers :");
+		for (Computer pc : listComputers) {
+			System.out.println(pc.toString());
+		}
+	}
 }
 
