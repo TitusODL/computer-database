@@ -7,38 +7,23 @@ import java.time.format.DateTimeFormatter;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
-import com.excilys.persistence.DAOCompany;
 
 public class MapperComputer { 
 
-	public static Computer ComputerDetailMapper(ResultSet resDetailcomputer) throws SQLException {
+	public static Computer ComputerDetailMapper(ResultSet resComputer) throws SQLException {
 
-		Computer computer;
-		long computerId = (resDetailcomputer.getLong("computer.id"));
-		String computerName = (resDetailcomputer.getString("computer.name"));
-		LocalDate introduced = (resDetailcomputer.getDate("computer.introduced") != null ? resDetailcomputer.getDate("computer.introduced").toLocalDate() : null);
-		LocalDate discontinued = (resDetailcomputer.getDate("computer.discontinued") != null ? resDetailcomputer.getDate("computer.discontinued").toLocalDate() : null);
-		Long companyId = (resDetailcomputer.getLong("company_id"));
-		String companyName = (resDetailcomputer.getString("company.name"));
 
-		Company company = new Company(companyId,companyName);
-		computer = new Computer(computerId,computerName,introduced,discontinued,company);
+		long computerId = (resComputer.getLong("computer.id"));
+		String computerName = (resComputer.getString("computer.name"));
+		LocalDate introduced = (resComputer.getDate("computer.introduced") != null ? resComputer.getDate("computer.introduced").toLocalDate() : null);
+		LocalDate discontinued = (resComputer.getDate("computer.discontinued") != null ? resComputer.getDate("computer.discontinued").toLocalDate() : null);
+		Long companyId = (resComputer.getLong("company_id"));
+		String companyName = (resComputer.getString("company.name"));
+		Company company = new Company.CompanyBuilder().setId(companyId).setName(companyName).build();
+		Computer computer = new Computer.Builder().setId(computerId).setName(computerName).setIntroducedDate(introduced)
+										 .setDiscontinuedDate(discontinued).setCompany(company).build();
 		return computer;
 	}
-	public static Computer ComputersMapper(ResultSet resDetailcomputer) throws SQLException {
-
-		long computerId = (resDetailcomputer.getLong("computer.id"));
-		String computerName = (resDetailcomputer.getString("computer.name"));
-		LocalDate introduced = (resDetailcomputer.getDate("computer.introduced") != null ? resDetailcomputer.getDate("computer.introduced").toLocalDate() : null);
-		LocalDate discontinued = (resDetailcomputer.getDate("computer.discontinued") != null ? resDetailcomputer.getDate("computer.discontinued").toLocalDate() : null);
-		Long companyId = (resDetailcomputer.getLong("company_id"));
-		//String companyName = (resDetailcomputer.getString("company.name"));
-		Company company = new Company();
-		company = DAOCompany.getInstance().getCompanybyId(companyId);
-		Computer pc = new Computer(computerId, computerName, introduced, discontinued,company);
-		return pc;
-	}
-
 	public static LocalDate transString(String entry) {
 		if(entry.isEmpty()) {
 			return null;

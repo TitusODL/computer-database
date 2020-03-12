@@ -11,7 +11,6 @@ import com.excilys.model.Company;
 public class DAOCompany  {
 
 	private static volatile DAOCompany instance = null;
-
 	
 	public final static DAOCompany getInstance() {
 		if (DAOCompany.instance == null) {
@@ -31,7 +30,6 @@ public class DAOCompany  {
 		ArrayList<Company> listCompanies = new ArrayList<Company>();
 		try (PreparedStatement pstmCompany =MysqlConnect.conn.prepareStatement(listCompany);){
 			ResultSet resCompany = pstmCompany.executeQuery();
-			System.out.println("yoo");
 			while (resCompany.next()) {
 				long companyId = resCompany.getLong("company.id");
 				String companyName = resCompany.getString("company.name");
@@ -43,8 +41,8 @@ public class DAOCompany  {
 			System.out.println(e.getMessage());
 		}
 		return listCompanies;
-
 	}
+	
 	public Company getCompanybyId(long id) throws SQLException {
 
 		try (PreparedStatement pstmCompanyDetail =MysqlConnect.conn.prepareStatement(companyById);){
