@@ -8,6 +8,7 @@ import java.util.Scanner;
 import com.excilys.mapper.MapperComputer;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
+import com.excilys.model.Pagination;
 import com.excilys.persistence.DAOCompany;
 import com.excilys.persistence.DAOComputer;
 import com.excilys.persistence.MysqlConnect;
@@ -49,11 +50,11 @@ public class MenuofActions {
 	public void updateComputer() throws SQLException {
 		System.out.println("You choose to update a computer :");
 		System.out.println("Enter ID to modify :");
-        int updId = scan.nextInt();
-        scan.nextLine();
-        Optional<Computer> optionDetails = DAOComputer.getInstance().getComputerDetail(updId);
-        System.out.println(optionDetails.toString());
-        Computer computer = new Computer();
+		int updId = scan.nextInt();
+		scan.nextLine();
+		Optional<Computer> optionDetails = DAOComputer.getInstance().getComputerDetail(updId);
+		System.out.println(optionDetails.toString());
+		Computer computer = new Computer();
 		System.out.println("Enter new name");
 		computer.setName(scan.nextLine());
 		System.out.println("Enter new introduction date (yyyy-MM-dd):");
@@ -64,9 +65,9 @@ public class MenuofActions {
 		Company company = daocompany.getCompanybyId(scan.nextInt());
 		computer.setCompany(company);
 		daocomputer.updateComputer(computer,updId);
-		
+
 	}
-	
+
 	public void createComputer() throws SQLException {
 		Computer computer = new Computer();
 		System.out.println("Enter name");
@@ -81,17 +82,17 @@ public class MenuofActions {
 		daocomputer.addComputer(computer);
 
 	}
-    public void deleteComputer() throws SQLException {
-        System.out.println("Entrer un ID");
-         int suppId = scan.nextInt();
-         daocomputer.deleteComputer(suppId);
-    }
+	public void deleteComputer() throws SQLException {
+		System.out.println("Entrer un ID");
+		int suppId = scan.nextInt();
+		daocomputer.deleteComputer(suppId);
+	}
 
 
 	public void listCompanies() throws SQLException {
 		DAOCompany shcompany = new DAOCompany();
 		ArrayList<Company> listCompanies = new ArrayList<Company>();
-		listCompanies = shcompany.getCompany();
+		listCompanies = shcompany.getCompanies();
 		System.out.println("You choose the list of companies :");
 		for (Company hm : listCompanies) {
 			System.out.println(hm.toString());
@@ -100,10 +101,43 @@ public class MenuofActions {
 	public void listComputers() throws SQLException {
 		DAOComputer shcomputer = new DAOComputer();
 		ArrayList<Computer> listComputers = new ArrayList<Computer>();
-		listComputers = shcomputer.getComputer();
+		listComputers = shcomputer.getComputers();
 		System.out.println("You choose the list of computers :");
 		for (Computer pc : listComputers) {
 			System.out.println(pc.toString());
+		}
+	}
+
+
+	public void  displayPage() {
+		Pagination page = new Pagination(DAOComputer.countAllComputer());
+		ArrayList<Computer> pageComputer =new ArrayList<Computer>();
+		pageComputer = DAOComputer.getInstance().getPageComputersRequest(page);
+		page.displayPageContent(pageComputer);
+
+		
+		boolean quit =true;
+		while(quit){
+			System.out.println("*------------------------------------------------------------------*");
+			System.out.format("page %d / %d | next page : N | prev page : P | quit : Q \n", page.getActualPageNb(), page.getMaxPages());
+			String line = this.scan.nextLine();
+			switch(line) {
+			case "n" :
+				page.nextPage();
+				pageComputer = DAOComputer.getInstance().getPageComputersRequest(page);
+				page.displayPageContent(pageComputer);
+				break;
+			case "p" :
+				page.PrevPage();
+				pageComputer = DAOComputer.getInstance().getPageComputersRequest(page);
+				page.displayPageContent(pageComputer);
+				break;
+			case "q" :
+				quit =false;
+				break;
+			default :
+				System.out.println("Wrong entry, please use a proposed answer");
+			}
 		}
 	}
 }

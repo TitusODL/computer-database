@@ -5,10 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.excilys.mapper.MapperComputer;
+import com.excilys.model.Company;
 import com.excilys.model.Computer;
+import com.excilys.model.Pagination;
 
 public class DAOComputer {
 
@@ -26,14 +29,45 @@ public class DAOComputer {
 		}
 		return DAOComputer.instance;
 	}
+	
+//	private List<Computer> getpagecomputer(ResultSet resSet) throws SQLException{
+//		List<Computer> comp = new ArrayList<Computer>();
+//		while(resSet.next()) {
+//			
+//			Company company = new Company.CompanyBuilder().setId(company.id).setName(company.name).build();
+//			Computer computer = new Computer.Builder().setId(computer.id).setName(computer.name).setIntroducedDate(computer.introduced)
+//					 .setDiscontinuedDate(computer.discontinued).setCompany(company).build();
+////			Company company = new Company.CompanyBuilder().setId(resSet.getLong("company.id")).setName(resSet.getString("company.name")).build();
+////			Computer computer = new Computer.Builder().setId(resSet.getLong("computer.id").setName(resSet.getString("computer.name").setIntroducedDate(resSet.getTimestamp("computer.introduced")
+////					 .setDiscontinuedDate(resSet.getTimestamp("computer.discontinued").build();
+//			
+//			res.add(computer);
+//			}
+//		return res;
+//	
+//
+//	}
+	
+//	private Optional<Computer> storeOneOrNoneComputerFromReq(ResultSet resSet) throws SQLException{
+//		if(resSet.next()) {
+//			Company company = new Company.CompanyBuilder().setId(resSet.getLong("company.id")).setName(resSet.getString("company.name")).build();
+//			Computer computer = new Computer.Builder().setId(resSet.getLong("computer.id").setName(resSet.getString("computer.name").setIntroducedDate(resSet.getTimestamp("computer.introduced")
+//					 .setDiscontinuedDate(resSet.getTimestamp("computer.discontinued").build();
+//			return Optional.of(computer);
+//		}
+//		else {
+//			return Optional.empty();
+//		}
+//	}
 
 	private final static String listComputer = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer LEFT JOIN company ON company.id =company_id ;";
 	private final static String computerById = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer LEFT JOIN company ON company_id =company.id WHERE computer.id =?; ";
 	private final static String compAdd = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?);";
 	private final static String compDel = "DELETE FROM computer WHERE id = ?";
 	private final static String updAdd = "UPDATE computer SET computer.name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE computer.id= ?;";
-												//"SELECT pc.name, pc.id, pc.introduced, pc.discontinued, pc.company_id, comp.name FROM computer AS pc LEFT JOIN company AS comp ON comp.id = pc.company_id;";
-
+	private final static String countAllComputerQuery = "SELECT COUNT(id) FROM computer";
+	private final static String getPageComputersQuery = "SELECT computer.name, computer.id, computer.introduced, computer.discontinued, computer.company_id, company.name FROM computer LEFT JOIN company ON company.id = computer.company_id LIMIT ?, ?";
+												
 	public void addComputer(Computer computer) throws SQLException {
 
 		try (PreparedStatement pstmt = MysqlConnect.conn.prepareStatement(compAdd)) {
@@ -86,7 +120,7 @@ public class DAOComputer {
 		return Optional.ofNullable(comput);
 	}
 
-	public ArrayList<Computer> getComputer() throws SQLException {
+	public ArrayList<Computer> getComputers() throws SQLException {
 		ArrayList<Computer> listComputers = new ArrayList<Computer>();
 		try (PreparedStatement pstmComputerDetail =MysqlConnect.conn.prepareStatement(listComputer);){
 			ResultSet resComputer = pstmComputerDetail.executeQuery();
@@ -100,4 +134,32 @@ public class DAOComputer {
 		}
 		return listComputers;
 	}
+	
+	public static int countAllComputer() {
+		try(PreparedStatement stmt = MysqlConnect.conn.prepareStatement(countAllComputerQuery);){
+			ResultSet res1 = stmt.executeQuery();
+			if(res1.next()) {return res1.getInt("COUNT(id)");}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public ArrayList<Computer> getPageComputersRequest(Pagination page) {
+		ArrayList<Computer> res = new ArrayList<Computer>();
+		try(PreparedStatement stmt = MysqlConnect.conn.prepareStatement(getPageComputersQuery);){
+			stmt.setInt(1, page.getActualPageNb()*page.getPageSize());
+			stmt.setInt(2, page.getPageSize());
+			ResultSet res1 = stmt.executeQuery();
+			while (res1.next()) {
+			Computer computer = MapperComputer.ComputerDetailMapper(res1);
+			res.add(computer);
+			}
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+
 }
