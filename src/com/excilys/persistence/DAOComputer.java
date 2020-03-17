@@ -5,11 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import com.excilys.mapper.MapperComputer;
-import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.model.Pagination;
 
@@ -30,35 +28,6 @@ public class DAOComputer {
 		return DAOComputer.instance;
 	}
 	
-//	private List<Computer> getpagecomputer(ResultSet resSet) throws SQLException{
-//		List<Computer> comp = new ArrayList<Computer>();
-//		while(resSet.next()) {
-//			
-//			Company company = new Company.CompanyBuilder().setId(company.id).setName(company.name).build();
-//			Computer computer = new Computer.Builder().setId(computer.id).setName(computer.name).setIntroducedDate(computer.introduced)
-//					 .setDiscontinuedDate(computer.discontinued).setCompany(company).build();
-////			Company company = new Company.CompanyBuilder().setId(resSet.getLong("company.id")).setName(resSet.getString("company.name")).build();
-////			Computer computer = new Computer.Builder().setId(resSet.getLong("computer.id").setName(resSet.getString("computer.name").setIntroducedDate(resSet.getTimestamp("computer.introduced")
-////					 .setDiscontinuedDate(resSet.getTimestamp("computer.discontinued").build();
-//			
-//			res.add(computer);
-//			}
-//		return res;
-//	
-//
-//	}
-	
-//	private Optional<Computer> storeOneOrNoneComputerFromReq(ResultSet resSet) throws SQLException{
-//		if(resSet.next()) {
-//			Company company = new Company.CompanyBuilder().setId(resSet.getLong("company.id")).setName(resSet.getString("company.name")).build();
-//			Computer computer = new Computer.Builder().setId(resSet.getLong("computer.id").setName(resSet.getString("computer.name").setIntroducedDate(resSet.getTimestamp("computer.introduced")
-//					 .setDiscontinuedDate(resSet.getTimestamp("computer.discontinued").build();
-//			return Optional.of(computer);
-//		}
-//		else {
-//			return Optional.empty();
-//		}
-//	}
 
 	private final static String listComputer = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer LEFT JOIN company ON company.id =company_id ;";
 	private final static String computerById = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer LEFT JOIN company ON company_id =company.id WHERE computer.id =?; ";

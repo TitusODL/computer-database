@@ -4,11 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Optional;
 
-import com.excilys.mapper.MapperComputer;
 import com.excilys.model.Company;
-import com.excilys.model.Computer;
 import com.excilys.model.Pagination;
 
 
@@ -40,16 +37,6 @@ public class DAOCompany  {
 		}
 		return res;
 	}
-	
-//	private Optional<Company> storeOneCompanyFromRequest(ResultSet resSet) throws SQLException{
-//		if(resSet.next()) {
-//			Company company = new Company.CompanyBuilder().setId(resSet.getLong("company.id")).setName(resSet.getString("company.name")).build();
-//			return Optional.of(company);
-//		}
-//		else {
-//			return Optional.empty();
-//		}
-//	}
 	
 	
 	public ArrayList<Company> getCompanies() throws SQLException{
