@@ -3,7 +3,14 @@ package com.excilys.ui;
 
 public enum MenuofEntries {
 
-	LISTCOMPUTERS, LISTCOMPANIES, COMPUTERDETAILS, UPDATECOMPUTER, ADDCOMPUTER, DELETECOMPUTER, QUIT, EXIT;
+	LISTCOMPUTERS, 
+	LISTCOMPANIES,
+	COMPUTERDETAILS,
+	UPDATECOMPUTER,
+	ADDCOMPUTER, 
+	DELETECOMPUTER, 
+	PAGINATION,
+	QUIT;
 
 	public static MenuofEntries entry(int choice) {
 		switch (choice) {
@@ -17,13 +24,15 @@ public enum MenuofEntries {
 		case 4:
 			return ADDCOMPUTER;
 		case 5:
-			return UPDATECOMPUTER ;
+			return DELETECOMPUTER ;
 		case 6:
-			return DELETECOMPUTER;
+			return UPDATECOMPUTER;
 		case 7:
+			return PAGINATION;
+		case 8:
 			return QUIT;
 		default:
-			return EXIT;
+			return QUIT;
 
 		}
 
