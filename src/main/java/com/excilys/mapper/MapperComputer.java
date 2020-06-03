@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
+import com.excilys.service.Validators;
 
 public class MapperComputer { 
 
@@ -21,14 +22,20 @@ public class MapperComputer {
 		String companyName = (resComputer.getString("company.name"));
 		Company company = new Company.CompanyBuilder().setId(companyId).setName(companyName).build();
 		Computer computer = new Computer.Builder().setId(computerId).setName(computerName).setIntroducedDate(introduced)
-										 .setDiscontinuedDate(discontinued).setCompany(company).build();
+				.setDiscontinuedDate(discontinued).setCompany(company).build();
 		return computer;
 	}
+	
+	
 	public static LocalDate transString(String entry) {
+		boolean format = Validators.verifyDateUserInput(entry);
 		if(entry.isEmpty()) {
 			return null;
 		}
-		else{ 
+		else if (!format){ 
+			return null;}
+		
+		else {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			LocalDate localDate = LocalDate.parse(entry, formatter);
 			return localDate;

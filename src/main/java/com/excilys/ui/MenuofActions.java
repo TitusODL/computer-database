@@ -10,6 +10,7 @@ import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.model.Pagination;
 import com.excilys.persistence.DAOComputer;
+import com.excilys.persistence.H2ConnectTest;
 import com.excilys.persistence.MysqlConnect;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
@@ -18,7 +19,6 @@ import com.excilys.service.ComputerService;
 public class MenuofActions {
 
 	private static volatile MenuofActions instance = null;
-	MysqlConnect msc = MysqlConnect.getDbCon();
 
 
 	public final static MenuofActions getInstance() {

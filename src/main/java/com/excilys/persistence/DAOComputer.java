@@ -14,7 +14,7 @@ import com.excilys.model.Pagination;
 public class DAOComputer {
 
 	private static volatile DAOComputer instance = null;
-	MysqlConnect msc = MysqlConnect.getDbCon();
+
 
 
 	public final static DAOComputer getInstance() {
@@ -81,7 +81,6 @@ public class DAOComputer {
 			if (resComputer.first()) {
 				comput = MapperComputer.ComputerDetailMapper(resComputer);
 			}
-
 		}
 		catch (SQLException e) {
 			System.out.println(e.getMessage());

@@ -11,6 +11,7 @@ public class MysqlConnect implements AutoCloseable {
     public static MysqlConnect db;
     String url= "jdbc:mysql://localhost:3306/";
     String dbName = "computer-database-db";
+    String timeZoneErr = "? useUnicode=true & useJDBCCompliantTimezoneShift=true & useLegacyDatetimeCode=false & serverTimezone=UTC";
     String driver = "com.mysql.cj.jdbc.Driver";
     String userName = "admincdb";
     String password = "qwerty1234";
@@ -31,7 +32,7 @@ public class MysqlConnect implements AutoCloseable {
 
         try {
             Class.forName(driver).newInstance();
-            conn = (Connection)DriverManager.getConnection(url+dbName,userName,password);
+            conn = (Connection)DriverManager.getConnection(url+dbName+timeZoneErr,userName,password);
         }
         catch (Exception sqle) {
             sqle.printStackTrace();
