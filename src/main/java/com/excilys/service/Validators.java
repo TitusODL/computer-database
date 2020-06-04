@@ -15,8 +15,6 @@ public class Validators {
 		
 		try
 		{	
-			
-		
 			if (date.isEmpty()) {
 	            return true;
 	        }

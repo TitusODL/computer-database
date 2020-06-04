@@ -47,7 +47,16 @@ public class H2ConnectTest implements AutoCloseable {
         return db;
 
     }
-
+    public static boolean ConnectionTest() {
+    	try  {
+    		H2ConnectTest.getDbCon();
+    		return true;
+    	}
+    	catch (Exception e){
+    		e.printStackTrace();
+    	}
+    	return false;
+    }
 
 	@Override
 	public void close() throws Exception {

@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.mapper.MapperComputer;
 import com.excilys.model.Computer;
 import com.excilys.model.Pagination;
 import com.excilys.persistence.DAOComputer;
