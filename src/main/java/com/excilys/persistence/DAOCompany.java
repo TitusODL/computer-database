@@ -41,7 +41,7 @@ public class DAOCompany  {
 	
 	public ArrayList<Company> getCompanies() throws SQLException{
 		ArrayList<Company> listCompanies = new ArrayList<Company>();
-		try (PreparedStatement pstmCompany =MysqlConnect.conn.prepareStatement(listCompany);){
+		try (PreparedStatement pstmCompany =Connecticut.conn.prepareStatement(listCompany);){
 			ResultSet resCompany = pstmCompany.executeQuery();
 			while (resCompany.next()) {
 				long companyId = resCompany.getLong("company.id");
@@ -58,7 +58,7 @@ public class DAOCompany  {
 	
 	public Company getCompanybyId(long id) throws SQLException {
 
-		try (PreparedStatement pstmCompanyDetail =MysqlConnect.conn.prepareStatement(companyById);){
+		try (PreparedStatement pstmCompanyDetail =Connecticut.conn.prepareStatement(companyById);){
 			pstmCompanyDetail.setLong(1,id);
 			ResultSet resCompany = pstmCompanyDetail.executeQuery();
 			while (resCompany.first()) {
@@ -77,7 +77,7 @@ public class DAOCompany  {
 	}
 	
 	public int countAllCompanies() {
-		try(PreparedStatement stmt = MysqlConnect.conn.prepareStatement(countAllCompaniesQuery);){
+		try(PreparedStatement stmt = Connecticut.conn.prepareStatement(countAllCompaniesQuery);){
 			ResultSet res1 = stmt.executeQuery();
 			if(res1.next()) {return res1.getInt("rowcount");}
 		}catch (SQLException e) {
@@ -88,7 +88,7 @@ public class DAOCompany  {
 	
 	public ArrayList<Company> getPageCompaniesRequest(Pagination page) {
 		ArrayList<Company> res = new ArrayList<Company>();
-		try(PreparedStatement stmt = MysqlConnect.conn.prepareStatement(getPageCompaniesQuery);){
+		try(PreparedStatement stmt = Connecticut.conn.prepareStatement(getPageCompaniesQuery);){
 			stmt.setInt(1, page.getActualPageNb()*page.getPageSize());
 			stmt.setInt(2, page.getPageSize());
 			ResultSet res1 = stmt.executeQuery();

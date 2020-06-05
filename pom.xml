@@ -59,6 +59,12 @@
 			<artifactId>spring-context</artifactId>
 			<version>5.2.5.RELEASE</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-catalina</artifactId>
+			<version>9.0.31</version>
+		</dependency>
 		<!-- H2 DB -->
 		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 		<dependency>
@@ -71,6 +77,11 @@
 			<artifactId>maven-checkstyle-plugin</artifactId>
 			<version>3.1.1</version>
 			<type>maven-plugin</type>
+		</dependency>
+				<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
 		</dependency>
 	</dependencies>
 
@@ -120,6 +131,18 @@
                     <version>3.7.1</version>
                 </plugin>
 
+				<plugin>
+					<groupId>org.apache.tomcat.maven</groupId>
+					<artifactId>tomcat8-maven-plugin</artifactId>
+					<version>2.2</version>
+					<configuration>
+						<url>http://localhost:8080/manager/text</url>
+						<server>TomcatServer</server>
+						<username>admintomcat</username>
+						<password>password1234</password>
+					</configuration>
+				</plugin>
+				
 			</plugins>
 		</pluginManagement>
 	</build>
