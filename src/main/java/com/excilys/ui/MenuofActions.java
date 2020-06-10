@@ -2,6 +2,7 @@ package com.excilys.ui;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -10,8 +11,6 @@ import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.model.Pagination;
 import com.excilys.persistence.DAOComputer;
-import com.excilys.persistence.H2ConnectTest;
-import com.excilys.persistence.MysqlConnect;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
@@ -62,7 +61,7 @@ public class MenuofActions {
 		System.out.println("Enter new date of Termination (yyyy-MM-dd):");
 		computer.setDiscontinued((MapperComputer.transString(scan.nextLine())));
 		System.out.println("Enter new company ID:");
-		Company company = companyService.getCompanybyId(scan.nextInt());
+		Company company = companyService.getCompanyById(scan.nextLine());
 		computer.setCompany(company);
 		computerService.updateComputer(computer,updId);
 
@@ -77,7 +76,7 @@ public class MenuofActions {
 		System.out.println("Date of Termination (yyyy-MM-dd)");
 		computer.setDiscontinued((MapperComputer.transString(scan.nextLine())));
 		System.out.println("The ID of the Company");
-		Company company = companyService.getCompanybyId(scan.nextInt());
+		Company company = companyService.getCompanyById(scan.nextLine());
 		computer.setCompany(company);
 		computerService.createComputer(computer);
 
@@ -92,15 +91,15 @@ public class MenuofActions {
 
 	public void listCompanies() throws SQLException {
 
-		ArrayList<Company> listCompanies = new ArrayList<Company>();
-		listCompanies = companyService.getCompany();
+		List<Company> listCompanies = new ArrayList<Company>();
+		listCompanies = companyService.getAllCompanies();
 		System.out.println("You choose the list of companies :");
 		for (Company hm : listCompanies) {
 			System.out.println(hm.toString());
 		}
 	}
 	public void listComputers() throws SQLException {
-		ArrayList<Computer> listComputers = new ArrayList<Computer>();
+		List<Computer> listComputers = new ArrayList<Computer>();
 		listComputers = computerService.getComputers();
 		System.out.println("You choose the list of computers :");
 		for (Computer pc : listComputers) {
@@ -110,8 +109,8 @@ public class MenuofActions {
 
 
 	public void  displayPage() {
-		Pagination page = new Pagination(DAOComputer.countAllComputer());
-		ArrayList<Computer> pageComputer =new ArrayList<Computer>();
+		Pagination page = new Pagination(DAOComputer.getInstance().countAllComputer(), 20);
+		List<Computer> pageComputer =new ArrayList<Computer>();
 		pageComputer = computerService.getPageComputer(page);
 		page.displayPageContent(pageComputer);
 				

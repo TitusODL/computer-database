@@ -4,4 +4,34 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+  	<servlet-name>ComputersList</servlet-name>
+  	<display-name>ComputersList</display-name>
+  	<description></description>
+  	<servlet-class>com.excilys.servlet.ComputersList</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>AddComputerServlet</servlet-name>
+  	<display-name>AddComputerServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.excilys.servlet.AddComputerServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>EditComputerServlet</servlet-name>
+  	<display-name>EditComputerServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.excilys.servlet.EditComputerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ComputersList</servlet-name>
+  	<url-pattern>/ComputersList</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AddComputerServlet</servlet-name>
+  	<url-pattern>/AddComputerServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>EditComputerServlet</servlet-name>
+  	<url-pattern>/EditComputerServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

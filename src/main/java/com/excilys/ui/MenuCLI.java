@@ -1,13 +1,12 @@
 package com.excilys.ui;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-import com.excilys.ui.MenuofEntries;
 
 public class MenuCLI {
 	
-	public static <T> void displayArrayList(ArrayList<T> list) {
+	public static <T> void displayArrayList(List<T> list) {
 		for(T o : list) {
 			System.out.println(o.toString());
 		}
@@ -30,7 +29,7 @@ public class MenuCLI {
 			int choice = key.nextInt();
 
 			switch(MenuofEntries.entry(choice)) {
-
+			//H2ConnectTest.getDbCon();
 			case LISTCOMPUTERS : 
 				MenuofActions.getInstance().listComputers();
 				break;

@@ -1,7 +1,9 @@
 package com.excilys.persistence;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class Connecticut implements AutoCloseable  {
@@ -18,8 +20,6 @@ public class Connecticut implements AutoCloseable  {
 	    private Connecticut() {
 	    	connectionProperties = new Properties();
 	        try {
-//	        	FileInputStream stream = new FileInputStream("src/main/ressources/mysql.properties");
-//	        	connectionProperties.load(stream);
 	        	connectionProperties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(Localisation));
 	        	url = connectionProperties.getProperty("url");
 	        	userName =connectionProperties.getProperty("userName");
@@ -27,8 +27,14 @@ public class Connecticut implements AutoCloseable  {
 	        	 Class.forName(connectionProperties.getProperty("driver"));
 	             conn = DriverManager.getConnection(url, userName, password);
 	        }
-	        catch (Exception e) {
-	            e.printStackTrace();
+	        catch (SQLException sqle) {
+	            sqle.printStackTrace();
+	        }
+	        catch (IOException ioexception) {
+	            ioexception.printStackTrace();
+	        }
+	        catch (ClassNotFoundException cnfexception) {
+	        	cnfexception.printStackTrace();
 	        }
 	    }
 	   

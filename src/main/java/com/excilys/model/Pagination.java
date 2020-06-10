@@ -1,6 +1,7 @@
 package com.excilys.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.ui.MenuCLI;
 
@@ -10,9 +11,9 @@ public class Pagination {
 	private int pageSize;
 	private int maxPages;
 	
-	public Pagination(int maxEntities) {
-		this.actualPageNb = 0;
-		this.pageSize = 15;
+	public Pagination(int maxEntities, int pageSize) {
+		this.actualPageNb=0;
+		this.pageSize = pageSize;
 		this.maxPages = maxEntities / this.pageSize;
 	}
 
@@ -28,7 +29,7 @@ public class Pagination {
 		}
 	}
 	
-	public <T> void displayPageContent(ArrayList<T> pageContent) {
+	public <T> void displayPageContent(List<T> pageContent) {
 		System.out.println("*-------------------------------------------------------------*");
 		MenuCLI.displayArrayList(pageContent);
 		System.out.println("*-------------------------------------------------------------*");

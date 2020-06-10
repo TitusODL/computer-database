@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.excilys.mapper.MapperComputer;
@@ -28,28 +29,28 @@ public class DAOComputer {
 		return DAOComputer.instance;
 	}
 	
-
 	private final static String listComputer = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer LEFT JOIN company ON company.id =company_id ;";
 	private final static String computerById = "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer LEFT JOIN company ON company_id =company.id WHERE computer.id =?; ";
 	private final static String compAdd = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?);";
 	private final static String compDel = "DELETE FROM computer WHERE id = ?";
 	private final static String updAdd = "UPDATE computer SET computer.name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE computer.id= ?;";
-	private final static String countAllComputerQuery = "SELECT COUNT(id) FROM computer";
+	private final static String countAllComputerQuery = "SELECT COUNT(id) as \"Rows\" FROM computer";
 	private final static String getPageComputersQuery = "SELECT computer.name, computer.id, computer.introduced, computer.discontinued, computer.company_id, company.name FROM computer LEFT JOIN company ON company.id = computer.company_id LIMIT ?, ?";
-												
-	public void addComputer(Computer computer) throws SQLException {
 
-		try (PreparedStatement pstmt = Connecticut.conn.prepareStatement(compAdd)) {
-			pstmt.setString(1, computer.name);
-			pstmt.setDate(2, computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null);
-			pstmt.setDate(3, computer.getDiscontinued() != null ? Date.valueOf(computer.getDiscontinued()) : null);
-			pstmt.setLong(4, computer.company.id);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+	public void addComputer(Computer computer){
+
+		try (PreparedStatement preparedStatementAddComputer = Connecticut.conn.prepareStatement(compAdd)) {
+			preparedStatementAddComputer.setString(1, computer.name);
+			preparedStatementAddComputer.setDate(2, computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null);
+			preparedStatementAddComputer.setDate(3, computer.getDiscontinued() != null ? Date.valueOf(computer.getDiscontinued()) : null);
+			preparedStatementAddComputer.setLong(4, computer.company.id);
+			preparedStatementAddComputer.executeUpdate();
+			
+		} catch (SQLException sqlexception) {
+			System.out.println(sqlexception.getMessage());
 		}
 	}
-	public void deleteComputer(int intId) throws SQLException {
+	public void deleteComputer(int intId) {
 
 		try (PreparedStatement pstmt = Connecticut.conn.prepareStatement(compDel)) {
 			pstmt.setLong(1, intId);
@@ -58,7 +59,7 @@ public class DAOComputer {
 			System.out.println(e.getMessage());
 		}
 	}
-	public void updateComputer(Computer computer,long intId) throws SQLException {
+	public void updateComputer(Computer computer,long intId) {
 
 
 		try (PreparedStatement pstmt = Connecticut.conn.prepareStatement(updAdd)) {
@@ -73,7 +74,7 @@ public class DAOComputer {
 		}
 	}
 
-	public Optional<Computer> getComputerDetail(long id) throws SQLException {
+	public Optional<Computer> getComputerDetail(long id) {
 		Computer comput = null;
 		try (PreparedStatement pstmComputerDetail =Connecticut.conn.prepareStatement(computerById);){
 			pstmComputerDetail.setLong(1,id);
@@ -88,8 +89,8 @@ public class DAOComputer {
 		return Optional.ofNullable(comput);
 	}
 
-	public ArrayList<Computer> getComputers() throws SQLException {
-		ArrayList<Computer> listComputers = new ArrayList<Computer>();
+	public List<Computer> getComputers(){
+		List<Computer> listComputers = new ArrayList<Computer>();
 		try (PreparedStatement pstmComputerDetail =Connecticut.conn.prepareStatement(listComputer);){
 			ResultSet resComputer = pstmComputerDetail.executeQuery();
 			while (resComputer.next()) {
@@ -103,18 +104,23 @@ public class DAOComputer {
 		return listComputers;
 	}
 	
-	public static int countAllComputer() {
+	public int countAllComputer(){
+		int nbRows = -1;
 		try(PreparedStatement stmt = Connecticut.conn.prepareStatement(countAllComputerQuery);){
 			ResultSet res1 = stmt.executeQuery();
-			if(res1.next()) {return res1.getInt("COUNT(id)");}
+			if(res1.next()) {
+				nbRows = res1.getInt("Rows");
+				}
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return 0;
+		System.out.println(nbRows);
+		return nbRows;
+	
 	}
 	
-	public ArrayList<Computer> getPageComputersRequest(Pagination page) {
-		ArrayList<Computer> res = new ArrayList<Computer>();
+	public List<Computer> getPageComputersRequest(Pagination page) {
+		List<Computer> res = new ArrayList<Computer>();
 		try(PreparedStatement stmt = Connecticut.conn.prepareStatement(getPageComputersQuery);){
 			stmt.setInt(1, page.getActualPageNb()*page.getPageSize());
 			stmt.setInt(2, page.getPageSize());
@@ -128,6 +134,5 @@ public class DAOComputer {
 		}
 		return res;
 	}
-
-
+	
 }

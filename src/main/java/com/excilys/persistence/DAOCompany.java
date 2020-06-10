@@ -39,7 +39,7 @@ public class DAOCompany  {
 	}
 	
 	
-	public ArrayList<Company> getCompanies() throws SQLException{
+	public ArrayList<Company> getCompanies() {
 		ArrayList<Company> listCompanies = new ArrayList<Company>();
 		try (PreparedStatement pstmCompany =Connecticut.conn.prepareStatement(listCompany);){
 			ResultSet resCompany = pstmCompany.executeQuery();
@@ -56,7 +56,7 @@ public class DAOCompany  {
 		return listCompanies;
 	}
 	
-	public Company getCompanybyId(long id) throws SQLException {
+	public Company getCompanybyId(long id) {
 
 		try (PreparedStatement pstmCompanyDetail =Connecticut.conn.prepareStatement(companyById);){
 			pstmCompanyDetail.setLong(1,id);

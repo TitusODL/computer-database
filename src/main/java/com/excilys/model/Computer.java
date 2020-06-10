@@ -9,13 +9,6 @@ public class Computer {
 	public LocalDate discontinued;
 	public Company company;
 
-//	public Computer(long id, String name, LocalDate introduced, LocalDate discontinued, Company company) {
-//		this.id = id;
-//		this.name = name;
-//		this.introduced = introduced;
-//		this.discontinued = discontinued;
-//		this.company = company;
-//	}
 	public Computer(Builder computerBuilder) {
 		this.id = computerBuilder.id;
 		this.name = computerBuilder.name;
@@ -84,12 +77,12 @@ public class Computer {
 			return this;
 		}
 
-		public Builder setIntroducedDate(LocalDate introduced) {
+		public Builder setIntroduced(LocalDate introduced) {
 			this.introduced = introduced;
 			return this;
 		}
 
-		public Builder setDiscontinuedDate(LocalDate discontinued) {
+		public Builder setDiscontinued(LocalDate discontinued) {
 			this.discontinued = discontinued;
 			return this;
 		}
@@ -108,4 +101,27 @@ public class Computer {
 		return "id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
 				+ ", company=" + company;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Computer other = (Computer) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	
 }
