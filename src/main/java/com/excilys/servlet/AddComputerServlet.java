@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.dto.DTOCompany;
 import com.excilys.dto.DTOComputer;
 import com.excilys.mapper.MapperCompany;
-import com.excilys.model.Company;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
@@ -25,6 +24,7 @@ public class AddComputerServlet extends HttpServlet {
 	private static final String ADDCOMPUTER = "/WEB-INF/views/addComputer.jsp";
 
 	CompanyService serviceCompany =  new CompanyService();
+	
 	ComputerService serviceComputer =  new ComputerService();
 	DTOComputer computerDTO;
 	List<DTOCompany>companysDTO = new ArrayList<DTOCompany>();
@@ -47,8 +47,8 @@ public class AddComputerServlet extends HttpServlet {
 		String introduced = request.getParameter("introduced");
 		String discontinued  = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
-		Company company = serviceCompany.getCompanyById(companyId);
-		String companyName = company.getName();
+		String companyName = serviceCompany.getCompanyById(companyId).getName();
+		
 		computerDTO = new DTOComputer.DTOComputerBuilder()
 				.setDiscontinued(discontinued)
 				.setIntroduced(introduced)

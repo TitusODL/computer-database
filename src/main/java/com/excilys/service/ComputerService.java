@@ -14,7 +14,7 @@ import com.excilys.model.Pagination;
 import com.excilys.persistence.DAOComputer;
 
 public class ComputerService {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(ComputerService.class);
 
 	public Optional<Computer> getComputerDetail(int id) throws SQLException {
@@ -26,20 +26,9 @@ public class ComputerService {
 
 	public void createComputer(Computer computer) throws SQLException {
 		DAOComputer.getInstance().addComputer(computer);
-		
+
 	}
 
-	public void updateComputer(Computer computer , long intId) throws SQLException {
-
-		Optional<Computer> compudp = DAOComputer.getInstance().getComputerDetail(intId);
-		if(compudp.isPresent()) {
-			DAOComputer.getInstance().updateComputer(computer,  intId);
-			logger.info("Computer updated");
-		}
-		else {
-			logger.info("ID not matching with a computer");
-		}
-	}
 	public int countAllComputer() {
 		return DAOComputer.getInstance().countAllComputer();
 	}
@@ -48,8 +37,8 @@ public class ComputerService {
 		return DAOComputer.getInstance().getPageComputersRequest(page);
 	}
 
-	
-	
+
+
 	CompanyService companyService = new CompanyService();
 
 	public List<Computer> getAllComputers(){
@@ -57,12 +46,11 @@ public class ComputerService {
 	}
 
 	public Optional<Computer> getComputerById(String id){
-		Optional<Computer> computer = DAOComputer.getInstance().getComputerDetail(Long.parseLong(id));
+		long compId = Long.parseLong(id);
+		Optional<Computer> computer = DAOComputer.getInstance().getComputerDetail(compId);
 		if (!computer.isPresent()) {
-
 			logger.info("Aucun ordinateur ne correspond à cet ID");
-			System.out.println();
-		}
+			}
 		return computer;
 	}
 
@@ -75,14 +63,12 @@ public class ComputerService {
 			DAOComputer.getInstance().addComputer(computer);
 		}
 	}
-	
+
 	public void updateComputer(DTOComputer DTOComputer){
 		DTOComputer newDTOComputer = new DTOComputer.DTOComputerBuilder().build();
 		newDTOComputer.setId(DTOComputer.id);
-
 		Optional<Computer> oldComputer = getComputerById(DTOComputer.id);
 		DTOComputer oldDTOComputer = MapperComputer.computerToDto(oldComputer.get());
-
 		updateName(DTOComputer, oldDTOComputer, newDTOComputer);
 		updateIntroduced(DTOComputer, oldDTOComputer, newDTOComputer);
 		updateDiscontinued(DTOComputer, oldDTOComputer, newDTOComputer);
@@ -90,13 +76,14 @@ public class ComputerService {
 		updateCompany(DTOComputer, oldDTOComputer, newDTOComputer);
 
 		logger.info(newDTOComputer.toString());
+
 		if (date) {
 			Computer computer = MapperComputer.dtoToComputer(newDTOComputer);
 			computer.setId(Long.parseLong(DTOComputer.id));
-			DAOComputer.getInstance().updateComputer(computer,10);
+			DAOComputer.getInstance().updateComputer(computer);
 		}
 	}
-	
+
 	public void deleteComputer(int id){
 		Optional<Computer> computer = DAOComputer.getInstance().getComputerDetail(id);
 		if (computer.isPresent()) {
@@ -108,7 +95,7 @@ public class ComputerService {
 		}
 	}
 
-	
+
 	private boolean verifierDate(DTOComputer DTOComputer) {
 		boolean ordreDate = false;
 		boolean dateIntroduced = Validators.verifyDateUserInput(DTOComputer.introduced);
@@ -123,7 +110,7 @@ public class ComputerService {
 			return true;
 		} else return false;
 	}
-	
+
 
 	private boolean verifierNom(DTOComputer DTOComputer) {
 		boolean name = false;
@@ -134,7 +121,7 @@ public class ComputerService {
 		}
 		return name;
 	}
-	
+
 	private void updateName(DTOComputer DTOComputer, DTOComputer oldDTOComputer, DTOComputer newDTOComputer) {
 		if (DTOComputer.name.isEmpty()) {
 			newDTOComputer.name = oldDTOComputer.name;
@@ -142,7 +129,7 @@ public class ComputerService {
 			newDTOComputer.setName(DTOComputer.name);
 		}
 	}
-	
+
 	private void updateIntroduced(DTOComputer DTOComputer, DTOComputer oldDTOComputer, DTOComputer newDTOComputer) {
 		if (DTOComputer.introduced.isEmpty()) {
 			newDTOComputer.introduced = oldDTOComputer.introduced;
@@ -150,22 +137,22 @@ public class ComputerService {
 			newDTOComputer.setIntroduced(DTOComputer.introduced);
 		}
 	}
-	
+
 	private void updateDiscontinued(DTOComputer DTOComputer, DTOComputer oldDTOComputer, DTOComputer newDTOComputer) {
 		if (DTOComputer.discontinued.isEmpty()) {
 			newDTOComputer.discontinued = oldDTOComputer.discontinued;
 		} else {
-			newDTOComputer.setIntroduced(DTOComputer.discontinued);
+			newDTOComputer.setDiscontinued(DTOComputer.discontinued);
 		}
 	}
-	
+
 	private void updateCompany(DTOComputer DTOComputer, DTOComputer oldDTOComputer, DTOComputer newDTOComputer) {
-		if (DTOComputer.company_id.isEmpty()) {
+		if (DTOComputer.company_id.isEmpty() || DTOComputer.company_name.isEmpty()) {
 			newDTOComputer.setCompany_id(oldDTOComputer.company_id);
+			newDTOComputer.setCompany_name(oldDTOComputer.company_name);
 		}  else {
 			newDTOComputer.setCompany_id(DTOComputer.company_id);
+			newDTOComputer.setCompany_name(DTOComputer.company_name);
 		}
 	}
 }
-
-

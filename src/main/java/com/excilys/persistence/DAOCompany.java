@@ -61,7 +61,7 @@ public class DAOCompany  {
 		try (PreparedStatement pstmCompanyDetail =Connecticut.conn.prepareStatement(companyById);){
 			pstmCompanyDetail.setLong(1,id);
 			ResultSet resCompany = pstmCompanyDetail.executeQuery();
-			while (resCompany.first()) {
+			while (resCompany.next()) {
 				long companyId = resCompany.getLong("company.id");
 				String companyName = resCompany.getString("company.name");
 				Company hm = new Company(companyId, companyName);

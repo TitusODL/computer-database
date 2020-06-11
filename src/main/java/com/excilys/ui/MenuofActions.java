@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.excilys.dto.DTOComputer;
 import com.excilys.mapper.MapperComputer;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
@@ -53,17 +54,19 @@ public class MenuofActions {
 		scan.nextLine();
 		Optional<Computer> optionDetails = computerService.getComputerDetail(updId);
 		System.out.println(optionDetails.toString());
-		Computer computer = new Computer();
+		DTOComputer computer = new DTOComputer.DTOComputerBuilder().build();
+		computer.setId(String.valueOf(updId));
 		System.out.println("Enter new name");
 		computer.setName(scan.nextLine());
 		System.out.println("Enter new introduction date (yyyy-MM-dd):");
-		computer.setIntroduced((MapperComputer.transString(scan.nextLine())));
+		computer.setIntroduced(scan.nextLine());
 		System.out.println("Enter new date of Termination (yyyy-MM-dd):");
-		computer.setDiscontinued((MapperComputer.transString(scan.nextLine())));
+		computer.setDiscontinued(scan.nextLine());
 		System.out.println("Enter new company ID:");
 		Company company = companyService.getCompanyById(scan.nextLine());
-		computer.setCompany(company);
-		computerService.updateComputer(computer,updId);
+		computer.setCompany_id(String.valueOf(company.id));
+		computer.setCompany_name(company.name);
+		computerService.updateComputer(computer);
 
 	}
 

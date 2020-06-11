@@ -14,13 +14,17 @@ public class MapperCompany {
 		long companyId = Long.parseLong(DTOCompany.id);
 		Company optCompany = DAOCompany.getInstance().getCompanybyId(companyId);
 
-		Company company = new Company.CompanyBuilder().setId(companyId).setName(optCompany.name).build();
+		Company company = new Company.CompanyBuilder()
+				.setId(companyId)
+				.setName(optCompany.name)
+				.build();
 
 		return company;
 	}
 
 	public static DTOCompany companyToDto(Company company) {
-		DTOCompany DTOCompany = new DTOCompany.DTOCompanyBuilder().setId(String.valueOf(company.id))
+		DTOCompany DTOCompany = new DTOCompany.DTOCompanyBuilder()
+				.setId(String.valueOf(company.id))
 				.setName(company.name).build();
 
 		return DTOCompany;
@@ -40,7 +44,6 @@ public class MapperCompany {
 		for(int i=0; i<CompanyList.size(); i++) {
 			CompanyList.add(dtoToCompany(DTOCompanyList.get(i)));
 		}
-		
 		return CompanyList;
 	}
 }

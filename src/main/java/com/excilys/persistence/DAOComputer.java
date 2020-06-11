@@ -55,11 +55,11 @@ public class DAOComputer {
 		try (PreparedStatement pstmt = Connecticut.conn.prepareStatement(compDel)) {
 			pstmt.setLong(1, intId);
 			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+		} catch (SQLException esql) {
+			esql.printStackTrace();
 		}
 	}
-	public void updateComputer(Computer computer,long intId) {
+	public void updateComputer(Computer computer) {
 
 
 		try (PreparedStatement pstmt = Connecticut.conn.prepareStatement(updAdd)) {
@@ -67,10 +67,10 @@ public class DAOComputer {
 			pstmt.setDate(2, computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null);
 			pstmt.setDate(3, computer.getDiscontinued() != null ? Date.valueOf(computer.getDiscontinued()) : null);
 			pstmt.setLong(4, computer.getCompany().getId());
-			pstmt.setLong(5,intId);
+			pstmt.setLong(5,computer.getId());
 			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+		} catch (SQLException esql) {
+			esql.printStackTrace();
 		}
 	}
 
@@ -79,12 +79,12 @@ public class DAOComputer {
 		try (PreparedStatement pstmComputerDetail =Connecticut.conn.prepareStatement(computerById);){
 			pstmComputerDetail.setLong(1,id);
 			ResultSet resComputer = pstmComputerDetail.executeQuery();
-			if (resComputer.first()) {
+			if (resComputer.next()) {
 				comput = MapperComputer.ComputerDetailMapper(resComputer);
 			}
 		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
+		catch (SQLException esql) {
+			esql.printStackTrace();
 		}
 		return Optional.ofNullable(comput);
 	}
@@ -98,8 +98,8 @@ public class DAOComputer {
 				listComputers.add(comp);
 			}
 		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
+		catch (SQLException esql) {
+			esql.printStackTrace();
 		}
 		return listComputers;
 	}
@@ -111,10 +111,9 @@ public class DAOComputer {
 			if(res1.next()) {
 				nbRows = res1.getInt("Rows");
 				}
-		}catch (SQLException e) {
-			e.printStackTrace();
+		}catch (SQLException esql) {
+			esql.printStackTrace();
 		}
-		System.out.println(nbRows);
 		return nbRows;
 	
 	}
@@ -129,8 +128,8 @@ public class DAOComputer {
 			Computer computer = MapperComputer.ComputerDetailMapper(res1);
 			res.add(computer);
 			}
-		}catch (SQLException e){
-			e.printStackTrace();
+		}catch (SQLException esql){
+			esql.printStackTrace();
 		}
 		return res;
 	}

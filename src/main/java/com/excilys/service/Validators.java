@@ -14,7 +14,6 @@ public class Validators {
 
 	public static boolean verifyDateUserInput(String date) {
 
-
 		if (date.isEmpty()) {
 			return true;
 		}
