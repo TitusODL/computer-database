@@ -31,13 +31,10 @@ public class DAOComputer {
 
 	public void addComputer(Computer computer) {
 
-		try (PreparedStatement preparedStatementAddComputer = Connecticut.conn
-				.prepareStatement(SQLRequests.LISTCOMPUTER.getQuery())) {
+		try (PreparedStatement preparedStatementAddComputer = Connecticut.conn.prepareStatement(SQLRequests.ADDCOMPUTER.getQuery())) {
 			preparedStatementAddComputer.setString(1, computer.name);
-			preparedStatementAddComputer.setDate(2,
-					computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null);
-			preparedStatementAddComputer.setDate(3,
-					computer.getDiscontinued() != null ? Date.valueOf(computer.getDiscontinued()) : null);
+			preparedStatementAddComputer.setDate(2,computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null);
+			preparedStatementAddComputer.setDate(3,computer.getDiscontinued() != null ? Date.valueOf(computer.getDiscontinued()) : null);
 			preparedStatementAddComputer.setLong(4, computer.company.id);
 			preparedStatementAddComputer.executeUpdate();
 
@@ -130,15 +127,17 @@ public class DAOComputer {
 		}
 		return rescomputer;
 	}
+	
 
-	public List<Computer> getPageComputerName(String search, Pagination page) {
+	public List<Computer> getPageComputerNameSearched(String search, Pagination page) {
 
 		List<Computer> computerlist = new ArrayList<Computer>();
 		try (PreparedStatement stmtSelectPage = Connecticut.conn
-				.prepareStatement(SQLRequests.GETPAGECOMPUTERNAME.getQuery());) {
+				.prepareStatement(SQLRequests.GETPAGECOMPUTERNAMESIZESEARCHED.getQuery());) {
 			stmtSelectPage.setString(1, "%" + search + "%");
-			stmtSelectPage.setInt(2, page.getPageSize() * page.getActualPageNb());
-			stmtSelectPage.setInt(3, page.getPageSize());
+			stmtSelectPage.setString(2, "%" + search + "%");
+			stmtSelectPage.setInt(3, page.getPageSize() * page.getActualPageNb());
+			stmtSelectPage.setInt(4, page.getPageSize());
 
 			ResultSet resListcomputer = stmtSelectPage.executeQuery();
 			while (resListcomputer.next()) {
@@ -161,12 +160,12 @@ public class DAOComputer {
 		try (PreparedStatement stmtSelectPage = Connecticut.conn
 				.prepareStatement(SQLRequests.GETPAGECOMPUTERNAMESEARCHED.getQuery());) {
 			stmtSelectPage.setString(1, "%" + search + "%");
+			stmtSelectPage.setString(2, "%" + search + "%");
 
 			ResultSet resListcomputer = stmtSelectPage.executeQuery();
 			while (resListcomputer.next()) {
 				Computer computer = MapperComputer.ComputerDetailMapper(resListcomputer);
 				computerlist.add(computer);
-
 			}
 
 		} catch (SQLException esql) {

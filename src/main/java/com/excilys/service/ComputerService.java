@@ -37,8 +37,8 @@ public class ComputerService {
 		return DAOComputer.getInstance().getPageComputersRequest(page);
 	}
 
-	public List<Computer> getPageByName(String search, Pagination page) {
-		return DAOComputer.getInstance().getPageComputerName(search, page);
+	public List<Computer> getPageByNameSearched(String search, Pagination page) {
+		return DAOComputer.getInstance().getPageComputerNameSearched(search, page);
 	}
 
 	public List<Computer> getSearchedComputers(String search) {

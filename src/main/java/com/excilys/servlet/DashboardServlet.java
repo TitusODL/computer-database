@@ -26,20 +26,20 @@ public class DashboardServlet extends HttpServlet {
 	private int nbRows = 0;
 	private int pageTaille = 10;
 	private int pageMax;
-	private int direction=1;
-	
+	private int direction = 1;
+
 	List<Computer> computerListPage = new ArrayList<Computer>();
 	Pagination page = new Pagination(nbRows, pageTaille);
 	ComputerService computerService = new ComputerService();
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		Connecticut.getDbCon();
 		nbRows = computerService.countAllComputer();
 		pageNum = page.getActualPageNb();
 		String search = null;
 		String order = "";
-		
 
 		if (request.getParameter("pageNum") != null) {
 			String s = request.getParameter("pageNum");
@@ -54,39 +54,38 @@ public class DashboardServlet extends HttpServlet {
 			page.setPageSize(pageTaille);
 			pageMax = nbRows / pageTaille;
 		}
-		
+
 		order = request.getParameter("order");
 		search = request.getParameter("search");
-		
-		if (search!=null && (order==null || order.isEmpty())) {
-			
-			computerListPage = computerService.getPageByName(search, page);
-			nbRows = computerService.getSearchedComputers(search).size();
 
-		}
-		else if (order!=null && (search==null || search.isEmpty())) {
+		if (search != null && (order == null || order.isEmpty())) {
+			computerListPage = computerService.getPageByNameSearched(search, page);
+			nbRows = computerService.getSearchedComputers(search).size();
+		} else if (order != null && (search == null || search.isEmpty())) {
 			try {
-				direction =Integer.parseInt(request.getParameter("direction"))%2;
-				computerListPage = computerService.getComputersbyOrder(order,direction,page);
+				direction = Integer.parseInt(request.getParameter("direction")) % 2;
+				computerListPage = computerService.getComputersbyOrder(order, direction, page);
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
-		else {
+		} else {
 			computerListPage = computerService.getPageComputer(page);
+
 		}
-		
+
 		request.setAttribute("order", order);
 		request.setAttribute("search", search);
 		request.setAttribute("nbRows", nbRows);
 		request.setAttribute("pageNum", pageNum);
 		request.setAttribute("pageMax", pageMax);
-		request.setAttribute("direction",direction);
+		request.setAttribute("direction", direction);
 		request.setAttribute("computerListPage", computerListPage);
 		request.getRequestDispatcher(DASHBOARD).forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		ComputerService computerService = new ComputerService();
 		String[] computers = request.getParameter("selection").split(",");

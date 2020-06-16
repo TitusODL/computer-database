@@ -20,9 +20,9 @@ public enum SQLRequests {
 	
 	GETPAGECOMPUTERORDERBYNAME( "SELECT computer.id, computer.name, computer.introduced , computer.discontinued , company_id, company.name FROM computer LEFT JOIN company ON company_id = company.id ORDER BY  LIMIT ?,?;"),
 	
-	GETPAGECOMPUTERNAME ("SELECT computer.id, computer.name, computer.introduced , computer.discontinued , company_id, company.name FROM computer LEFT JOIN company ON company_id = company.id WHERE computer.name LIKE ? LIMIT ?,?;"),
+	GETPAGECOMPUTERNAMESIZESEARCHED ("SELECT computer.id, computer.name, computer.introduced , computer.discontinued , company_id, company.name FROM computer LEFT JOIN company ON company_id = company.id WHERE computer.name LIKE ? OR company.name LIKE ? LIMIT ?,?;"),
 	
-	GETPAGECOMPUTERNAMESEARCHED( "SELECT computer.id, computer.name, computer.introduced , computer.discontinued , company_id, company.name FROM computer LEFT JOIN company ON company_id = company.id WHERE computer.name LIKE ?;"),
+	GETPAGECOMPUTERNAMESEARCHED( "SELECT computer.id, computer.name, computer.introduced , computer.discontinued , company_id, company.name FROM computer LEFT JOIN company ON company_id = company.id WHERE computer.name LIKE ? OR company.name LIKE ?;"),
 	
 	SORTPAGECOMPUTERASC("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company_id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY computer.name ASC LIMIT ?,?;"),
 	
