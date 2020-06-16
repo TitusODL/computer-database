@@ -10,6 +10,7 @@ public enum MenuofEntries {
 	ADDCOMPUTER, 
 	DELETECOMPUTER, 
 	PAGINATION,
+	DELETECOMPANY,
 	QUIT;
 
 	public static MenuofEntries entry(int choice) {
@@ -30,6 +31,8 @@ public enum MenuofEntries {
 		case 7:
 			return PAGINATION;
 		case 8:
+			return DELETECOMPANY;
+		case 9:
 			return QUIT;
 		default:
 			return QUIT;

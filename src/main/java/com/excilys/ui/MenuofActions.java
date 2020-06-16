@@ -90,6 +90,11 @@ public class MenuofActions {
 		
 		computerService.deleteComputer(suppId);
 	}
+	public void deleteCompany() throws SQLException {
+		System.out.println("Entrer un ID");
+		int suppId = scan.nextInt();
+		companyService.deleteCompany(suppId);
+	}
 
 
 	public void listCompanies() throws SQLException {

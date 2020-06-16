@@ -7,47 +7,51 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.mapper.MapperComputer;
 
-
 public class Validators {
 
-	private final static Logger LOGGER = LoggerFactory.getLogger(Validators.class.getName());
+	private final static Logger LOGGER = LoggerFactory.getLogger(Validators.class);
 
 	public static boolean verifyDateUserInput(String date) {
+		System.out.println("Validator " + date);
 
-		if (date.isEmpty()) {
+		if (date == null || date.isEmpty()) {
 			return true;
 		}
-		if (date.substring(4, 5).equals("/")) {
+		else if (date.equals("null")) {
+				return true;
+		
+		} 
+		else if (date.contains("/")) {
 			LOGGER.info("Mauvais format de Date");
 			return false;
-		} try
-		{	  
-			String year = date.substring(0,4);
-			int dateYear = Integer.parseInt(year);
-			String month = date.substring(5,7);
-			int dateMonth = Integer.parseInt(month);
-			String day = date.substring(8,10);
-			int dateDay = Integer.parseInt(day);
+		} else {
+			try {
+				String year = date.substring(0, 4);
+				int dateYear = Integer.parseInt(year);
+				String month = date.substring(5, 7);
+				int dateMonth = Integer.parseInt(month);
+				String day = date.substring(8, 10);
+				int dateDay = Integer.parseInt(day);
 
-			return true;
+				return true;
+			} catch (Exception e) {
+				LOGGER.error("Wrong format");
+				return false;
+			}
+
 		}
-		catch (Exception e) {
-			System.out.println(e.getMessage());
-			LOGGER.error("Wrong format");
-			return false;
-		}
-		
+
 	}
 
 	public static boolean verifierDateOrdre(String dateIntroduction, String dateTermination) {
 		LocalDate intro = MapperComputer.transString(dateIntroduction);
 		LocalDate termine = MapperComputer.transString(dateTermination);
 
-		if(dateIntroduction.isEmpty() || dateTermination.isEmpty()) {
+		if (dateIntroduction.isEmpty() || dateTermination.isEmpty()) {
 			return true;
 		}
 
-		return(termine.isAfter(intro));
+		return (termine.isAfter(intro));
 
 	}
 

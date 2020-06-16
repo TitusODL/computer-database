@@ -22,7 +22,8 @@ public class MenuCLI {
 		System.out.println("5 - Delete a computer");
 		System.out.println("6 - Update a computer");
 		System.out.println("7 - Pagination");
-		System.out.println("8 - Quit");
+		System.out.println("8 - Delete a company");
+		System.out.println("9 - Quit");
 		System.out.println("***********************************************************************************************************************");
 
 		try (Scanner key = new Scanner(System.in)) {
@@ -55,6 +56,10 @@ public class MenuCLI {
 				
 			case PAGINATION: 
 				MenuofActions.getInstance().displayPage();
+				break;
+			
+			case DELETECOMPANY: 
+				MenuofActions.getInstance().deleteCompany();
 				break;
 
 			case QUIT:

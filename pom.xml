@@ -19,6 +19,19 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<junitVersion>4.11</junitVersion>
+		<slf4jVersion>1.7.30</slf4jVersion>
+		<mysqlVersion>8.0.20</mysqlVersion>
+		<mockitoVersion>2.10.0</mockitoVersion>
+		<springcontextVersion>5.2.5.RELEASE</springcontextVersion>
+		<tomcatVersion>9.0.31</tomcatVersion>
+		<h2Version>1.4.200</h2Version>
+		<checkstylepluginVersion>3.1.1</checkstylepluginVersion>
+		<javaxservletjstlVersion>1.2</javaxservletjstlVersion>
+		<javaxservletapiVersion>4.0.1</javaxservletapiVersion>
+		<taglibVersion>1.1.2</taglibVersion>
+		<taglibimplVersion>1.2.5</taglibimplVersion>
+		<taglibspecVersion>1.2.5</taglibspecVersion>
+		<hikaricpVersion>3.4.1</hikaricpVersion>
 	</properties>
 
 	<dependencies>
@@ -31,81 +44,87 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.30</version>
+			<version>${slf4jVersion}</version>
 
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.30</version>
+			<version>${slf4jVersion}</version>
 
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.20</version>
+			<version>${mysqlVersion}</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>2.10.0</version>
+			<version>${mockitoVersion}</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- Spring -->
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+		<!-- https://mvnreptaglibimplVersionository.com/artifact/org.springframework/spring-context -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>5.2.5.RELEASE</version>
+			<version>${springcontextVersion}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-catalina</artifactId>
-			<version>9.0.31</version>
+			<version>${tomcatVersion}</version>
 		</dependency>
 		<!-- H2 DB -->
 		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.200</version>
+			<version>${h2Version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-checkstyle-plugin</artifactId>
-			<version>3.1.1</version>
+			<version>${checkstylepluginVersion}</version>
 			<type>maven-plugin</type>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<version>${javaxservletjstlVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>4.0.1</version>
+			<version>${javaxservletapiVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
-			<version>1.1.2</version>
+			<version>${taglibVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.taglibs</groupId>
 			<artifactId>taglibs-standard-impl</artifactId>
-			<version>1.2.5</version>
+			<version>${taglibimplVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.taglibs</groupId>
 			<artifactId>taglibs-standard-spec</artifactId>
-			<version>1.2.5</version>
+			<version>${taglibspecVersion}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>${hikaricpVersion}</version>
+		</dependency>
+
 
 	</dependencies>
 

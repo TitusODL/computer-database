@@ -20,41 +20,51 @@ public class ComputerService {
 	public Optional<Computer> getComputerDetail(int id) throws SQLException {
 		return DAOComputer.getInstance().getComputerDetail(id);
 	}
+
 	public List<Computer> getComputers() throws SQLException {
 		return DAOComputer.getInstance().getComputers();
 	}
 
 	public void createComputer(Computer computer) throws SQLException {
 		DAOComputer.getInstance().addComputer(computer);
-
 	}
 
 	public int countAllComputer() {
 		return DAOComputer.getInstance().countAllComputer();
 	}
 
-	public List<Computer> getPageComputer(Pagination page){
+	public List<Computer> getPageComputer(Pagination page) {
 		return DAOComputer.getInstance().getPageComputersRequest(page);
 	}
 
+	public List<Computer> getPageByName(String search, Pagination page) {
+		return DAOComputer.getInstance().getPageComputerName(search, page);
+	}
 
+	public List<Computer> getSearchedComputers(String search) {
+		return DAOComputer.getInstance().getSearchedComputers(search);
+	}
+
+	public List<Computer> getComputersbyOrder(String order,int direction,Pagination page) throws SQLException {
+		return DAOComputer.getInstance().getPageComputerOrderByName(order,direction,page);
+	}
 
 	CompanyService companyService = new CompanyService();
 
-	public List<Computer> getAllComputers(){
+	public List<Computer> getAllComputers() {
 		return DAOComputer.getInstance().getComputers();
 	}
 
-	public Optional<Computer> getComputerById(String id){
+	public Optional<Computer> getComputerById(String id) {
 		long compId = Long.parseLong(id);
 		Optional<Computer> computer = DAOComputer.getInstance().getComputerDetail(compId);
 		if (!computer.isPresent()) {
 			logger.info("Aucun ordinateur ne correspond à cet ID");
-			}
+		}
 		return computer;
 	}
 
-	public void createComputer(DTOComputer DTOComputer){
+	public void createComputer(DTOComputer DTOComputer) {
 		boolean name = verifierNom(DTOComputer);
 		boolean date = verifierDate(DTOComputer);
 
@@ -64,7 +74,7 @@ public class ComputerService {
 		}
 	}
 
-	public void updateComputer(DTOComputer DTOComputer){
+	public void updateComputer(DTOComputer DTOComputer) {
 		DTOComputer newDTOComputer = new DTOComputer.DTOComputerBuilder().build();
 		newDTOComputer.setId(DTOComputer.id);
 		Optional<Computer> oldComputer = getComputerById(DTOComputer.id);
@@ -84,7 +94,7 @@ public class ComputerService {
 		}
 	}
 
-	public void deleteComputer(int id){
+	public void deleteComputer(int id) {
 		Optional<Computer> computer = DAOComputer.getInstance().getComputerDetail(id);
 		if (computer.isPresent()) {
 			DAOComputer.getInstance().deleteComputer(id);
@@ -94,7 +104,6 @@ public class ComputerService {
 			logger.info("Aucun ordinateur ne correspond à cet ID");
 		}
 	}
-
 
 	private boolean verifierDate(DTOComputer DTOComputer) {
 		boolean ordreDate = false;
@@ -108,9 +117,9 @@ public class ComputerService {
 		}
 		if (dateIntroduced && dateDiscontinued && ordreDate) {
 			return true;
-		} else return false;
+		} else
+			return false;
 	}
-
 
 	private boolean verifierNom(DTOComputer DTOComputer) {
 		boolean name = false;
@@ -150,7 +159,7 @@ public class ComputerService {
 		if (DTOComputer.company_id.isEmpty() || DTOComputer.company_name.isEmpty()) {
 			newDTOComputer.setCompany_id(oldDTOComputer.company_id);
 			newDTOComputer.setCompany_name(oldDTOComputer.company_name);
-		}  else {
+		} else {
 			newDTOComputer.setCompany_id(DTOComputer.company_id);
 			newDTOComputer.setCompany_name(DTOComputer.company_name);
 		}

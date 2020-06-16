@@ -3,10 +3,8 @@ package com.excilys.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.excilys.dto.DTOComputer;
@@ -74,8 +72,11 @@ public class MapperComputer {
 	}
 	public static LocalDate transString(String entry) {
 		boolean format = Validators.verifyDateUserInput(entry);
-		System.out.println(entry);
-		if(entry.isEmpty()) 
+		if(entry == null || entry.isEmpty()) 
+		{
+			return null;
+		}
+		else if(entry.equals("null")) 
 		{
 			return null;
 		}
@@ -88,15 +89,5 @@ public class MapperComputer {
 			return localDate;
 
 		}
-
-	}
-	public LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
-		return dateToConvert.toInstant()
-				.atZone(ZoneId.systemDefault())
-				.toLocalDate();
-	} 
-	
-	public Date convertToDateViaSqlDate(LocalDate dateToConvert) {
-	    return java.sql.Date.valueOf(dateToConvert);
 	}
 }

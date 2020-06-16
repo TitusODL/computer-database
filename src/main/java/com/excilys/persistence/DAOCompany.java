@@ -98,4 +98,12 @@ public class DAOCompany  {
 		}
 		return res;
 	}
+	public void deleteCompany(int intId) {
+		try (PreparedStatement pstmt = Connecticut.conn.prepareStatement(SQLRequests.DELETECOMPANY.getQuery())) {
+			pstmt.setLong(1, intId);
+			pstmt.executeUpdate();
+		} catch (SQLException esql) {
+			esql.printStackTrace();
+		}
+	}
 }
