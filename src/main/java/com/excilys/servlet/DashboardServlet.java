@@ -27,6 +27,7 @@ public class DashboardServlet extends HttpServlet {
 	private int pageTaille = 10;
 	private int pageMax;
 	private int direction=1;
+	
 	List<Computer> computerListPage = new ArrayList<Computer>();
 	Pagination page = new Pagination(nbRows, pageTaille);
 	ComputerService computerService = new ComputerService();

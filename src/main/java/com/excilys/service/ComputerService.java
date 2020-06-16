@@ -17,7 +17,7 @@ public class ComputerService {
 
 	private static Logger logger = LoggerFactory.getLogger(ComputerService.class);
 
-	public Optional<Computer> getComputerDetail(int id) throws SQLException {
+	public Optional<Computer> getComputerDetail(long id) throws SQLException {
 		return DAOComputer.getInstance().getComputerDetail(id);
 	}
 
@@ -94,7 +94,7 @@ public class ComputerService {
 		}
 	}
 
-	public void deleteComputer(int id) {
+	public void deleteComputer(long id) {
 		Optional<Computer> computer = DAOComputer.getInstance().getComputerDetail(id);
 		if (computer.isPresent()) {
 			DAOComputer.getInstance().deleteComputer(id);

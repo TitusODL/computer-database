@@ -27,8 +27,8 @@ public class DAOComputer {
 		return DAOComputer.instance;
 	}
 	private static final int ASC = 1;
-	
-	
+
+
 	public void addComputer(Computer computer) {
 
 		try (PreparedStatement preparedStatementAddComputer = Connecticut.conn
@@ -46,7 +46,7 @@ public class DAOComputer {
 		}
 	}
 
-	public void deleteComputer(int intId) {
+	public void deleteComputer(long intId) {
 
 		try (PreparedStatement pstmt = Connecticut.conn.prepareStatement(SQLRequests.DELETECOMPUTER.getQuery())) {
 			pstmt.setLong(1, intId);
@@ -180,26 +180,28 @@ public class DAOComputer {
 
 
 	public List<Computer> getPageComputerOrderByName(String order, int direction, Pagination page) {
+
+		List<Computer> computerlist = new ArrayList<Computer>();
+		PreparedStatement statementSelecPage;
 		try {
 
-			List<Computer> computerlist = new ArrayList<Computer>();
-			PreparedStatement statementSelecPage;
+
 			if (order.equals("computer.name")) {
 				if (direction == ASC) {
 					statementSelecPage = Connecticut.conn.prepareStatement(SQLRequests.SORTPAGECOMPUTERASC.getQuery());
 				}					
-					else {
+				else {
 					statementSelecPage = Connecticut.conn.prepareStatement(SQLRequests.SORTPAGECOMPUTERDESC.getQuery());
 				}
-												}	
+			}	
 			else {
 				if (direction == ASC) {
 					statementSelecPage = Connecticut.conn.prepareStatement(SQLRequests.SORTPAGECOMPANYASC.getQuery());
 				} 
-			else {
+				else {
 					statementSelecPage = Connecticut.conn.prepareStatement(SQLRequests.SORTPAGECOMPANYDESC.getQuery());
 				}
-				}
+			}
 			statementSelecPage.setInt(1, page.getActualPageNb() * page.getPageSize());
 			statementSelecPage.setInt(2, page.getPageSize());
 			ResultSet resListecomputer = statementSelecPage.executeQuery();
@@ -207,12 +209,30 @@ public class DAOComputer {
 				Computer computer = MapperComputer.ComputerDetailMapper(resListecomputer);
 				computerlist.add(computer);
 			}
-			return computerlist;
+
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return computerlist;
+	}
 
+	public List<Computer> getComputerIdByCompany(long id) {
+
+		List<Computer> list = new ArrayList<Computer>();
+		Computer comput = new Computer();
+		try (PreparedStatement pstmComputerDetail = Connecticut.conn.prepareStatement(SQLRequests.COMPUTERBYIDBYCOMPANY.getQuery());) {
+			pstmComputerDetail.setLong(1, id);
+			ResultSet resComputer = pstmComputerDetail.executeQuery();
+			while(resComputer.next()) {
+				comput = MapperComputer.ComputerDetailMapper(resComputer);
+				list.add(comput);	
+				;
+			}
+		} catch (SQLException esql) {
+			esql.printStackTrace();
+		}
+		return list;
 	}
 
 }
