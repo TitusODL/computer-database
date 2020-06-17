@@ -2,8 +2,8 @@ package com.excilys.dto;
 
 public class DTOCompany {
 
-	public String id;
-	public String name;
+	private String id;
+	private String name;
 
 	private DTOCompany() {
 	}
@@ -26,8 +26,8 @@ public class DTOCompany {
 	}
 
 	public static class DTOCompanyBuilder {
-		public String id;
-		public String name;
+		private String id;
+		private String name;
 
 		public DTOCompany build() {
 			return new DTOCompany(this);

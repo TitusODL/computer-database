@@ -2,6 +2,7 @@ package com.excilys.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,15 +15,17 @@ import com.excilys.persistence.DAOComputer;
 public class CompanyService {
 	private static Logger logger = LoggerFactory.getLogger(CompanyService.class);
 
-	public Company getCompanyById(String companyID) {
+	public Optional<Company> getCompanyById(String companyID) {
 		try {
 			long compId = Long.parseLong(companyID);
-			Company company = DAOCompany.getInstance().getCompanybyId(compId);
+			Optional<Company> company = DAOCompany.getInstance().getCompanybyId(compId);
 			return company;
+			
 		} catch (NumberFormatException NFexception) {
 			NFexception.printStackTrace();
 		}
-		return null;
+		
+		return Optional.ofNullable(null);
 	}
 
 	public List<Company> getAllCompanies() {
@@ -31,7 +34,7 @@ public class CompanyService {
 
 	public void deleteCompany(long id) {
 		ComputerService cs = new ComputerService();
-		Company company = DAOCompany.getInstance().getCompanybyId(id);
+		Optional<Company> company = DAOCompany.getInstance().getCompanybyId(id);
 		List<Computer> list = new ArrayList<Computer>();
 		list = DAOComputer.getInstance().getComputerIdByCompany(id);
 		if (company != null) {

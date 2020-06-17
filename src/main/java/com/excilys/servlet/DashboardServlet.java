@@ -1,7 +1,6 @@
 package com.excilys.servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +31,7 @@ public class DashboardServlet extends HttpServlet {
 	Pagination page = new Pagination(nbRows, pageTaille);
 	ComputerService computerService = new ComputerService();
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		Connecticut.getDbCon();
 		nbRows = computerService.countAllComputer();
@@ -54,26 +52,16 @@ public class DashboardServlet extends HttpServlet {
 			page.setPageSize(pageTaille);
 			pageMax = nbRows / pageTaille;
 		}
-
-		order = request.getParameter("order");
+		
 		search = request.getParameter("search");
+		order = request.getParameter("order");
+		computerListPage = getPageFromParam(request, search, order);
+		setAttribut(request, search, order,nbRows,pageNum,pageMax,direction,computerListPage);
+		request.getRequestDispatcher(DASHBOARD).forward(request, response);
+	}
 
-		if (search != null && (order == null || order.isEmpty())) {
-			computerListPage = computerService.getPageByNameSearched(search, page);
-			nbRows = computerService.getSearchedComputers(search).size();
-		} else if (order != null && (search == null || search.isEmpty())) {
-			try {
-				direction = Integer.parseInt(request.getParameter("direction")) % 2;
-				computerListPage = computerService.getComputersbyOrder(order, direction, page);
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		} else {
-			computerListPage = computerService.getPageComputer(page);
-
-		}
-
+	
+	private void setAttribut(HttpServletRequest request, String search, String order, int nbRows, int pageNum, int pageMax, int direction, List<Computer> computerListPage) {
 		request.setAttribute("order", order);
 		request.setAttribute("search", search);
 		request.setAttribute("nbRows", nbRows);
@@ -81,11 +69,30 @@ public class DashboardServlet extends HttpServlet {
 		request.setAttribute("pageMax", pageMax);
 		request.setAttribute("direction", direction);
 		request.setAttribute("computerListPage", computerListPage);
-		request.getRequestDispatcher(DASHBOARD).forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	private List<Computer>  getPageFromParam(HttpServletRequest request, String search, String order) {
+		
+		if (search != null && (order == null || order.isEmpty())) 
+		{
+	
+			computerListPage = computerService.getPageByNameSearched(search, page);
+			nbRows = computerService.getSearchedComputers(search).size();
+		} 
+		else if (order != null && (search == null || search.isEmpty())) 
+		{
+			
+			direction = Integer.parseInt(request.getParameter("direction")) % 2;
+			computerListPage = computerService.getComputersbyOrder(order, direction, page);
+		} 
+		else
+		{
+			computerListPage = computerService.getPageComputer(page);
+		}
+		return computerListPage;
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 
 		ComputerService computerService = new ComputerService();
 		String[] computers = request.getParameter("selection").split(",");

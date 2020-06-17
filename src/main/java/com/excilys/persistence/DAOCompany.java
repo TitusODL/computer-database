@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import com.excilys.model.Company;
 import com.excilys.model.Pagination;
@@ -24,11 +25,6 @@ public class DAOCompany  {
 		return DAOCompany.instance;
 	}
 
-	private final static String listCompany = "SELECT company.id, company.name FROM company;";
-	private final static String companyById = "SELECT  company.id, company.name FROM company WHERE company.id =?; ";
-	private final static String countAllCompaniesQuery = "SELECT COUNT(id) AS rowcount FROM company";
-	private final static String getPageCompaniesQuery = "SELECT id, name FROM company ORDER BY id LIMIT ?, ?";
-	
 	private  ArrayList<Company> storeCompaniesFromRequest(ResultSet resSet) throws SQLException{
 		ArrayList<Company> res = new ArrayList<Company>();
 		while(resSet.next()) {
@@ -41,7 +37,7 @@ public class DAOCompany  {
 	
 	public ArrayList<Company> getCompanies() {
 		ArrayList<Company> listCompanies = new ArrayList<Company>();
-		try (PreparedStatement pstmCompany =Connecticut.conn.prepareStatement(listCompany);){
+		try (PreparedStatement pstmCompany =Connecticut.conn.prepareStatement(SQLRequests.COMPANYLIST.getQuery());){
 			ResultSet resCompany = pstmCompany.executeQuery();
 			while (resCompany.next()) {
 				long companyId = resCompany.getLong("company.id");
@@ -56,28 +52,28 @@ public class DAOCompany  {
 		return listCompanies;
 	}
 	
-	public Company getCompanybyId(long id) {
+	public Optional<Company >getCompanybyId(long id) {
 
-		try (PreparedStatement pstmCompanyDetail =Connecticut.conn.prepareStatement(companyById);){
+		try (PreparedStatement pstmCompanyDetail =Connecticut.conn.prepareStatement(SQLRequests.COMPANYBYID.getQuery());){
 			pstmCompanyDetail.setLong(1,id);
 			ResultSet resCompany = pstmCompanyDetail.executeQuery();
 			while (resCompany.next()) {
 				long companyId = resCompany.getLong("company.id");
 				String companyName = resCompany.getString("company.name");
 				Company hm = new Company(companyId, companyName);
-				return hm;
+				return Optional.of(hm);
 			}
-		
 		}
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		return null;
+		return Optional.ofNullable(null);
+
 
 	}
 	
 	public int countAllCompanies() {
-		try(PreparedStatement stmt = Connecticut.conn.prepareStatement(countAllCompaniesQuery);){
+		try(PreparedStatement stmt = Connecticut.conn.prepareStatement(SQLRequests.COUNTALLCOMPANIESQUERY.getQuery());){
 			ResultSet res1 = stmt.executeQuery();
 			if(res1.next()) {return res1.getInt("rowcount");}
 		}catch (SQLException e) {
@@ -88,7 +84,7 @@ public class DAOCompany  {
 	
 	public ArrayList<Company> getPageCompaniesRequest(Pagination page) {
 		ArrayList<Company> res = new ArrayList<Company>();
-		try(PreparedStatement stmt = Connecticut.conn.prepareStatement(getPageCompaniesQuery);){
+		try(PreparedStatement stmt = Connecticut.conn.prepareStatement(SQLRequests.GETPAGECOMPANIESQUERY.getQuery());){
 			stmt.setInt(1, page.getActualPageNb()*page.getPageSize());
 			stmt.setInt(2, page.getPageSize());
 			ResultSet res1 = stmt.executeQuery();
@@ -98,6 +94,7 @@ public class DAOCompany  {
 		}
 		return res;
 	}
+	
 	public void deleteCompany(long intId) {
 		try (PreparedStatement pstmt = Connecticut.conn.prepareStatement(SQLRequests.DELETECOMPANY.getQuery())) {
 			pstmt.setLong(1, intId);

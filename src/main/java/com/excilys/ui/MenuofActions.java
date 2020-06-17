@@ -63,7 +63,7 @@ public class MenuofActions {
 		System.out.println("Enter new date of Termination (yyyy-MM-dd):");
 		computer.setDiscontinued(scan.nextLine());
 		System.out.println("Enter new company ID:");
-		Company company = companyService.getCompanyById(scan.nextLine());
+		Company company = companyService.getCompanyById(scan.nextLine()).get();
 		computer.setCompany_id(String.valueOf(company.id));
 		computer.setCompany_name(company.name);
 		computerService.updateComputer(computer);
@@ -79,7 +79,7 @@ public class MenuofActions {
 		System.out.println("Date of Termination (yyyy-MM-dd)");
 		computer.setDiscontinued((MapperComputer.transString(scan.nextLine())));
 		System.out.println("The ID of the Company");
-		Company company = companyService.getCompanyById(scan.nextLine());
+		Company company = companyService.getCompanyById(scan.nextLine()).get();
 		computer.setCompany(company);
 		computerService.createComputer(computer);
 

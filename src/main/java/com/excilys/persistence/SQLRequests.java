@@ -1,7 +1,7 @@
 package com.excilys.persistence;
 
 public enum SQLRequests {
-
+///In DAOComputer////
 	LISTCOMPUTER("SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer LEFT JOIN company ON company.id =company_id ;"),
 	
 	COMPUTERBYID( "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer LEFT JOIN company ON company_id =company.id WHERE computer.id =?; "),
@@ -32,7 +32,15 @@ public enum SQLRequests {
 	
 	SORTPAGECOMPANYDESC("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, company_id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id ORDER BY company.name DESC LIMIT ?,?;"),
 
-	COMPUTERBYIDBYCOMPANY( "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer LEFT JOIN company ON company_id =company.id WHERE company.id =?; ");
+	COMPUTERBYIDBYCOMPANY( "SELECT computer.id, computer.name, introduced, discontinued, company_id, company.name FROM computer LEFT JOIN company ON company_id =company.id WHERE company.id =?; "),
+	///In DAOCompany///
+	COMPANYLIST("SELECT company.id, company.name FROM company;"),
+	
+	COMPANYBYID("SELECT  company.id, company.name FROM company WHERE company.id =?;"),
+	
+	COUNTALLCOMPANIESQUERY("SELECT COUNT(id) AS rowcount FROM company"),
+	
+	GETPAGECOMPANIESQUERY("SELECT id, name FROM company ORDER BY id LIMIT ?, ?");
 	
 	private String query;
 

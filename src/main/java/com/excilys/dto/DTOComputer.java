@@ -1,12 +1,12 @@
 package com.excilys.dto;
 
 public class DTOComputer{
-	public String id;
-	public String name;
-	public String introduced;
-	public String discontinued;
-	public String company_id;
-	public String company_name;
+	private String id;
+	private String name;
+	private String introduced;
+	private String discontinued;
+	private String company_id;
+	private String company_name;
 
 
 	private DTOComputer(DTOComputerBuilder computerDTOBuilder) {

@@ -11,8 +11,8 @@ import com.excilys.persistence.DAOCompany;
 public class MapperCompany {
 
 	public static Company dtoToCompany(DTOCompany DTOCompany){
-		long companyId = Long.parseLong(DTOCompany.id);
-		Company optCompany = DAOCompany.getInstance().getCompanybyId(companyId);
+		long companyId = Long.parseLong(DTOCompany.getId());
+		Company optCompany = DAOCompany.getInstance().getCompanybyId(companyId).get();
 
 		Company company = new Company.CompanyBuilder()
 				.setId(companyId)

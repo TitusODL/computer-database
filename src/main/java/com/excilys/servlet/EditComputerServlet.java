@@ -49,8 +49,7 @@ public class EditComputerServlet extends HttpServlet {
 		String introduced = request.getParameter("introduced");
 		String discontinued  = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
-		String companyName = serviceCompany.getCompanyById(companyId).getName();
-		System.out.println(companyName);
+		String companyName = serviceCompany.getCompanyById(companyId).toString();
 		
 		computerDTO = new DTOComputer.DTOComputerBuilder()
 				.setId(computerId)

@@ -16,50 +16,43 @@ import com.excilys.mapper.MapperCompany;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
-@WebServlet (urlPatterns ="/AddComputer")
+@WebServlet(urlPatterns = "/AddComputer")
 
 public class AddComputerServlet extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
 	private static final String ADDCOMPUTER = "/WEB-INF/views/addComputer.jsp";
 
-	CompanyService serviceCompany =  new CompanyService();
-	
-	ComputerService serviceComputer =  new ComputerService();
+	CompanyService serviceCompany = new CompanyService();
+
+	ComputerService serviceComputer = new ComputerService();
 	DTOComputer computerDTO;
-	List<DTOCompany>companysDTO = new ArrayList<DTOCompany>();
-	
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-			companysDTO = MapperCompany.listCompanyToDto(serviceCompany.getAllCompanies());
-			
-				request.setAttribute("companysDTO", companysDTO);
-				request.getRequestDispatcher(ADDCOMPUTER).forward(request, response);
+	List<DTOCompany> companysDTO = new ArrayList<DTOCompany>();
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		companysDTO = MapperCompany.listCompanyToDto(serviceCompany.getAllCompanies());
+
+		request.setAttribute("companysDTO", companysDTO);
+		request.getRequestDispatcher(ADDCOMPUTER).forward(request, response);
 
 	}
 
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		String computerName = request.getParameter("computerName");
 		String introduced = request.getParameter("introduced");
-		String discontinued  = request.getParameter("discontinued");
+		String discontinued = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
-		String companyName = serviceCompany.getCompanyById(companyId).getName();
-		
-		computerDTO = new DTOComputer.DTOComputerBuilder()
-				.setDiscontinued(discontinued)
-				.setIntroduced(introduced)
-				.setName(computerName)
-				.setCompany_Id(companyId)
-				.setCompany_Name(companyName)
-				.build();
-	
-		serviceComputer.createComputer(computerDTO);
-			response.sendRedirect("Dashboard");
+		String companyName = serviceCompany.getCompanyById(companyId).toString();
 
+		computerDTO = new DTOComputer.DTOComputerBuilder().setDiscontinued(discontinued).setIntroduced(introduced)
+				.setName(computerName).setCompany_Id(companyId).setCompany_Name(companyName).build();
+
+		serviceComputer.createComputer(computerDTO);
+		response.sendRedirect("Dashboard");
 
 	}
 

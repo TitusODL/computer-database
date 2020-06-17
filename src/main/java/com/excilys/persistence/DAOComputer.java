@@ -26,6 +26,7 @@ public class DAOComputer {
 		}
 		return DAOComputer.instance;
 	}
+	
 	private static final int ASC = 1;
 
 
@@ -99,8 +100,7 @@ public class DAOComputer {
 
 	public int countAllComputer() {
 		int nbRows = -1;
-		try (PreparedStatement stmt = Connecticut.conn
-				.prepareStatement(SQLRequests.COUNTALLCOMPUTERQUERY.getQuery());) {
+		try (PreparedStatement stmt = Connecticut.conn.prepareStatement(SQLRequests.COUNTALLCOMPUTERQUERY.getQuery());) {
 			ResultSet res1 = stmt.executeQuery();
 			if (res1.next()) {
 				nbRows = res1.getInt("Rows");
@@ -132,8 +132,7 @@ public class DAOComputer {
 	public List<Computer> getPageComputerNameSearched(String search, Pagination page) {
 
 		List<Computer> computerlist = new ArrayList<Computer>();
-		try (PreparedStatement stmtSelectPage = Connecticut.conn
-				.prepareStatement(SQLRequests.GETPAGECOMPUTERNAMESIZESEARCHED.getQuery());) {
+		try (PreparedStatement stmtSelectPage = Connecticut.conn.prepareStatement(SQLRequests.GETPAGECOMPUTERNAMESIZESEARCHED.getQuery());) {
 			stmtSelectPage.setString(1, "%" + search + "%");
 			stmtSelectPage.setString(2, "%" + search + "%");
 			stmtSelectPage.setInt(3, page.getPageSize() * page.getActualPageNb());
@@ -143,7 +142,6 @@ public class DAOComputer {
 			while (resListcomputer.next()) {
 				Computer computer = MapperComputer.ComputerDetailMapper(resListcomputer);
 				computerlist.add(computer);
-
 			}
 
 		} catch (SQLException esql) {
@@ -157,8 +155,7 @@ public class DAOComputer {
 	public List<Computer> getSearchedComputers(String search) {
 
 		List<Computer> computerlist = new ArrayList<Computer>();
-		try (PreparedStatement stmtSelectPage = Connecticut.conn
-				.prepareStatement(SQLRequests.GETPAGECOMPUTERNAMESEARCHED.getQuery());) {
+		try (PreparedStatement stmtSelectPage = Connecticut.conn.prepareStatement(SQLRequests.GETPAGECOMPUTERNAMESEARCHED.getQuery());) {
 			stmtSelectPage.setString(1, "%" + search + "%");
 			stmtSelectPage.setString(2, "%" + search + "%");
 
@@ -176,15 +173,11 @@ public class DAOComputer {
 
 	}
 
-
-
 	public List<Computer> getPageComputerOrderByName(String order, int direction, Pagination page) {
 
 		List<Computer> computerlist = new ArrayList<Computer>();
 		PreparedStatement statementSelecPage;
 		try {
-
-
 			if (order.equals("computer.name")) {
 				if (direction == ASC) {
 					statementSelecPage = Connecticut.conn.prepareStatement(SQLRequests.SORTPAGECOMPUTERASC.getQuery());
@@ -208,10 +201,9 @@ public class DAOComputer {
 				Computer computer = MapperComputer.ComputerDetailMapper(resListecomputer);
 				computerlist.add(computer);
 			}
-
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException esql) {
+			esql.printStackTrace();
 		}
 		return computerlist;
 	}
@@ -225,8 +217,7 @@ public class DAOComputer {
 			ResultSet resComputer = pstmComputerDetail.executeQuery();
 			while(resComputer.next()) {
 				comput = MapperComputer.ComputerDetailMapper(resComputer);
-				list.add(comput);	
-				;
+				list.add(comput);
 			}
 		} catch (SQLException esql) {
 			esql.printStackTrace();

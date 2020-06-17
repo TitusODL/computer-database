@@ -32,10 +32,10 @@ public class MapperComputer {
 	}
 
 	public static Computer dtoToComputer(DTOComputer DTOComputer) throws NumberFormatException{
-		Computer computer = new Computer.Builder().setName(DTOComputer.name)
-				.setIntroduced(transString(DTOComputer.introduced))
-				.setDiscontinued(transString(DTOComputer.discontinued))
-				.setCompany(DAOCompany.getInstance().getCompanybyId(Long.parseLong(DTOComputer.company_id)))
+		Computer computer = new Computer.Builder().setName(DTOComputer.getName())
+				.setIntroduced(transString(DTOComputer.getIntroduced()))
+				.setDiscontinued(transString(DTOComputer.getDiscontinued()))
+				.setCompany(DAOCompany.getInstance().getCompanybyId(Long.parseLong(DTOComputer.getCompany_id())).get())
 				.build();
 		return computer;
 	}
@@ -70,6 +70,10 @@ public class MapperComputer {
 
 		return computerList;
 	}
+	
+	
+	
+	///////////////////////Transformation de Date et LocalDate//////////////////////////////////////////////////////
 	public static LocalDate transString(String entry) {
 		boolean format = Validators.verifyDateUserInput(entry);
 		if(entry == null || entry.isEmpty()) 

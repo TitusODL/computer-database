@@ -45,7 +45,7 @@ public class ComputerService {
 		return DAOComputer.getInstance().getSearchedComputers(search);
 	}
 
-	public List<Computer> getComputersbyOrder(String order,int direction,Pagination page) throws SQLException {
+	public List<Computer> getComputersbyOrder(String order,int direction,Pagination page) {
 		return DAOComputer.getInstance().getPageComputerOrderByName(order,direction,page);
 	}
 
@@ -76,8 +76,8 @@ public class ComputerService {
 
 	public void updateComputer(DTOComputer DTOComputer) {
 		DTOComputer newDTOComputer = new DTOComputer.DTOComputerBuilder().build();
-		newDTOComputer.setId(DTOComputer.id);
-		Optional<Computer> oldComputer = getComputerById(DTOComputer.id);
+		newDTOComputer.setId(DTOComputer.getId());
+		Optional<Computer> oldComputer = getComputerById(DTOComputer.getId());
 		DTOComputer oldDTOComputer = MapperComputer.computerToDto(oldComputer.get());
 		updateName(DTOComputer, oldDTOComputer, newDTOComputer);
 		updateIntroduced(DTOComputer, oldDTOComputer, newDTOComputer);
@@ -89,7 +89,7 @@ public class ComputerService {
 
 		if (date) {
 			Computer computer = MapperComputer.dtoToComputer(newDTOComputer);
-			computer.setId(Long.parseLong(DTOComputer.id));
+			computer.setId(Long.parseLong(DTOComputer.getId()));
 			DAOComputer.getInstance().updateComputer(computer);
 		}
 	}
@@ -101,18 +101,18 @@ public class ComputerService {
 			logger.info(computer.get().toString());
 			logger.info("Computer deleted");
 		} else {
-			logger.info("Aucun ordinateur ne correspond à cet ID");
+			logger.info("No Computer on this ID");
 		}
 	}
 
 	private boolean verifierDate(DTOComputer DTOComputer) {
 		boolean ordreDate = false;
-		boolean dateIntroduced = Validators.verifyDateUserInput(DTOComputer.introduced);
-		boolean dateDiscontinued = Validators.verifyDateUserInput(DTOComputer.discontinued);
+		boolean dateIntroduced = Validators.verifyDateUserInput(DTOComputer.getIntroduced());
+		boolean dateDiscontinued = Validators.verifyDateUserInput(DTOComputer.getDiscontinued());
 		if (dateIntroduced && dateDiscontinued) {
-			ordreDate = Validators.verifierDateOrdre(DTOComputer.introduced, DTOComputer.discontinued);
+			ordreDate = Validators.verifierDateOrdre(DTOComputer.getIntroduced(), DTOComputer.getDiscontinued());
 			if (!ordreDate) {
-				logger.info("Date non valide !");
+				logger.info("Non Valid Date!");
 			}
 		}
 		if (dateIntroduced && dateDiscontinued && ordreDate) {
@@ -123,8 +123,8 @@ public class ComputerService {
 
 	private boolean verifierNom(DTOComputer DTOComputer) {
 		boolean name = false;
-		if (DTOComputer.name.isEmpty()) {
-			logger.info("Nom requis");
+		if (DTOComputer.getName().isEmpty()) {
+			logger.info("Name required");
 		} else {
 			name = true;
 		}
@@ -132,36 +132,40 @@ public class ComputerService {
 	}
 
 	private void updateName(DTOComputer DTOComputer, DTOComputer oldDTOComputer, DTOComputer newDTOComputer) {
-		if (DTOComputer.name.isEmpty()) {
-			newDTOComputer.name = oldDTOComputer.name;
+		if (DTOComputer.getName().isEmpty()) {
+			String oui = newDTOComputer.getName(); 
+			oldDTOComputer.setName(oui);
+
 		} else {
-			newDTOComputer.setName(DTOComputer.name);
+			newDTOComputer.setName(DTOComputer.getName());
 		}
 	}
 
 	private void updateIntroduced(DTOComputer DTOComputer, DTOComputer oldDTOComputer, DTOComputer newDTOComputer) {
-		if (DTOComputer.introduced.isEmpty()) {
-			newDTOComputer.introduced = oldDTOComputer.introduced;
+		if (DTOComputer.getIntroduced().isEmpty()) {
+			String oui = newDTOComputer.getIntroduced(); 
+			oldDTOComputer.setIntroduced(oui);
 		} else {
-			newDTOComputer.setIntroduced(DTOComputer.introduced);
+			newDTOComputer.setIntroduced(DTOComputer.getIntroduced());
 		}
 	}
 
 	private void updateDiscontinued(DTOComputer DTOComputer, DTOComputer oldDTOComputer, DTOComputer newDTOComputer) {
-		if (DTOComputer.discontinued.isEmpty()) {
-			newDTOComputer.discontinued = oldDTOComputer.discontinued;
+		if (DTOComputer.getDiscontinued().isEmpty()) {
+			String oui = newDTOComputer.getDiscontinued(); 
+			oldDTOComputer.setDiscontinued(oui);
 		} else {
-			newDTOComputer.setDiscontinued(DTOComputer.discontinued);
+			newDTOComputer.setDiscontinued(DTOComputer.getDiscontinued());
 		}
 	}
 
 	private void updateCompany(DTOComputer DTOComputer, DTOComputer oldDTOComputer, DTOComputer newDTOComputer) {
-		if (DTOComputer.company_id.isEmpty() || DTOComputer.company_name.isEmpty()) {
-			newDTOComputer.setCompany_id(oldDTOComputer.company_id);
-			newDTOComputer.setCompany_name(oldDTOComputer.company_name);
+		if (DTOComputer.getCompany_id().isEmpty() || DTOComputer.getCompany_name().isEmpty()) {
+			newDTOComputer.setCompany_id(oldDTOComputer.getCompany_id());
+			newDTOComputer.setCompany_name(oldDTOComputer.getCompany_name());
 		} else {
-			newDTOComputer.setCompany_id(DTOComputer.company_id);
-			newDTOComputer.setCompany_name(DTOComputer.company_name);
+			newDTOComputer.setCompany_id(DTOComputer.getCompany_id());
+			newDTOComputer.setCompany_name(DTOComputer.getCompany_name());
 		}
 	}
 }

@@ -9,15 +9,7 @@ public class Pagination {
 	private int actualPageNb;
 	private int pageSize;
 	private int maxPages;
-	private int direction;
-	
-	public int getDirection() {
-		return direction;
-	}
 
-	public void setDirection(int direction) {
-		this.direction = direction;
-	}
 
 	public Pagination(int maxEntities, int pageSize) {
 		this.actualPageNb=0;
