@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.mapper.MapperComputer;
+import com.excilys.mapper.MapperDate;
 
 public class Validators {
 
@@ -44,8 +44,8 @@ public class Validators {
 	}
 
 	public static boolean verifierDateOrdre(String dateIntroduction, String dateTermination) {
-		LocalDate intro = MapperComputer.transString(dateIntroduction);
-		LocalDate termine = MapperComputer.transString(dateTermination);
+		LocalDate intro = MapperDate.ConvertDateString(dateIntroduction);
+		LocalDate termine = MapperDate.ConvertDateString(dateTermination);
 
 		if (dateIntroduction.isEmpty() || dateTermination.isEmpty()) {
 			return true;

@@ -16,7 +16,7 @@ public class MapperCompany {
 
 		Company company = new Company.CompanyBuilder()
 				.setId(companyId)
-				.setName(optCompany.name)
+				.setName(optCompany.getName())
 				.build();
 
 		return company;
@@ -24,8 +24,8 @@ public class MapperCompany {
 
 	public static DTOCompany companyToDto(Company company) {
 		DTOCompany DTOCompany = new DTOCompany.DTOCompanyBuilder()
-				.setId(String.valueOf(company.id))
-				.setName(company.name).build();
+				.setId(String.valueOf(company.getId()))
+				.setName(company.getName()).build();
 
 		return DTOCompany;
 	}

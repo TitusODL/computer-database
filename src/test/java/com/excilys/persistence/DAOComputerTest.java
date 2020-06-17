@@ -6,10 +6,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import com.excilys.mapper.MapperComputer;
+
+import com.excilys.mapper.MapperDate;
 import com.excilys.model.Computer;
 import com.excilys.service.Validators;
 
@@ -38,7 +40,7 @@ public void init() {
 @Test
 public void testCoversionDateTrue() {
     String date = "2010-04-22";
-    LocalDate local = MapperComputer.transString(date);
+    LocalDate local = MapperDate.ConvertDateString(date);
     LocalDate localDate = LocalDate.of(2010, 04, 22);
     
     assertEquals(localDate, local);
@@ -53,21 +55,21 @@ public void testdateOrdreTrue() {
 @Test
 public void testDateEmpty() {
     String date = "";
-    LocalDate localdate = MapperComputer.transString(date);
+    LocalDate localdate = MapperDate.ConvertDateString(date);
     
     assertEquals(null, localdate);
 }
 @Test
 public void testDateFormat() {
     String date = "sdqs";
-    LocalDate localdate = MapperComputer.transString(date);
+    LocalDate localdate = MapperDate.ConvertDateString(date);
     
     assertEquals(null, localdate);
 }
 @Test
 public void testDateSl() {
     String date = "2010/04/22";
-    LocalDate localdate = MapperComputer.transString(date);
+    LocalDate localdate = MapperDate.ConvertDateString(date);
     
     assertEquals(null, localdate);
 }
@@ -89,6 +91,6 @@ public void testgetComputerDetail() throws SQLException  {
 
 	Computer computer1 = DAOComputer.getInstance().getComputerDetail(2).get();
 
-	assertEquals(computer1.name, computer2.name);
+	assertEquals(computer1.getName(), computer2.getName());
 }
 }

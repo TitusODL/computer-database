@@ -36,28 +36,33 @@ public class DashboardServlet extends HttpServlet {
 		Connecticut.getDbCon();
 		nbRows = computerService.countAllComputer();
 		pageNum = page.getActualPageNb();
-		String search = null;
+		String search ;
 		String order = "";
 
+		pageNumParam(request);
+		pageTailleParam(request);
+		search = request.getParameter("search");
+		order = request.getParameter("order");
+		computerListPage = getPageFromParam(request, search, order);
+		setAttribut(request, search, order,nbRows,pageNum,pageMax,direction,computerListPage);
+		request.getRequestDispatcher(DASHBOARD).forward(request, response);
+	}
+
+	private void pageNumParam(HttpServletRequest request) {
 		if (request.getParameter("pageNum") != null) {
 			String s = request.getParameter("pageNum");
 			pageNum = Integer.parseInt(s);
 			page.setActualPageNb(pageNum);
 
 		}
-
+	}
+	private void pageTailleParam(HttpServletRequest request) {
 		if (request.getParameter("pageTaille") != null) {
 			String s = request.getParameter("pageTaille");
 			pageTaille = Integer.parseInt(s);
 			page.setPageSize(pageTaille);
 			pageMax = nbRows / pageTaille;
 		}
-		
-		search = request.getParameter("search");
-		order = request.getParameter("order");
-		computerListPage = getPageFromParam(request, search, order);
-		setAttribut(request, search, order,nbRows,pageNum,pageMax,direction,computerListPage);
-		request.getRequestDispatcher(DASHBOARD).forward(request, response);
 	}
 
 	

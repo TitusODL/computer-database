@@ -33,10 +33,10 @@ public class DAOComputer {
 	public void addComputer(Computer computer) {
 
 		try (PreparedStatement preparedStatementAddComputer = Connecticut.conn.prepareStatement(SQLRequests.ADDCOMPUTER.getQuery())) {
-			preparedStatementAddComputer.setString(1, computer.name);
+			preparedStatementAddComputer.setString(1, computer.getName());
 			preparedStatementAddComputer.setDate(2,computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null);
 			preparedStatementAddComputer.setDate(3,computer.getDiscontinued() != null ? Date.valueOf(computer.getDiscontinued()) : null);
-			preparedStatementAddComputer.setLong(4, computer.company.id);
+			preparedStatementAddComputer.setLong(4, computer.getCompany().getId());
 			preparedStatementAddComputer.executeUpdate();
 
 		} catch (SQLException sqlexception) {
@@ -57,7 +57,7 @@ public class DAOComputer {
 	public void updateComputer(Computer computer) {
 
 		try (PreparedStatement pstmt = Connecticut.conn.prepareStatement(SQLRequests.UPDATECOMPUTER.getQuery())) {
-			pstmt.setString(1, computer.name);
+			pstmt.setString(1, computer.getName());
 			pstmt.setDate(2, computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null);
 			pstmt.setDate(3, computer.getDiscontinued() != null ? Date.valueOf(computer.getDiscontinued()) : null);
 			pstmt.setLong(4, computer.getCompany().getId());

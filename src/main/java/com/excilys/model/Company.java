@@ -2,8 +2,8 @@ package com.excilys.model;
 
 
 public class Company {
-	public long id;
-	public String name;
+	private long id;
+	private String name;
 
 	public Company(long id, String name) {
 		this.id = id;

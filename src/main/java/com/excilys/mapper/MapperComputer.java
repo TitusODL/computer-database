@@ -3,7 +3,6 @@ package com.excilys.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import com.excilys.dto.DTOComputer;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.persistence.DAOCompany;
-import com.excilys.service.Validators;
 
 public class MapperComputer { 
 
@@ -33,8 +31,8 @@ public class MapperComputer {
 
 	public static Computer dtoToComputer(DTOComputer DTOComputer) throws NumberFormatException{
 		Computer computer = new Computer.Builder().setName(DTOComputer.getName())
-				.setIntroduced(transString(DTOComputer.getIntroduced()))
-				.setDiscontinued(transString(DTOComputer.getDiscontinued()))
+				.setIntroduced(MapperDate.ConvertDateString(DTOComputer.getIntroduced()))
+				.setDiscontinued(MapperDate.ConvertDateString(DTOComputer.getDiscontinued()))
 				.setCompany(DAOCompany.getInstance().getCompanybyId(Long.parseLong(DTOComputer.getCompany_id())).get())
 				.build();
 		return computer;
@@ -42,11 +40,11 @@ public class MapperComputer {
 
 	public static DTOComputer computerToDto(Computer computer) {
 
-		DTOComputer DTOComputer = new DTOComputer.DTOComputerBuilder().setId(String.valueOf(computer.id))
-				.setName(computer.name).setIntroduced(String.valueOf(computer.introduced))
-				.setDiscontinued(String.valueOf(computer.discontinued))
-				.setCompany_Id(String.valueOf(computer.company.id))
-				.setCompany_Name(String.valueOf(computer.company.name))
+		DTOComputer DTOComputer = new DTOComputer.DTOComputerBuilder().setId(String.valueOf(computer.getId()))
+				.setName(computer.getName()).setIntroduced(String.valueOf(computer.getIntroduced()))
+				.setDiscontinued(String.valueOf(computer.getDiscontinued()))
+				.setCompany_Id(String.valueOf(computer.getCompany().getId()))
+				.setCompany_Name(String.valueOf(computer.getCompany().getName()))
 				.build();
 		return DTOComputer;
 	}
@@ -71,27 +69,5 @@ public class MapperComputer {
 		return computerList;
 	}
 	
-	
-	
-	///////////////////////Transformation de Date et LocalDate//////////////////////////////////////////////////////
-	public static LocalDate transString(String entry) {
-		boolean format = Validators.verifyDateUserInput(entry);
-		if(entry == null || entry.isEmpty()) 
-		{
-			return null;
-		}
-		else if(entry.equals("null")) 
-		{
-			return null;
-		}
-		else if (!format){ 
-			return null;
-		}
-		else {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDate localDate = LocalDate.parse(entry, formatter);
-			return localDate;
 
-		}
-	}
 }

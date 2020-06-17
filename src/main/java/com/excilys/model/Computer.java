@@ -3,11 +3,11 @@ package com.excilys.model;
 import java.time.LocalDate;
 
 public class Computer {
-	public long id;
-	public String name;
-	public LocalDate introduced;
-	public LocalDate discontinued;
-	public Company company;
+	private long id;
+	private String name;
+	private LocalDate introduced;
+	private LocalDate discontinued;
+	private Company company;
 
 	public Computer(Builder computerBuilder) {
 		this.id = computerBuilder.id;

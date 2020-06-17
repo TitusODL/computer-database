@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import com.excilys.dto.DTOComputer;
-import com.excilys.mapper.MapperComputer;
+import com.excilys.mapper.MapperDate;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.model.Pagination;
@@ -64,8 +64,8 @@ public class MenuofActions {
 		computer.setDiscontinued(scan.nextLine());
 		System.out.println("Enter new company ID:");
 		Company company = companyService.getCompanyById(scan.nextLine()).get();
-		computer.setCompany_id(String.valueOf(company.id));
-		computer.setCompany_name(company.name);
+		computer.setCompany_id(String.valueOf(company.getId()));
+		computer.setCompany_name(company.getName());
 		computerService.updateComputer(computer);
 
 	}
@@ -75,9 +75,9 @@ public class MenuofActions {
 		System.out.println("Enter name");
 		computer.setName(scan.nextLine());
 		System.out.println("Introduction date (yyyy-MM-dd):");
-		computer.setIntroduced((MapperComputer.transString(scan.nextLine())));
+		computer.setIntroduced((MapperDate.ConvertDateString(scan.nextLine())));
 		System.out.println("Date of Termination (yyyy-MM-dd)");
-		computer.setDiscontinued((MapperComputer.transString(scan.nextLine())));
+		computer.setDiscontinued((MapperDate.ConvertDateString(scan.nextLine())));
 		System.out.println("The ID of the Company");
 		Company company = companyService.getCompanyById(scan.nextLine()).get();
 		computer.setCompany(company);
