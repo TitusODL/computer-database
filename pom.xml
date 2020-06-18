@@ -22,7 +22,6 @@
 		<slf4jVersion>1.7.30</slf4jVersion>
 		<mysqlVersion>8.0.20</mysqlVersion>
 		<mockitoVersion>2.10.0</mockitoVersion>
-		<springcontextVersion>5.2.5.RELEASE</springcontextVersion>
 		<tomcatVersion>9.0.31</tomcatVersion>
 		<h2Version>1.4.200</h2Version>
 		<checkstylepluginVersion>3.1.1</checkstylepluginVersion>
@@ -32,9 +31,24 @@
 		<taglibimplVersion>1.2.5</taglibimplVersion>
 		<taglibspecVersion>1.2.5</taglibspecVersion>
 		<hikaricpVersion>3.4.1</hikaricpVersion>
+		<springVersion>5.2.5.RELEASE</springVersion>
 	</properties>
 
 	<dependencies>
+			<!-- Spring -->
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -67,14 +81,6 @@
 			<version>${mockitoVersion}</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- Spring -->
-		<!-- https://mvnreptaglibimplVersionository.com/artifact/org.springframework/spring-context -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${springcontextVersion}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-catalina</artifactId>
