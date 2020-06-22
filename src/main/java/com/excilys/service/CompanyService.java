@@ -6,19 +6,29 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.persistence.DAOCompany;
-import com.excilys.persistence.DAOComputer;
 
+@Service
 public class CompanyService {
+	
+	DAOCompany daoCompany;
+	ComputerService serviceComputer;
+	
+public CompanyService(DAOCompany daoCompany, ComputerService serviceComputer) {
+		this.daoCompany = daoCompany;
+		this.serviceComputer = serviceComputer;
+	}
+
 	private static Logger logger = LoggerFactory.getLogger(CompanyService.class);
 
 	public Optional<Company> getCompanyById(String companyID) {
 		try {
 			long compId = Long.parseLong(companyID);
-			Optional<Company> company = DAOCompany.getInstance().getCompanybyId(compId);
+			Optional<Company> company = daoCompany.getCompanybyId(compId);
 			return company;
 			
 		} catch (NumberFormatException NFexception) {
@@ -29,19 +39,20 @@ public class CompanyService {
 	}
 
 	public List<Company> getAllCompanies() {
-		return DAOCompany.getInstance().getCompanies();
+		return daoCompany.getCompanies();
 	}
 
 	public void deleteCompany(long id) {
-		ComputerService cs = new ComputerService();
-		Optional<Company> company = DAOCompany.getInstance().getCompanybyId(id);
+		
+	//	ComputerService cs = new ComputerService();
+		Optional<Company> company = daoCompany.getCompanybyId(id);
 		List<Computer> list = new ArrayList<Computer>();
-		list = DAOComputer.getInstance().getComputerIdByCompany(id);
+		list = serviceComputer.getComputerIdByCompany(id);
 		if (company != null) {
 			for (Computer c : list) {
-				cs.deleteComputer(c.getId());
+				serviceComputer.deleteComputer(c.getId());
 			}
-			DAOCompany.getInstance().deleteCompany(id);
+			daoCompany.deleteCompany(id);
 			logger.info(list.size() + " Computers deleted");
 			logger.info(company.toString()+" Company deleted");
 		} else {

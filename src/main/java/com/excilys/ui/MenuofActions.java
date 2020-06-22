@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.dto.DTOComputer;
 import com.excilys.mapper.MapperDate;
 import com.excilys.model.Company;
@@ -15,26 +17,19 @@ import com.excilys.persistence.DAOComputer;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
-
+@Component
 public class MenuofActions {
 
-	private static volatile MenuofActions instance = null;
-
-
-	public final static MenuofActions getInstance() {
-		if (MenuofActions.instance == null) {
-			synchronized (DAOComputer.class) {
-				if (MenuofActions.instance == null) {
-					MenuofActions.instance = new MenuofActions();
-				}
-			}
-		}
-		return MenuofActions.instance;
+	public Scanner scan = new Scanner(System.in);
+	
+	ComputerService computerService;
+	CompanyService companyService;
+	public MenuofActions(ComputerService computerService, CompanyService companyService, DAOComputer daoComputer) {
+		this.computerService = computerService;
+		this.companyService = companyService;
 	}
 
-	public Scanner scan = new Scanner(System.in);
-	ComputerService computerService =new ComputerService();
-	CompanyService companyService =new CompanyService();
+
 
 	public void showDetails() throws SQLException {
 		System.out.println("You choose the detail of a computer \n Please enter the ID of the computer :");
@@ -117,7 +112,7 @@ public class MenuofActions {
 
 
 	public void  displayPage() {
-		Pagination page = new Pagination(DAOComputer.getInstance().countAllComputer(), 20);
+		Pagination page = new Pagination(computerService.countAllComputer(), 20);
 		List<Computer> pageComputer =new ArrayList<Computer>();
 		pageComputer = computerService.getPageComputer(page);
 		page.displayPageContent(pageComputer);

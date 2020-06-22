@@ -11,8 +11,12 @@ public class MenuCLI {
 			System.out.println(o.toString());
 		}
 	}
-	
-	public static void CliMenu() throws SQLException {
+	MenuofActions menuofActions;
+
+	public MenuCLI(MenuofActions menuofActions) {
+		this.menuofActions = menuofActions;
+	}
+	public void CliMenu() throws SQLException {
 		System.out.println("***********************************************************************************************************************");
 		System.out.println("Choose one of the options below :");
 		System.out.println("1 - List computers");
@@ -32,34 +36,34 @@ public class MenuCLI {
 			switch(MenuofEntries.entry(choice)) {
 			//H2ConnectTest.getDbCon();
 			case LISTCOMPUTERS : 
-				MenuofActions.getInstance().listComputers();
+				menuofActions.listComputers();
 				break;
 			case LISTCOMPANIES: 
-				MenuofActions.getInstance().listCompanies();
+				menuofActions.listCompanies();
 				break;
 
 			case COMPUTERDETAILS :
-				MenuofActions.getInstance().showDetails();
+				menuofActions.showDetails();
 				break;
 
 			case ADDCOMPUTER : 
-				MenuofActions.getInstance().createComputer();
+				menuofActions.createComputer();
 				break;
 
 			case DELETECOMPUTER: 
-				MenuofActions.getInstance().deleteComputer();
+				menuofActions.deleteComputer();
 				break;
 
 			case UPDATECOMPUTER: 
-				MenuofActions.getInstance().updateComputer();
+				menuofActions.updateComputer();
 				break;
 				
 			case PAGINATION: 
-				MenuofActions.getInstance().displayPage();
+				menuofActions.displayPage();
 				break;
 			
 			case DELETECOMPANY: 
-				MenuofActions.getInstance().deleteCompany();
+				menuofActions.deleteCompany();
 				break;
 
 			case QUIT:

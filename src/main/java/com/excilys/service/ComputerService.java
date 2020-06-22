@@ -6,58 +6,68 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.excilys.dto.DTOComputer;
 import com.excilys.mapper.MapperComputer;
 import com.excilys.model.Computer;
 import com.excilys.model.Pagination;
 import com.excilys.persistence.DAOComputer;
-
+@Service
 public class ComputerService {
+	DAOComputer daoComputer;
+	MapperComputer mapperComputer;
+	
+
+	public ComputerService(DAOComputer daoComputer,MapperComputer mapperComputer) {
+		this.daoComputer = daoComputer;
+		this.mapperComputer = mapperComputer;
+	}
 
 	private static Logger logger = LoggerFactory.getLogger(ComputerService.class);
 
 	public Optional<Computer> getComputerDetail(long id) throws SQLException {
-		return DAOComputer.getInstance().getComputerDetail(id);
+		return daoComputer.getComputerDetail(id);
 	}
 
 	public List<Computer> getComputers() throws SQLException {
-		return DAOComputer.getInstance().getComputers();
+		return daoComputer.getComputers();
 	}
 
 	public void createComputer(Computer computer) throws SQLException {
-		DAOComputer.getInstance().addComputer(computer);
+		daoComputer.addComputer(computer);
 	}
 
 	public int countAllComputer() {
-		return DAOComputer.getInstance().countAllComputer();
+		return daoComputer.countAllComputer();
 	}
 
 	public List<Computer> getPageComputer(Pagination page) {
-		return DAOComputer.getInstance().getPageComputersRequest(page);
+		return daoComputer.getPageComputersRequest(page);
 	}
 
 	public List<Computer> getPageByNameSearched(String search, Pagination page) {
-		return DAOComputer.getInstance().getPageComputerNameSearched(search, page);
+		return daoComputer.getPageComputerNameSearched(search, page);
+	}
+	public List<Computer> getComputerIdByCompany(long id){
+		return daoComputer.getComputerIdByCompany(id);
 	}
 
 	public List<Computer> getSearchedComputers(String search) {
-		return DAOComputer.getInstance().getSearchedComputers(search);
+		return daoComputer.getSearchedComputers(search);
 	}
 
 	public List<Computer> getComputersbyOrder(String order,int direction,Pagination page) {
-		return DAOComputer.getInstance().getPageComputerOrderByName(order,direction,page);
+		return daoComputer.getPageComputerOrderByName(order,direction,page);
 	}
 
-	CompanyService companyService = new CompanyService();
-
 	public List<Computer> getAllComputers() {
-		return DAOComputer.getInstance().getComputers();
+		return daoComputer.getComputers();
 	}
 
 	public Optional<Computer> getComputerById(String id) {
 		long compId = Long.parseLong(id);
-		Optional<Computer> computer = DAOComputer.getInstance().getComputerDetail(compId);
+		Optional<Computer> computer = daoComputer.getComputerDetail(compId);
 		if (!computer.isPresent()) {
 			logger.info("Aucun ordinateur ne correspond à cet ID");
 		}
@@ -69,8 +79,8 @@ public class ComputerService {
 		boolean date = verifierDate(DTOComputer);
 
 		if (name && date) {
-			Computer computer = MapperComputer.dtoToComputer(DTOComputer);
-			DAOComputer.getInstance().addComputer(computer);
+			Computer computer = mapperComputer.dtoToComputer(DTOComputer);
+			daoComputer.addComputer(computer);
 		}
 	}
 
@@ -88,16 +98,16 @@ public class ComputerService {
 		logger.info(newDTOComputer.toString());
 
 		if (date) {
-			Computer computer = MapperComputer.dtoToComputer(newDTOComputer);
+			Computer computer = mapperComputer.dtoToComputer(newDTOComputer);
 			computer.setId(Long.parseLong(DTOComputer.getId()));
-			DAOComputer.getInstance().updateComputer(computer);
+			daoComputer.updateComputer(computer);
 		}
 	}
 
 	public void deleteComputer(long id) {
-		Optional<Computer> computer = DAOComputer.getInstance().getComputerDetail(id);
+		Optional<Computer> computer = daoComputer.getComputerDetail(id);
 		if (computer.isPresent()) {
-			DAOComputer.getInstance().deleteComputer(id);
+			daoComputer.deleteComputer(id);
 			logger.info(computer.get().toString());
 			logger.info("Computer deleted");
 		} else {
