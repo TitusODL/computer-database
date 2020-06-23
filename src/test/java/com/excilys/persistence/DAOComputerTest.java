@@ -20,6 +20,12 @@ public class DAOComputerTest extends Mockito {
 String dateInt = "1998-08-10";
 String dateTerm = "1998-08-11";
 Computer computer2 = new Computer.Builder().setId(2).setName("CM-2a").build();
+DAOComputer daoComputer;
+
+public DAOComputerTest(DAOComputer daoComputer) {
+	this.daoComputer = daoComputer;
+}
+
 
 //@Mock Computer computer ==> computer = mock(Computer.class);
 public Computer computer;
@@ -56,7 +62,6 @@ public void testdateOrdreTrue() {
 public void testDateEmpty() {
     String date = "";
     LocalDate localdate = MapperDate.ConvertDateString(date);
-    
     assertEquals(null, localdate);
 }
 @Test
@@ -89,7 +94,7 @@ assertTrue(Validators.verifierDateOrdre((datedebut.toString()),datefin.toString(
 @Test
 public void testgetComputerDetail() throws SQLException  {
 
-	Computer computer1 = DAOComputer.getInstance().getComputerDetail(2).get();
+	Computer computer1 = daoComputer.getComputerDetail(2).get();
 
 	assertEquals(computer1.getName(), computer2.getName());
 }

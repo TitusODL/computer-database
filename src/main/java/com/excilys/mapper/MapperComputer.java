@@ -1,17 +1,26 @@
 package com.excilys.mapper;
 
 import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import com.excilys.dto.DTOComputer;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.persistence.DAOCompany;
 
+@Component
 public class MapperComputer { 
+	
+	DAOCompany daoCompany;
+	public MapperComputer(DAOCompany daoCompany) {
+	this.daoCompany = daoCompany;
+}
 
 	public static Computer ComputerDetailMapper(ResultSet resComputer) throws SQLException {
 
@@ -29,11 +38,11 @@ public class MapperComputer {
 		return computer;
 	}
 
-	public static Computer dtoToComputer(DTOComputer DTOComputer) throws NumberFormatException{
+	public Computer dtoToComputer(DTOComputer DTOComputer) throws NumberFormatException{
 		Computer computer = new Computer.Builder().setName(DTOComputer.getName())
 				.setIntroduced(MapperDate.ConvertDateString(DTOComputer.getIntroduced()))
 				.setDiscontinued(MapperDate.ConvertDateString(DTOComputer.getDiscontinued()))
-				.setCompany(DAOCompany.getInstance().getCompanybyId(Long.parseLong(DTOComputer.getCompany_id())).get())
+				.setCompany(daoCompany.getCompanybyId(Long.parseLong(DTOComputer.getCompany_id())).get())
 				.build();
 		return computer;
 	}
@@ -59,7 +68,7 @@ public class MapperComputer {
 		return DTOComputerList;
 	}
 
-	public static List<Computer> listDtoToComputer(List<DTOComputer> DTOComputerList){
+	public List<Computer> listDtoToComputer(List<DTOComputer> DTOComputerList){
 		List<Computer> computerList = new ArrayList<Computer>();
 
 		for(int i=0; i<computerList.size(); i++) {

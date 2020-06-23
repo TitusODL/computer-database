@@ -3,16 +3,22 @@ package com.excilys.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.dto.DTOCompany;
 import com.excilys.model.Company;
-
 import com.excilys.persistence.DAOCompany;
-
+@Component
 public class MapperCompany {
+	
+	DAOCompany daoCompany;
+	public MapperCompany(DAOCompany daoCompany) {
+	this.daoCompany = daoCompany;
+}
 
-	public static Company dtoToCompany(DTOCompany DTOCompany){
+	public Company dtoToCompany(DTOCompany DTOCompany){
 		long companyId = Long.parseLong(DTOCompany.getId());
-		Company optCompany = DAOCompany.getInstance().getCompanybyId(companyId).get();
+		Company optCompany = daoCompany.getCompanybyId(companyId).get();
 
 		Company company = new Company.CompanyBuilder()
 				.setId(companyId)
@@ -38,7 +44,7 @@ public class MapperCompany {
 		
 		return DTOCompanyList;
 	}
-	public static List<Company> listDtoToCompany(List<DTOCompany> DTOCompanyList){
+	public List<Company> listDtoToCompany(List<DTOCompany> DTOCompanyList){
 		List<Company> CompanyList = new ArrayList<Company>();
 		
 		for(int i=0; i<CompanyList.size(); i++) {
