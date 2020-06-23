@@ -1,13 +1,15 @@
 package com.excilys.persistence;
 
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.mapper.MapperComputer;
@@ -17,206 +19,105 @@ import com.excilys.model.Pagination;
 @Repository
 public class DAOComputer {
 
-	HikariCPConnect conn;
-	public DAOComputer(HikariCPConnect conn) {
-		this.conn = conn;
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
+	private DAOCompany daoCompany;
+	private MapperComputer computerMapper = new MapperComputer(daoCompany);
+
+	public DAOComputer(DataSource dataSource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
 	private static final int ASC = 1;
 
 	public void addComputer(Computer computer) {
-
-		try (PreparedStatement preparedStatementAddComputer = conn.getConnection().prepareStatement(SQLRequests.ADDCOMPUTER.getQuery())) {
-			preparedStatementAddComputer.setString(1, computer.getName());
-			preparedStatementAddComputer.setDate(2,computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null);
-			preparedStatementAddComputer.setDate(3,computer.getDiscontinued() != null ? Date.valueOf(computer.getDiscontinued()) : null);
-			preparedStatementAddComputer.setLong(4, computer.getCompany().getId());
-			preparedStatementAddComputer.executeUpdate();
-
-		} catch (SQLException sqlexception) {
-			System.out.println(sqlexception.getMessage());
-		}
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("1", computer.getName())
+				.addValue("2", computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null)
+				.addValue("3", computer.getDiscontinued() != null ? Date.valueOf(computer.getDiscontinued()) : null)
+				.addValue("4", computer.getCompany().getId());
+		namedParameterJdbcTemplate.update(SQLRequests.ADDCOMPUTER.getQuery(), namedParameters);
 	}
 
 	public void deleteComputer(long intId) {
-
-		try (PreparedStatement pstmt = conn.getConnection().prepareStatement(SQLRequests.DELETECOMPUTER.getQuery())) {
-			pstmt.setLong(1, intId);
-			pstmt.executeUpdate();
-		} catch (SQLException esql) {
-			esql.printStackTrace();
-		}
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("1", intId);
+		namedParameterJdbcTemplate.update(SQLRequests.DELETECOMPUTER.getQuery(), namedParameters);
 	}
 
 	public void updateComputer(Computer computer) {
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("1", computer.getName())
+				.addValue("2", computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null)
+				.addValue("3", computer.getDiscontinued() != null ? Date.valueOf(computer.getDiscontinued()) : null)
+				.addValue("4", computer.getCompany().getId()).addValue("5", computer.getId());
 
-		try (PreparedStatement pstmt = conn.getConnection().prepareStatement(SQLRequests.UPDATECOMPUTER.getQuery())) {
-			pstmt.setString(1, computer.getName());
-			pstmt.setDate(2, computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null);
-			pstmt.setDate(3, computer.getDiscontinued() != null ? Date.valueOf(computer.getDiscontinued()) : null);
-			pstmt.setLong(4, computer.getCompany().getId());
-			pstmt.setLong(5, computer.getId());
-			pstmt.executeUpdate();
-		} catch (SQLException esql) {
-			esql.printStackTrace();
-		}
+		namedParameterJdbcTemplate.update(SQLRequests.UPDATECOMPUTER.getQuery(), namedParameters);
 	}
 
 	public Optional<Computer> getComputerDetail(long id) {
-		Computer comput = new Computer();
-		try (PreparedStatement pstmComputerDetail = conn.getConnection()
-				.prepareStatement(SQLRequests.COMPUTERBYID.getQuery());) {
-			pstmComputerDetail.setLong(1, id);
-			ResultSet resComputer = pstmComputerDetail.executeQuery();
-			if (resComputer.next()) {
-				comput = MapperComputer.ComputerDetailMapper(resComputer);
-			}
-		} catch (SQLException esql) {
-			esql.printStackTrace();
-		}
-		return Optional.ofNullable(comput);
+		Computer computer = new Computer();
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("1", id);
+		computer = namedParameterJdbcTemplate.queryForObject(SQLRequests.COMPUTERBYID.getQuery(), namedParameters,
+				this.computerMapper);
+		return Optional.of(computer);
 	}
 
 	public List<Computer> getComputers() {
-		List<Computer> listComputers = new ArrayList<Computer>();
-		try (PreparedStatement pstmComputerDetail = conn.getConnection()
-				.prepareStatement(SQLRequests.LISTCOMPUTER.getQuery());) {
-			ResultSet resComputer = pstmComputerDetail.executeQuery();
-			while (resComputer.next()) {
-				Computer comp = MapperComputer.ComputerDetailMapper(resComputer);
-				listComputers.add(comp);
-			}
-		} catch (SQLException esql) {
-			esql.printStackTrace();
-		}
-		return listComputers;
+		return this.namedParameterJdbcTemplate.query(SQLRequests.LISTCOMPUTER.getQuery(), this.computerMapper);
 	}
 
 	public int countAllComputer() {
-		int nbRows = -1;
-		try (PreparedStatement stmt = conn.getConnection().prepareStatement(SQLRequests.COUNTALLCOMPUTERQUERY.getQuery());) {
-			ResultSet res1 = stmt.executeQuery();
-			if (res1.next()) {
-				nbRows = res1.getInt("Rows");
-			}
-		} catch (SQLException esql) {
-			esql.printStackTrace();
-		}
-		return nbRows;
-
+		return jdbcTemplate.queryForObject(SQLRequests.COUNTALLCOMPUTERQUERY.getQuery(), Integer.class);
 	}
 
 	public List<Computer> getPageComputersRequest(Pagination page) {
-		List<Computer> rescomputer = new ArrayList<Computer>();
-		try (PreparedStatement stmt = HikariCPConnect.conn.prepareStatement(SQLRequests.GETPAGECOMPUTERQUERY.getQuery());) {
-			stmt.setInt(1, page.getActualPageNb() * page.getPageSize());
-			stmt.setInt(2, page.getPageSize());
-			ResultSet res1 = stmt.executeQuery();
-			while (res1.next()) {
-				Computer computer = MapperComputer.ComputerDetailMapper(res1);
-				rescomputer.add(computer);
-			}
-		} catch (SQLException esql) {
-			esql.printStackTrace();
-		}
-		return rescomputer;
+		SqlParameterSource namedParameters = new MapSqlParameterSource()
+				.addValue("1", page.getActualPageNb() * page.getPageSize()).addValue("2", page.getPageSize());
+		return namedParameterJdbcTemplate.query(SQLRequests.GETPAGECOMPUTERQUERY.getQuery(), namedParameters,
+				this.computerMapper);
 	}
-	
 
 	public List<Computer> getPageComputerNameSearched(String search, Pagination page) {
-
-		List<Computer> computerlist = new ArrayList<Computer>();
-		try (PreparedStatement stmtSelectPage = conn.getConnection().prepareStatement(SQLRequests.GETPAGECOMPUTERNAMESIZESEARCHED.getQuery());) {
-			stmtSelectPage.setString(1, "%" + search + "%");
-			stmtSelectPage.setString(2, "%" + search + "%");
-			stmtSelectPage.setInt(3, page.getPageSize() * page.getActualPageNb());
-			stmtSelectPage.setInt(4, page.getPageSize());
-
-			ResultSet resListcomputer = stmtSelectPage.executeQuery();
-			while (resListcomputer.next()) {
-				Computer computer = MapperComputer.ComputerDetailMapper(resListcomputer);
-				computerlist.add(computer);
-			}
-
-		} catch (SQLException esql) {
-
-			esql.printStackTrace();
-		}
-		return computerlist;
-
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("1", "%" + search + "%")
+				.addValue("2", "%" + search + "%").addValue("3", page.getPageSize() * page.getActualPageNb())
+				.addValue("4", page.getPageSize());
+		return namedParameterJdbcTemplate.query(SQLRequests.GETPAGECOMPUTERNAMESIZESEARCHED.getQuery(), namedParameters,
+				this.computerMapper);
 	}
 
 	public List<Computer> getSearchedComputers(String search) {
-
-		List<Computer> computerlist = new ArrayList<Computer>();
-		try (PreparedStatement stmtSelectPage = conn.getConnection().prepareStatement(SQLRequests.GETPAGECOMPUTERNAMESEARCHED.getQuery());) {
-			stmtSelectPage.setString(1, "%" + search + "%");
-			stmtSelectPage.setString(2, "%" + search + "%");
-
-			ResultSet resListcomputer = stmtSelectPage.executeQuery();
-			while (resListcomputer.next()) {
-				Computer computer = MapperComputer.ComputerDetailMapper(resListcomputer);
-				computerlist.add(computer);
-			}
-
-		} catch (SQLException esql) {
-
-			esql.printStackTrace();
-		}
-		return computerlist;
-
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("1", "%" + search + "%").addValue("2",
+				"%" + search + "%");
+		return namedParameterJdbcTemplate.query(SQLRequests.GETPAGECOMPUTERNAMESEARCHED.getQuery(), namedParameters,
+				this.computerMapper);
 	}
 
 	public List<Computer> getPageComputerOrderByName(String order, int direction, Pagination page) {
-
-		List<Computer> computerlist = new ArrayList<Computer>();
-		PreparedStatement statementSelecPage;
-		try {
-			if (order.equals("computer.name")) {
-				if (direction == ASC) {
-					statementSelecPage = conn.getConnection().prepareStatement(SQLRequests.SORTPAGECOMPUTERASC.getQuery());
-				}					
-				else {
-					statementSelecPage = conn.getConnection().prepareStatement(SQLRequests.SORTPAGECOMPUTERDESC.getQuery());
-				}
-			}	
-			else {
-				if (direction == ASC) {
-					statementSelecPage = conn.getConnection().prepareStatement(SQLRequests.SORTPAGECOMPANYASC.getQuery());
-				} 
-				else {
-					statementSelecPage = conn.getConnection().prepareStatement(SQLRequests.SORTPAGECOMPANYDESC.getQuery());
-				}
+		SqlParameterSource namedParameters = new MapSqlParameterSource()
+				.addValue("1", page.getActualPageNb() * page.getPageSize()).addValue("2", page.getPageSize());
+		if (order.equals("computer.name")) {
+			if (direction == ASC) {
+				return namedParameterJdbcTemplate.query(SQLRequests.SORTPAGECOMPUTERASC.getQuery(), namedParameters,
+						this.computerMapper);
+			} else {
+				return namedParameterJdbcTemplate.query(SQLRequests.SORTPAGECOMPUTERDESC.getQuery(), namedParameters,
+						this.computerMapper);
 			}
-			statementSelecPage.setInt(1, page.getActualPageNb() * page.getPageSize());
-			statementSelecPage.setInt(2, page.getPageSize());
-			ResultSet resListecomputer = statementSelecPage.executeQuery();
-			while (resListecomputer.next()) {
-				Computer computer = MapperComputer.ComputerDetailMapper(resListecomputer);
-				computerlist.add(computer);
+		} else {
+			if (direction == ASC) {
+				return namedParameterJdbcTemplate.query(SQLRequests.SORTPAGECOMPANYASC.getQuery(), namedParameters,
+						this.computerMapper);
+			} else {
+				return namedParameterJdbcTemplate.query(SQLRequests.SORTPAGECOMPANYDESC.getQuery(), namedParameters,
+						this.computerMapper);
 			}
-			
-		} catch (SQLException esql) {
-			esql.printStackTrace();
 		}
-		return computerlist;
+
 	}
 
 	public List<Computer> getComputerIdByCompany(long id) {
-
-		List<Computer> list = new ArrayList<Computer>();
-		Computer comput = new Computer();
-		try (PreparedStatement pstmComputerDetail = conn.getConnection().prepareStatement(SQLRequests.COMPUTERBYIDBYCOMPANY.getQuery());) {
-			pstmComputerDetail.setLong(1, id);
-			ResultSet resComputer = pstmComputerDetail.executeQuery();
-			while(resComputer.next()) {
-				comput = MapperComputer.ComputerDetailMapper(resComputer);
-				list.add(comput);
-			}
-		} catch (SQLException esql) {
-			esql.printStackTrace();
-		}
-		return list;
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("1", id);
+		return namedParameterJdbcTemplate.query(SQLRequests.COMPUTERBYIDBYCOMPANY.getQuery(), namedParameters,
+				this.computerMapper);
 	}
 
 }

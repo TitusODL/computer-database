@@ -30,9 +30,6 @@ public class AddComputerServlet extends HttpServlet {
 	@Autowired
 	CompanyService companyService;
 	
-	public AddComputerServlet() {
-
-	}
 
 	private static final long serialVersionUID = 1L;
 	private static final String ADDCOMPUTER = "/WEB-INF/views/addComputer.jsp";

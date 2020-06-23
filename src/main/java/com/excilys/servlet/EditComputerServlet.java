@@ -36,9 +36,7 @@ public class EditComputerServlet extends HttpServlet {
 	@Autowired
 	CompanyService serviceCompany;
 	DTOComputer computerDTO;
-	public EditComputerServlet() {
-		
-	}
+
 	
 	List<DTOCompany> listCompanyDTO = new ArrayList<DTOCompany>();
 	

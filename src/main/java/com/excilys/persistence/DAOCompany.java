@@ -1,102 +1,59 @@
 package com.excilys.persistence;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.mapper.MapperCompany;
 import com.excilys.model.Company;
 import com.excilys.model.Pagination;
 
-
 @Repository
-public class DAOCompany  {
+public class DAOCompany {
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
+	private DAOCompany daoCompany;
+	private MapperCompany mapperCompany = new MapperCompany(daoCompany);
 
-	HikariCPConnect conn;
-	public DAOCompany(HikariCPConnect conn) {
-		this.conn = conn;
+	public DAOCompany(DataSource dataSource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-	
-	private  List<Company> storeCompaniesFromRequest(ResultSet resSet) throws SQLException{
-		List<Company> res = new ArrayList<Company>();
-		while(resSet.next()) {
-			Company company = new Company.CompanyBuilder().setId(resSet.getLong("company.id")).setName(resSet.getString("company.name")).build();
-			res.add(company);
-		}
-		return res;
-	}
-	
-	
+
 	public List<Company> getCompanies() {
-		List<Company> listCompanies = new ArrayList<Company>();
-		try (PreparedStatement pstmCompany =conn.getConnection().prepareStatement(SQLRequests.COMPANYLIST.getQuery());){
-			ResultSet resCompany = pstmCompany.executeQuery();
-			while (resCompany.next()) {
-				long companyId = resCompany.getLong("company.id");
-				String companyName = resCompany.getString("company.name");
-				Company hm = new Company(companyId, companyName);
-				listCompanies.add(hm);
-			}
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return listCompanies;
+		return this.namedParameterJdbcTemplate.query(SQLRequests.COMPANYLIST.getQuery(), this.mapperCompany);
 	}
-	
-	public Optional<Company >getCompanybyId(long id) {
 
-		try (PreparedStatement pstmCompanyDetail =conn.getConnection().prepareStatement(SQLRequests.COMPANYBYID.getQuery());){
-			pstmCompanyDetail.setLong(1,id);
-			ResultSet resCompany = pstmCompanyDetail.executeQuery();
-			while (resCompany.next()) {
-				long companyId = resCompany.getLong("company.id");
-				String companyName = resCompany.getString("company.name");
-				Company hm = new Company(companyId, companyName);
-				return Optional.of(hm);
-			}
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return Optional.ofNullable(null);
+	public Optional<Company> getCompanybyId(long id) {
 
-
+		Company company = new Company();
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("1", id);
+		company = namedParameterJdbcTemplate.queryForObject(SQLRequests.COMPANYBYID.getQuery(), namedParameters,
+				this.mapperCompany);
+		return Optional.of(company);
 	}
-	
+
 	public int countAllCompanies() {
-		try(PreparedStatement stmt = conn.getConnection().prepareStatement(SQLRequests.COUNTALLCOMPANIESQUERY.getQuery());){
-			ResultSet res1 = stmt.executeQuery();
-			if(res1.next()) {return res1.getInt("rowcount");}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
+		return jdbcTemplate.queryForObject(SQLRequests.COUNTALLCOMPANIESQUERY.getQuery(), Integer.class);
 	}
-	
+
 	public List<Company> getPageCompaniesRequest(Pagination page) {
-		List<Company> res = new ArrayList<Company>();
-		try(PreparedStatement stmt = conn.getConnection().prepareStatement(SQLRequests.GETPAGECOMPANIESQUERY.getQuery());){
-			stmt.setInt(1, page.getActualPageNb()*page.getPageSize());
-			stmt.setInt(2, page.getPageSize());
-			ResultSet res1 = stmt.executeQuery();
-			res = storeCompaniesFromRequest(res1);
-		}catch (SQLException e){
-			e.printStackTrace();
-		}
-		return res;
+		SqlParameterSource namedParameters = new MapSqlParameterSource()
+				.addValue("1", page.getActualPageNb() * page.getPageSize()).addValue("2", page.getPageSize());
+		return namedParameterJdbcTemplate.query(SQLRequests.GETPAGECOMPANIESQUERY.getQuery(), namedParameters,
+				this.mapperCompany);
 	}
-	
+
 	public void deleteCompany(long intId) {
-		try (PreparedStatement pstmt = conn.getConnection().prepareStatement(SQLRequests.DELETECOMPANY.getQuery())) {
-			pstmt.setLong(1, intId);
-			pstmt.executeUpdate();
-		} catch (SQLException esql) {
-			esql.printStackTrace();
-		}
+		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("1", intId);
+		namedParameterJdbcTemplate.update(SQLRequests.DELETECOMPANY.getQuery(), namedParameters);
+
 	}
 }

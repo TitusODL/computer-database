@@ -39,10 +39,6 @@ public class DashboardServlet extends HttpServlet {
 	@Autowired
 	ComputerService computerService;
 
-	public DashboardServlet() {
-
-	}
-
 	public void init(ServletConfig conf) throws ServletException {
 		super.init(conf);
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
@@ -98,13 +94,11 @@ public class DashboardServlet extends HttpServlet {
 		
 		if (search != null && (order == null || order.isEmpty())) 
 		{
-	
 			computerListPage = computerService.getPageByNameSearched(search, page);
 			nbRows = computerService.getSearchedComputers(search).size();
 		} 
 		else if (order != null && (search == null || search.isEmpty())) 
 		{
-			
 			direction = Integer.parseInt(request.getParameter("direction")) % 2;
 			computerListPage = computerService.getComputersbyOrder(order, direction, page);
 		} 

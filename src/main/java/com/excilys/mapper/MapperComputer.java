@@ -1,12 +1,12 @@
 package com.excilys.mapper;
 
 import java.sql.ResultSet;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.excilys.dto.DTOComputer;
@@ -15,15 +15,13 @@ import com.excilys.model.Computer;
 import com.excilys.persistence.DAOCompany;
 
 @Component
-public class MapperComputer { 
+public class MapperComputer implements RowMapper<Computer>{ 
 	
 	DAOCompany daoCompany;
 	public MapperComputer(DAOCompany daoCompany) {
-	this.daoCompany = daoCompany;
-}
-
+		this.daoCompany =daoCompany;
+	}
 	public static Computer ComputerDetailMapper(ResultSet resComputer) throws SQLException {
-
 
 		long computerId = (resComputer.getLong("computer.id"));
 		String computerName = (resComputer.getString("computer.name"));
@@ -39,16 +37,17 @@ public class MapperComputer {
 	}
 
 	public Computer dtoToComputer(DTOComputer DTOComputer) throws NumberFormatException{
-		Computer computer = new Computer.Builder().setName(DTOComputer.getName())
+		Computer computer = new Computer.Builder()
+				.setName(DTOComputer.getName())
 				.setIntroduced(MapperDate.ConvertDateString(DTOComputer.getIntroduced()))
 				.setDiscontinued(MapperDate.ConvertDateString(DTOComputer.getDiscontinued()))
+				//.setId(DTOCompany.getId())
 				.setCompany(daoCompany.getCompanybyId(Long.parseLong(DTOComputer.getCompany_id())).get())
 				.build();
 		return computer;
 	}
 
-	public static DTOComputer computerToDto(Computer computer) {
-
+	public static DTOComputer computerToDto(Computer computer) {	
 		DTOComputer DTOComputer = new DTOComputer.DTOComputerBuilder().setId(String.valueOf(computer.getId()))
 				.setName(computer.getName()).setIntroduced(String.valueOf(computer.getIntroduced()))
 				.setDiscontinued(String.valueOf(computer.getDiscontinued()))
@@ -76,6 +75,11 @@ public class MapperComputer {
 		}
 
 		return computerList;
+	}
+
+	@Override
+	public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
+		return ComputerDetailMapper(rs);
 	}
 	
 
