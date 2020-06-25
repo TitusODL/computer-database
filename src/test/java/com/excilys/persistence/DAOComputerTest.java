@@ -9,13 +9,15 @@ import java.time.LocalDate;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.mapper.MapperDate;
 import com.excilys.model.Computer;
 import com.excilys.service.Validators;
 
-
+@RunWith(SpringJUnit4ClassRunner.class)
 public class DAOComputerTest extends Mockito {
 String dateInt = "1998-08-10";
 String dateTerm = "1998-08-11";
@@ -36,7 +38,7 @@ LocalDate datefin = LocalDate.of(2000,06,05);
 
 @Before
 public void init() {
-	Connecticut.getDbCon();
+//	Connecticut.getDbCon();
 	//H2ConnectTest.getDbCon();
 	computer = mock(Computer.class);
 	//compi = mock(DAOComputer.class);

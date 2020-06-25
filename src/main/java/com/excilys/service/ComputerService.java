@@ -23,7 +23,6 @@ public class ComputerService {
 		this.daoComputer = daoComputer;
 		this.mapperComputer = mapperComputer;
 	}
-
 	private static Logger logger = LoggerFactory.getLogger(ComputerService.class);
 
 	public Optional<Computer> getComputerDetail(long id) throws SQLException {
@@ -34,20 +33,17 @@ public class ComputerService {
 		return daoComputer.getComputers();
 	}
 
-	public void createComputer(Computer computer) throws SQLException {
-		daoComputer.addComputer(computer);
-	}
-
 	public int countAllComputer() {
 		return daoComputer.countAllComputer();
 	}
 
-	public List<Computer> getPageComputer(Pagination page) {
-		return daoComputer.getPageComputersRequest(page);
+	public List<DTOComputer> getPageComputer(Pagination page) {
+		
+		return MapperComputer.listComputerToDto(daoComputer.getPageComputersRequest(page));
 	}
 
-	public List<Computer> getPageByNameSearched(String search, Pagination page) {
-		return daoComputer.getPageComputerNameSearched(search, page);
+	public List<DTOComputer> getPageByNameSearched(String search, Pagination page) {
+		return MapperComputer.listComputerToDto(daoComputer.getPageComputerNameSearched(search, page));
 	}
 	public List<Computer> getComputerIdByCompany(long id){
 		return daoComputer.getComputerIdByCompany(id);
@@ -57,8 +53,8 @@ public class ComputerService {
 		return daoComputer.getSearchedComputers(search);
 	}
 
-	public List<Computer> getComputersbyOrder(String order,int direction,Pagination page) {
-		return daoComputer.getPageComputerOrderByName(order,direction,page);
+	public List<DTOComputer> getComputersbyOrder(String order,int direction,Pagination page) {
+		return MapperComputer.listComputerToDto(daoComputer.getPageComputerOrderByName(order,direction,page));
 	}
 
 	public List<Computer> getAllComputers() {
@@ -162,8 +158,8 @@ public class ComputerService {
 
 	private void updateDiscontinued(DTOComputer DTOComputer, DTOComputer oldDTOComputer, DTOComputer newDTOComputer) {
 		if (DTOComputer.getDiscontinued().isEmpty()) {
-			String oui = newDTOComputer.getDiscontinued(); 
-			oldDTOComputer.setDiscontinued(oui);
+			String fAlse = newDTOComputer.getDiscontinued(); 
+			oldDTOComputer.setDiscontinued(fAlse);
 		} else {
 			newDTOComputer.setDiscontinued(DTOComputer.getDiscontinued());
 		}

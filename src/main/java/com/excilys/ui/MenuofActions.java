@@ -9,7 +9,6 @@ import java.util.Scanner;
 import org.springframework.stereotype.Component;
 
 import com.excilys.dto.DTOComputer;
-import com.excilys.mapper.MapperDate;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.model.Pagination;
@@ -66,17 +65,18 @@ public class MenuofActions {
 	}
 
 	public void createComputer() throws SQLException {
-		Computer computer = new Computer();
+		DTOComputer dtocomputer = new DTOComputer.DTOComputerBuilder().build();
+
 		System.out.println("Enter name");
-		computer.setName(scan.nextLine());
+		dtocomputer.setName(scan.nextLine());
 		System.out.println("Introduction date (yyyy-MM-dd):");
-		computer.setIntroduced((MapperDate.ConvertDateString(scan.nextLine())));
+		dtocomputer.setIntroduced((scan.nextLine()));
 		System.out.println("Date of Termination (yyyy-MM-dd)");
-		computer.setDiscontinued((MapperDate.ConvertDateString(scan.nextLine())));
+		dtocomputer.setDiscontinued((scan.nextLine()));
 		System.out.println("The ID of the Company");
-		Company company = companyService.getCompanyById(scan.nextLine()).get();
-		computer.setCompany(company);
-		computerService.createComputer(computer);
+		dtocomputer.setCompany_id(dtocomputer.getCompany_id());
+		dtocomputer.setCompany_name(dtocomputer.getCompany_name());
+		computerService.createComputer(dtocomputer);
 
 	}
 	public void deleteComputer() throws SQLException {
@@ -113,7 +113,7 @@ public class MenuofActions {
 
 	public void  displayPage() {
 		Pagination page = new Pagination(computerService.countAllComputer(), 20);
-		List<Computer> pageComputer =new ArrayList<Computer>();
+		List<DTOComputer> pageComputer =new ArrayList<DTOComputer>();
 		pageComputer = computerService.getPageComputer(page);
 		page.displayPageContent(pageComputer);
 				

@@ -1,97 +1,56 @@
 package com.excilys.servlet;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.excilys.model.Computer;
+import com.excilys.dto.DTOComputer;
 import com.excilys.model.Pagination;
-import com.excilys.persistence.Connecticut;
 import com.excilys.service.ComputerService;
 
 @Controller
-@WebServlet(urlPatterns = "/Dashboard")
+//@WebServlet(urlPatterns = "/Dashboard")
+@RequestMapping(value = "/")
 
-public class DashboardServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private static final String DASHBOARD = "/WEB-INF/views/dashboard.jsp";
+public class DashboardServlet {
 
-	private int pageNum;
 	private int nbRows = 0;
-	private int pageTaille = 10;
 	private int pageMax;
-	private int direction = 1;
+	public ComputerService computerService;
+	public DashboardServlet(ComputerService computerService) {
+		this.computerService = computerService;
 
-	List<Computer> computerListPage = new ArrayList<Computer>();
-	Pagination page = new Pagination(nbRows, pageTaille);
-	
-	@Autowired
-	ComputerService computerService;
-
-	public void init(ServletConfig conf) throws ServletException {
-		super.init(conf);
-		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-		
 	}
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		Connecticut.getDbCon();
+	@GetMapping(value = "Dashboard")
+	public ModelAndView dashboard(
+			@RequestParam(required = false, value = "pageNum") Integer pageNum,
+			@RequestParam(required = false, value = "pageTaille") String pageTaille,
+			@RequestParam(required = false, value = "search") String search,
+			@RequestParam(required = false, value = "order") String order,
+			@RequestParam(required = false, value = "direction") String direction) {
+
+		List<DTOComputer> computerListPage = new ArrayList<DTOComputer>();
+		ModelAndView modelAndView = new ModelAndView("dashboard");
 		nbRows = computerService.countAllComputer();
-		pageNum = page.getActualPageNb();
-		String search ;
-		String order = "";
+		Pagination page = new Pagination(nbRows, Integer.parseInt(pageTaille==null ? pageTaille="10" : pageTaille));
+		page.getActualPageNb();		
 
-		pageNumParam(request);
-		pageTailleParam(request);
-		search = request.getParameter("search");
-		order = request.getParameter("order");
-		computerListPage = getPageFromParam(request, search, order);
-		setAttribut(request, search, order,nbRows,pageNum,pageMax,direction,computerListPage);
-		request.getRequestDispatcher(DASHBOARD).forward(request, response);
-	}
-
-	private void pageNumParam(HttpServletRequest request) {
-		if (request.getParameter("pageNum") != null) {
-			String s = request.getParameter("pageNum");
-			pageNum = Integer.parseInt(s);
+		if (pageNum != null) {
 			page.setActualPageNb(pageNum);
-
 		}
-	}
-	private void pageTailleParam(HttpServletRequest request) {
-		if (request.getParameter("pageTaille") != null) {
-			String s = request.getParameter("pageTaille");
-			pageTaille = Integer.parseInt(s);
-			page.setPageSize(pageTaille);
-			pageMax = nbRows / pageTaille;
+		if (pageTaille != null) {
+			int pageTailler = Integer.parseInt(pageTaille);
+			page.setPageSize(pageTailler);
+			pageMax = nbRows / pageTailler;
 		}
-	}
-
-	
-	private void setAttribut(HttpServletRequest request, String search, String order, int nbRows, int pageNum, int pageMax, int direction, List<Computer> computerListPage) {
-		request.setAttribute("order", order);
-		request.setAttribute("search", search);
-		request.setAttribute("nbRows", nbRows);
-		request.setAttribute("pageNum", pageNum);
-		request.setAttribute("pageMax", pageMax);
-		request.setAttribute("direction", direction);
-		request.setAttribute("computerListPage", computerListPage);
-	}
-
-	private List<Computer>  getPageFromParam(HttpServletRequest request, String search, String order) {
-		
 		if (search != null && (order == null || order.isEmpty())) 
 		{
 			computerListPage = computerService.getPageByNameSearched(search, page);
@@ -99,23 +58,36 @@ public class DashboardServlet extends HttpServlet {
 		} 
 		else if (order != null && (search == null || search.isEmpty())) 
 		{
-			direction = Integer.parseInt(request.getParameter("direction")) % 2;
-			computerListPage = computerService.getComputersbyOrder(order, direction, page);
+			int directions = Integer.parseInt(direction) % 2;
+			computerListPage = computerService.getComputersbyOrder(order, directions, page);
 		} 
 		else
 		{
 			computerListPage = computerService.getPageComputer(page);
 		}
-		return computerListPage;
+
+		modelAndView.addObject("search", search);
+		modelAndView.addObject("order",order);
+		modelAndView.addObject("nbRows", nbRows);
+		modelAndView.addObject("pageMax", pageMax);
+		modelAndView.addObject("direction", direction);
+		modelAndView.addObject("pageTaille",pageTaille);
+		modelAndView.addObject("computerListPage", computerListPage);
+		modelAndView.addObject("pageNum", pageNum);
+
+		return modelAndView;
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
+	@PostMapping(value="/deleteComputer")
+	public ModelAndView deleteComputer(@RequestParam(value = "selection") String selection) {
 
-		String[] computers = request.getParameter("selection").split(",");
-		for (String s : computers) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/Dashboard");
+		List<String> computers = Arrays.asList(selection.split(","));
+		for(String s : computers) {
 			computerService.deleteComputer(Integer.parseInt(s));
 		}
-		response.sendRedirect("Dashboard");
+
+		return modelAndView;
 	}
 
 }

@@ -14,11 +14,11 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 @Configuration
+@ComponentScan(basePackageClasses = ConfigurationWebController.class)
 @ComponentScan(basePackages = { "com.excilys.service", "com.excilys.persistence", "com.excilys.servlet", "com.excilys.mapper", "com.excilys.ui" })
 @PropertySource("classpath:hikari.properties")
 public class ConfigurationSpring extends AbstractContextLoaderInitializer {
 
-	
 
     @Autowired
     Environment environment;
@@ -42,7 +42,7 @@ public class ConfigurationSpring extends AbstractContextLoaderInitializer {
 	@Override
 	protected WebApplicationContext createRootApplicationContext() {
 		AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-		rootContext.register(ConfigurationSpring.class);
+		rootContext.register(ConfigurationWebController.class,ConfigurationSpring.class);
 		return rootContext;
 
 	}
