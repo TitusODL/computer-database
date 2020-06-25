@@ -30,7 +30,6 @@
 		<taglibVersion>1.1.2</taglibVersion>
 		<taglibimplVersion>1.2.5</taglibimplVersion>
 		<taglibspecVersion>1.2.5</taglibspecVersion>
-		<hikaricpVersion>3.4.1</hikaricpVersion>
 		<springVersion>5.2.5.RELEASE</springVersion>
 	</properties>
 
@@ -148,13 +147,6 @@
 			<artifactId>taglibs-standard-spec</artifactId>
 			<version>${taglibspecVersion}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-			<version>${hikaricpVersion}</version>
-		</dependency>
-
-
 	</dependencies>
 
 	<build>

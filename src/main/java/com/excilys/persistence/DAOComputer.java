@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.dto.DTOComputer;
 import com.excilys.mapper.MapperComputer;
 import com.excilys.model.Computer;
 import com.excilys.model.Pagination;

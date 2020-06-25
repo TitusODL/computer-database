@@ -16,14 +16,14 @@ import com.excilys.model.Pagination;
 import com.excilys.service.ComputerService;
 
 @Controller
-//@WebServlet(urlPatterns = "/Dashboard")
 @RequestMapping(value = "/")
 
 public class DashboardServlet {
 
-	private int nbRows = 0;
+	private int nbRows;
 	private int pageMax;
 	public ComputerService computerService;
+	
 	public DashboardServlet(ComputerService computerService) {
 		this.computerService = computerService;
 
@@ -51,6 +51,27 @@ public class DashboardServlet {
 			page.setPageSize(pageTailler);
 			pageMax = nbRows / pageTailler;
 		}
+		computerListPage = paramPage(search, order, direction, page);
+		addObjectParam(pageNum, pageTaille, search, order, direction, computerListPage, modelAndView);
+
+		return modelAndView;
+	}
+
+	
+	private void addObjectParam(Integer pageNum, String pageTaille, String search, String order, String direction,
+			List<DTOComputer> computerListPage, ModelAndView modelAndView) {
+		modelAndView.addObject("search", search);
+		modelAndView.addObject("order",order);
+		modelAndView.addObject("nbRows", nbRows);
+		modelAndView.addObject("pageMax", pageMax);
+		modelAndView.addObject("direction", direction);
+		modelAndView.addObject("pageTaille",pageTaille);
+		modelAndView.addObject("computerListPage", computerListPage);
+		modelAndView.addObject("pageNum", pageNum);
+	}
+
+	private List<DTOComputer> paramPage(String search, String order, String direction, Pagination page) {
+		List<DTOComputer> computerListPage;
 		if (search != null && (order == null || order.isEmpty())) 
 		{
 			computerListPage = computerService.getPageByNameSearched(search, page);
@@ -65,17 +86,7 @@ public class DashboardServlet {
 		{
 			computerListPage = computerService.getPageComputer(page);
 		}
-
-		modelAndView.addObject("search", search);
-		modelAndView.addObject("order",order);
-		modelAndView.addObject("nbRows", nbRows);
-		modelAndView.addObject("pageMax", pageMax);
-		modelAndView.addObject("direction", direction);
-		modelAndView.addObject("pageTaille",pageTaille);
-		modelAndView.addObject("computerListPage", computerListPage);
-		modelAndView.addObject("pageNum", pageNum);
-
-		return modelAndView;
+		return computerListPage;
 	}
 
 	@PostMapping(value="/deleteComputer")

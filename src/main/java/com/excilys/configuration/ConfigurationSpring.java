@@ -19,10 +19,8 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 @PropertySource("classpath:hikari.properties")
 public class ConfigurationSpring extends AbstractContextLoaderInitializer {
 
-
     @Autowired
     Environment environment;
-
 
 	private final String DRIVER = "driverClassName";
 	private final String URL = "JdbcUrl";
