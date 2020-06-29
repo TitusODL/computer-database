@@ -22,6 +22,7 @@ public class DashboardServlet {
 
 	private int nbRows;
 	private int pageMax;
+	private int directions;
 	public ComputerService computerService;
 	
 	public DashboardServlet(ComputerService computerService) {
@@ -64,7 +65,7 @@ public class DashboardServlet {
 		modelAndView.addObject("order",order);
 		modelAndView.addObject("nbRows", nbRows);
 		modelAndView.addObject("pageMax", pageMax);
-		modelAndView.addObject("direction", direction);
+		modelAndView.addObject("direction", directions);
 		modelAndView.addObject("pageTaille",pageTaille);
 		modelAndView.addObject("computerListPage", computerListPage);
 		modelAndView.addObject("pageNum", pageNum);
@@ -79,7 +80,7 @@ public class DashboardServlet {
 		} 
 		else if (order != null && (search == null || search.isEmpty())) 
 		{
-			int directions = Integer.parseInt(direction) % 2;
+			directions = Integer.parseInt(direction)%2;
 			computerListPage = computerService.getComputersbyOrder(order, directions, page);
 		} 
 		else
