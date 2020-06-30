@@ -9,19 +9,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.excilys.dto.DTOComputer;
-import com.excilys.mapper.MapperComputer;
+import com.excilys.mapper.MapperDTOComputer;
 import com.excilys.model.Computer;
 import com.excilys.model.Pagination;
 import com.excilys.persistence.DAOComputer;
 @Service
 public class ComputerService {
 	DAOComputer daoComputer;
-	MapperComputer mapperComputer;
+	MapperDTOComputer mapperDTOComputer;
 	
 
-	public ComputerService(DAOComputer daoComputer,MapperComputer mapperComputer) {
+	public ComputerService(DAOComputer daoComputer,MapperDTOComputer mapperDTOComputer) {
 		this.daoComputer = daoComputer;
-		this.mapperComputer = mapperComputer;
+		this.mapperDTOComputer = mapperDTOComputer;
 	}
 	private static Logger logger = LoggerFactory.getLogger(ComputerService.class);
 
@@ -39,11 +39,11 @@ public class ComputerService {
 
 	public List<DTOComputer> getPageComputer(Pagination page) {
 		
-		return MapperComputer.listComputerToDto(daoComputer.getPageComputersRequest(page));
+		return MapperDTOComputer.listComputerToDto(daoComputer.getPageComputersRequest(page));
 	}
 
 	public List<DTOComputer> getPageByNameSearched(String search, Pagination page) {
-		return MapperComputer.listComputerToDto(daoComputer.getPageComputerNameSearched(search, page));
+		return MapperDTOComputer.listComputerToDto(daoComputer.getPageComputerNameSearched(search, page));
 	}
 	public List<Computer> getComputerIdByCompany(long id){
 		return daoComputer.getComputerIdByCompany(id);
@@ -54,7 +54,7 @@ public class ComputerService {
 	}
 
 	public List<DTOComputer> getComputersbyOrder(String order,int direction,Pagination page) {
-		return MapperComputer.listComputerToDto(daoComputer.getPageComputerOrderByName(order,direction,page));
+		return MapperDTOComputer.listComputerToDto(daoComputer.getPageComputerOrderByName(order,direction,page));
 	}
 
 	public List<Computer> getAllComputers() {
@@ -75,7 +75,7 @@ public class ComputerService {
 		boolean date = verifierDate(DTOComputer);
 
 		if (name && date) {
-			Computer computer = mapperComputer.dtoToComputer(DTOComputer);
+			Computer computer = mapperDTOComputer.dtoToComputer(DTOComputer);
 			daoComputer.addComputer(computer);
 		}
 	}
@@ -84,7 +84,7 @@ public class ComputerService {
 		DTOComputer newDTOComputer = new DTOComputer.DTOComputerBuilder().build();
 		newDTOComputer.setId(DTOComputer.getId());
 		Optional<Computer> oldComputer = getComputerById(DTOComputer.getId());
-		DTOComputer oldDTOComputer = MapperComputer.computerToDto(oldComputer.get());
+		DTOComputer oldDTOComputer = MapperDTOComputer.computerToDto(oldComputer.get());
 		updateName(DTOComputer, oldDTOComputer, newDTOComputer);
 		updateIntroduced(DTOComputer, oldDTOComputer, newDTOComputer);
 		updateDiscontinued(DTOComputer, oldDTOComputer, newDTOComputer);
@@ -94,7 +94,7 @@ public class ComputerService {
 		logger.info(newDTOComputer.toString());
 
 		if (date) {
-			Computer computer = mapperComputer.dtoToComputer(newDTOComputer);
+			Computer computer = mapperDTOComputer.dtoToComputer(newDTOComputer);
 			computer.setId(Long.parseLong(DTOComputer.getId()));
 			daoComputer.updateComputer(computer);
 		}

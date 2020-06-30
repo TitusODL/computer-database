@@ -1,4 +1,4 @@
-package com.excilys.servlet;
+package com.excilys.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +13,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.dto.DTOCompany;
 import com.excilys.dto.DTOComputer;
-import com.excilys.mapper.MapperCompany;
-import com.excilys.mapper.MapperComputer;
+import com.excilys.mapper.MapperDTOCompany;
+import com.excilys.mapper.MapperDTOComputer;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
 @Controller
 @RequestMapping(value = "/")
 
-public class EditComputerServlet {
+public class EditComputerController {
 	@Autowired
 	ComputerService serviceComputer;
 	
@@ -34,8 +34,8 @@ public class EditComputerServlet {
 	public ModelAndView editcomputer(
 			@RequestParam(required = false, value = "computerId") String computerId) {
 			ModelAndView modelAndView = new ModelAndView("editComputer");
-			listCompanyDTO = MapperCompany.listCompanyToDto(serviceCompany.getAllCompanies());
-			computerDTO = MapperComputer.computerToDto(serviceComputer.getComputerById(computerId).get());
+			listCompanyDTO = MapperDTOCompany.listCompanyToDto(serviceCompany.getAllCompanies());
+			computerDTO = MapperDTOComputer.computerToDto(serviceComputer.getComputerById(computerId).get());
 			modelAndView.addObject("listCompanyDTO", listCompanyDTO);
 			modelAndView.addObject("computerDTO",computerDTO);
 			return modelAndView;

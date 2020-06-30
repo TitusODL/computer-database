@@ -19,8 +19,7 @@ import com.excilys.model.Pagination;
 public class DAOCompany {
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private JdbcTemplate jdbcTemplate;
-	private DAOCompany daoCompany;
-	private MapperCompany mapperCompany = new MapperCompany(daoCompany);
+	private MapperCompany mapperCompany = new MapperCompany();
 
 	public DAOCompany(DataSource dataSource) {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);

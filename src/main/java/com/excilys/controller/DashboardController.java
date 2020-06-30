@@ -1,4 +1,4 @@
-package com.excilys.servlet;
+package com.excilys.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,14 +18,14 @@ import com.excilys.service.ComputerService;
 @Controller
 @RequestMapping(value = "/")
 
-public class DashboardServlet {
+public class DashboardController {
 
 	private int nbRows;
 	private int pageMax;
 	private int directions;
 	public ComputerService computerService;
 	
-	public DashboardServlet(ComputerService computerService) {
+	public DashboardController(ComputerService computerService) {
 		this.computerService = computerService;
 
 	}

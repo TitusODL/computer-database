@@ -28,10 +28,9 @@ public class ConfigurationWebController implements WebApplicationInitializer,Web
 	public void onStartup(ServletContext sc) throws ServletException {
 		AnnotationConfigWebApplicationContext root =  new AnnotationConfigWebApplicationContext();
 		root.register(ConfigurationWebController.class, ConfigurationSpring.class);
-//		root.refresh();
 		root.setServletContext(sc);
 
-//		sc.addListener(new ContextLoaderListener(root));
+
 
 		DispatcherServlet dv = new DispatcherServlet(root);
 		ServletRegistration.Dynamic appServlet = sc.addServlet("Dashboard", dv);
@@ -39,12 +38,7 @@ public class ConfigurationWebController implements WebApplicationInitializer,Web
 		appServlet.addMapping("/");
 		
 	}
-//
-//	@Override
-//	   public void addViewControllers(ViewControllerRegistry registry) {
-//	      registry.addViewController("/").setViewName("accueil");
-//	   }
-//	 
+
 	 @Bean
 	   public ViewResolver getViewLocation() {
 	      InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

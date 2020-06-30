@@ -21,8 +21,7 @@ public class DAOComputer {
 
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private JdbcTemplate jdbcTemplate;
-	private DAOCompany daoCompany;
-	private MapperComputer computerMapper = new MapperComputer(daoCompany);
+	private MapperComputer computerMapper = new MapperComputer();
 
 	public DAOComputer(DataSource dataSource) {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
@@ -43,7 +42,7 @@ public class DAOComputer {
 		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("1", intId);
 		namedParameterJdbcTemplate.update(SQLRequests.DELETECOMPUTER.getQuery(), namedParameters);
 	}
-
+	
 	public void updateComputer(Computer computer) {
 		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("1", computer.getName())
 				.addValue("2", computer.getIntroduced() != null ? Date.valueOf(computer.getIntroduced()) : null)
