@@ -14,8 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 @Configuration
-@ComponentScan(basePackageClasses = ConfigurationWebController.class)
-@ComponentScan(basePackages = { "com.excilys.service", "com.excilys.persistence", "com.excilys.servlet", "com.excilys.mapper", "com.excilys.ui" })
+@ComponentScan(basePackages = { "com.excilys.service", "com.excilys.persistence", "com.excilys.controller", "com.excilys.mapper", "com.excilys.ui" })
 @PropertySource("classpath:hikari.properties")
 public class ConfigurationSpring extends AbstractContextLoaderInitializer {
 

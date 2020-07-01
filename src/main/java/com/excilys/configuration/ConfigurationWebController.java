@@ -19,7 +19,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "com.excilys.service", "com.excilys.persistence", "com.excilys.servlet", "com.excilys.mapper", "com.excilys.ui" })
+@ComponentScan(basePackages = { "com.excilys.service", "com.excilys.persistence", "com.excilys.controller", "com.excilys.mapper", "com.excilys.ui" })
 @ComponentScan(basePackageClasses = ConfigurationSpring.class)
 public class ConfigurationWebController implements WebApplicationInitializer,WebMvcConfigurer{
 

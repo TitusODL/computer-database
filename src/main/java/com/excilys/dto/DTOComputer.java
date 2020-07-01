@@ -7,7 +7,10 @@ public class DTOComputer{
 	private String discontinued;
 	private String company_id;
 	private String company_name;
+ 
+	private DTOComputer() {
 
+	}
 
 	private DTOComputer(DTOComputerBuilder computerDTOBuilder) {
 		this.id = computerDTOBuilder.id;

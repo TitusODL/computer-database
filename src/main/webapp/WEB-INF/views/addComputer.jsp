@@ -52,8 +52,8 @@
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
-									type="text" class="form-control" id="computerName"
-									name=computerName placeholder="Computer name" required>
+									type="text" class="form-control" id="name"
+									name=naame placeholder="Computer name" required>
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
@@ -67,7 +67,7 @@
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
-									class="form-control" id="companyId" name=companyId>
+									class="form-control" id="company_id" name=company_id>
 									<c:forEach var="i" items="${companysDTO}">
 										<option value="${i.id}">
 											<c:out value="${i.name}"></c:out>

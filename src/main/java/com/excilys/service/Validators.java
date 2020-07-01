@@ -13,7 +13,6 @@ public class Validators {
 	private final static Logger LOGGER = LoggerFactory.getLogger(Validators.class);
 
 	public static boolean verifyDateUserInput(String date) {
-		System.out.println("Validator " + date);
 
 		if (date == null || date.isEmpty()) {
 			return true;

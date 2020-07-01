@@ -166,7 +166,7 @@ public class ComputerService {
 	}
 
 	private void updateCompany(DTOComputer DTOComputer, DTOComputer oldDTOComputer, DTOComputer newDTOComputer) {
-		if (DTOComputer.getCompany_id().isEmpty() || DTOComputer.getCompany_name().isEmpty()) {
+		if (DTOComputer.getCompany_id().isEmpty()) {
 			newDTOComputer.setCompany_id(oldDTOComputer.getCompany_id());
 			newDTOComputer.setCompany_name(oldDTOComputer.getCompany_name());
 		} else {

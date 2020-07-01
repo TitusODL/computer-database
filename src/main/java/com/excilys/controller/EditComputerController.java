@@ -41,25 +41,10 @@ public class EditComputerController {
 			return modelAndView;
 	}
 
-	@PostMapping(value="EditComputer")
-	public ModelAndView deleteComputer(
-			@RequestParam(value = "computerId") String computerId,
-			@RequestParam(value = "computerName") String computerName,
-			@RequestParam(value = "introduced") String introduced,
-			@RequestParam(value = "discontinued") String discontinued,
-			@RequestParam(value = "companyId") String companyId) {
-
+	@PostMapping(value="/EditComputer")
+	public ModelAndView deleteComputer(DTOComputer dtoComputer) {
 		ModelAndView modelAndView = new ModelAndView("redirect:/Dashboard");
-		String companyName = serviceCompany.getCompanyById(companyId).toString();
-		computerDTO = new DTOComputer.DTOComputerBuilder()
-				.setId(computerId)
-				.setDiscontinued(discontinued)
-				.setIntroduced(introduced)
-				.setName(computerName)
-				.setCompany_Id(companyId)
-				.setCompany_Name(companyName)
-				.build();
-		serviceComputer.updateComputer(computerDTO);
+		serviceComputer.updateComputer(dtoComputer);
 		return modelAndView;
 	}
 

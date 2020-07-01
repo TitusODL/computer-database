@@ -45,19 +45,18 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
-					<div class="label label-default pull-right">id:
-						${computerDTO.id}</div>
+					<div class="label label-default pull-right">id:${computerDTO.id}</div>
 					<h1>Edit Computer</h1>
 
 					<form action="EditComputer" method="POST">
-						<input type="hidden" value="${computerDTO.id}" id="computerId"
-							name="computerId" />
+						<input type="hidden" value="${computerDTO.id}" id="id"
+							name="id" />
 						<!-- TODO: Change this value with the computer id -->
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
-									type="text" class="form-control" id="computerName"
-									name="computerName" placeholder="Computer name"
+									type="text" class="form-control" id="name"
+									name="name" placeholder="Computer name"
 									value="${computerDTO.name}">
 							</div>
 							<div class="form-group">
@@ -72,7 +71,7 @@
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
-									class="form-control" id="companyId" name=companyId>
+									class="form-control" id="company_id" name=company_id>
 									<c:forEach var="i" items="${listCompanyDTO}">
 										<option value="${i.id}">
 											<c:out value="${i.name}"></c:out>
