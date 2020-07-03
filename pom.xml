@@ -17,7 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<junitVersion>4.11</junitVersion>
+		<junitVersion>4.12</junitVersion>
 		<slf4jVersion>1.7.30</slf4jVersion>
 		<mysqlVersion>8.0.20</mysqlVersion>
 		<mockitoVersion>2.10.0</mockitoVersion>
@@ -30,6 +30,8 @@
 		<taglibimplVersion>1.2.5</taglibimplVersion>
 		<taglibspecVersion>1.2.5</taglibspecVersion>
 		<springVersion>5.2.5.RELEASE</springVersion>
+		<jpaVersion>2.3.1.RELEASE</jpaVersion>
+		<hibernateVersion>5.4.17.Final</hibernateVersion>
 	</properties>
 
 	<dependencies>
@@ -50,7 +52,30 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${springVersion}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${jpaVersion}</version>
+		</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernateVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernateVersion}</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -121,6 +146,11 @@
 			<groupId>org.apache.taglibs</groupId>
 			<artifactId>taglibs-standard-spec</artifactId>
 			<version>${taglibspecVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20180813</version>
 		</dependency>
 	</dependencies>
 

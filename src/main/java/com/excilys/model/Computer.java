@@ -2,11 +2,33 @@ package com.excilys.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
+@Entity
+@Table(name = "computer")
 public class Computer {
-	private long id;
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(name = "name")
 	private String name;
+	@Column(name = "introduced")
 	private LocalDate introduced;
+	@Column(name = "discontinued")
 	private LocalDate discontinued;
+	@ManyToOne
+	@JoinColumn(name = "company_id")
 	private Company company;
 
 	public Computer(Builder computerBuilder) {
@@ -98,10 +120,9 @@ public class Computer {
 	}
 	@Override
 	public String toString() {
-		return "id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-				+ ", company=" + company;
+		
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.DEFAULT_STYLE);
 	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

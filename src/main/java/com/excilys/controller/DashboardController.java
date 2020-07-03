@@ -1,5 +1,6 @@
 package com.excilys.controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,9 +21,9 @@ import com.excilys.service.ComputerService;
 
 public class DashboardController {
 
-	private int nbRows;
-	private int pageMax;
-	private int dir;
+	private long nbRows;
+	private long pageMax;
+	private long dir;
 	public ComputerService computerService;
 
 	public DashboardController(ComputerService computerService) {
@@ -30,22 +31,25 @@ public class DashboardController {
 
 	}
 
+	private static final int ASC = 1;
+
 	@GetMapping(value = "Dashboard")
 	public ModelAndView dashboard(@RequestParam(required = false, value = "pageNum") Integer pageNum,
 			@RequestParam(required = false, value = "pageTaille") String pageTaille,
 			@RequestParam(required = false, value = "search") String search,
 			@RequestParam(required = false, value = "order") String order,
-			@RequestParam(required = false, value = "direction") String direction) {
+			@RequestParam(required = false, value = "direction") String direction) throws SQLException {
 		List<DTOComputer> computerListPage = new ArrayList<DTOComputer>();
 		ModelAndView modelAndView = new ModelAndView("dashboard");
-		nbRows = computerService.countAllComputer();
-		Pagination page = new Pagination(nbRows, Integer.parseInt(pageTaille == null ? pageTaille = "10" : pageTaille));
+		nbRows = computerService.countComputers();
+		Pagination page = new Pagination((int) nbRows,
+				Integer.parseInt(pageTaille == null ? pageTaille = "10" : pageTaille));
 		page.getActualPageNb();
 
-//			if (pageNum != null) {
-//				;
-//			}
-		page.setActualPageNb(pageNum);
+		if (pageNum != null) {
+			page.setActualPageNb(pageNum);
+		}
+
 		if (pageTaille != null) {
 			int pageT = Integer.parseInt(pageTaille);
 			page.setPageSize(pageT);
@@ -70,15 +74,17 @@ public class DashboardController {
 	}
 
 	private List<DTOComputer> paramPage(String search, String order, String direction, Pagination page) {
-		List<DTOComputer> computerListPage;
+		List<DTOComputer> computerListPage = null;
 		if (search != null && (order == null || order.isEmpty())) {
-			computerListPage = computerService.getPageByNameSearched(search, page);
-			nbRows = computerService.getSearchedComputers(search).size();
+			computerListPage = computerService.getComputerByName(search, page);
+			nbRows = computerService.countSearchedComputers(search);
 		} else if (order != null && (search == null || search.isEmpty())) {
-			dir = Integer.parseInt(direction) % 2;
-			computerListPage = computerService.getComputersbyOrder(order, dir, page);
-		} else {
-			computerListPage = computerService.getPageComputer(page);
+			 dir = Long.parseLong(direction) % 2;
+			return computerListPage = computerService.orderBy(page, dir, order);
+		}
+
+		else {
+			computerListPage = computerService.ComputersPage(page);
 		}
 		return computerListPage;
 	}

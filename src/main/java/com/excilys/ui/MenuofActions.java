@@ -8,9 +8,8 @@ import java.util.Scanner;
 
 import org.springframework.stereotype.Component;
 
+import com.excilys.dto.DTOCompany;
 import com.excilys.dto.DTOComputer;
-import com.excilys.model.Company;
-import com.excilys.model.Computer;
 import com.excilys.model.Pagination;
 import com.excilys.persistence.DAOComputer;
 import com.excilys.service.CompanyService;
@@ -32,8 +31,8 @@ public class MenuofActions {
 
 	public void showDetails() throws SQLException {
 		System.out.println("You choose the detail of a computer \n Please enter the ID of the computer :");
-		int choice2 = scan.nextInt();
-		Optional<Computer> chosenComputer = computerService.getComputerDetail(choice2);
+		String choice2 = scan.nextLine();
+		Optional<DTOComputer> chosenComputer = computerService.getComputerById(choice2);
 		if ( chosenComputer.isPresent() ) {
 			System.out.println(chosenComputer.get().toString());
 		}
@@ -44,9 +43,9 @@ public class MenuofActions {
 	public void updateComputer() throws SQLException {
 		System.out.println("You choose to update a computer :");
 		System.out.println("Enter ID to modify :");
-		int updId = scan.nextInt();
+		String updId = scan.nextLine();
 		scan.nextLine();
-		Optional<Computer> optionDetails = computerService.getComputerDetail(updId);
+		Optional<DTOComputer> optionDetails = computerService.getComputerById(updId);
 		System.out.println(optionDetails.toString());
 		DTOComputer computer = new DTOComputer.DTOComputerBuilder().build();
 		computer.setId(String.valueOf(updId));
@@ -57,7 +56,7 @@ public class MenuofActions {
 		System.out.println("Enter new date of Termination (yyyy-MM-dd):");
 		computer.setDiscontinued(scan.nextLine());
 		System.out.println("Enter new company ID:");
-		Company company = companyService.getCompanyById(scan.nextLine()).get();
+		DTOCompany company = companyService.getCompanyById(scan.nextLong()).get();
 		computer.setCompany_id(String.valueOf(company.getId()));
 		computer.setCompany_name(company.getName());
 		computerService.updateComputer(computer);
@@ -76,7 +75,7 @@ public class MenuofActions {
 		System.out.println("The ID of the Company");
 		dtocomputer.setCompany_id(dtocomputer.getCompany_id());
 		dtocomputer.setCompany_name(dtocomputer.getCompany_name());
-		computerService.createComputer(dtocomputer);
+		computerService.addComputer(dtocomputer);
 
 	}
 	public void deleteComputer() throws SQLException {
@@ -94,27 +93,27 @@ public class MenuofActions {
 
 	public void listCompanies() throws SQLException {
 
-		List<Company> listCompanies = new ArrayList<Company>();
-		listCompanies = companyService.getAllCompanies();
+		List<DTOCompany> listCompanies = new ArrayList<DTOCompany>();
+		listCompanies = companyService.listCompanies();
 		System.out.println("You choose the list of companies :");
-		for (Company hm : listCompanies) {
+		for (DTOCompany hm : listCompanies) {
 			System.out.println(hm.toString());
 		}
 	}
 	public void listComputers() throws SQLException {
-		List<Computer> listComputers = new ArrayList<Computer>();
-		listComputers = computerService.getComputers();
+		List<DTOComputer> listComputers = new ArrayList<DTOComputer>();
+		listComputers = computerService.listComputers();
 		System.out.println("You choose the list of computers :");
-		for (Computer pc : listComputers) {
+		for (DTOComputer pc : listComputers) {
 			System.out.println(pc.toString());
 		}
 	}
 
 
-	public void  displayPage() {
-		Pagination page = new Pagination(computerService.countAllComputer(), 20);
+	public void  displayPage() throws SQLException {
+		Pagination page = new Pagination((int) computerService.countComputers(), 20);
 		List<DTOComputer> pageComputer =new ArrayList<DTOComputer>();
-		pageComputer = computerService.getPageComputer(page);
+		pageComputer = computerService.ComputersPage(page);
 		page.displayPageContent(pageComputer);
 				
 		boolean quit =true;
@@ -125,12 +124,12 @@ public class MenuofActions {
 			switch(line) {
 			case "n" :
 				page.nextPage();
-				pageComputer = computerService.getPageComputer(page);
+				pageComputer = computerService.ComputersPage(page);
 				page.displayPageContent(pageComputer);
 				break;
 			case "p" :
 				page.PrevPage();
-				pageComputer = computerService.getPageComputer(page);
+				pageComputer = computerService.ComputersPage(page);
 				page.displayPageContent(pageComputer);
 				break;
 			case "q" :

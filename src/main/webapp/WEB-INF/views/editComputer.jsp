@@ -54,7 +54,7 @@
 						<!-- TODO: Change this value with the computer id -->
 						<fieldset>
 							<div class="form-group">
-								<label for="computerName">Computer name</label> <input
+								<label for="name">Computer name</label> <input
 									type="text" class="form-control" id="name"
 									name="name" placeholder="Computer name"
 									value="${computerDTO.name}">
@@ -70,11 +70,11 @@
 									name="discontinued" placeholder="Discontinued date">
 							</div>
 							<div class="form-group">
-								<label for="companyId">Company</label> <select
+								<label for="company_id">Company</label> <select
 									class="form-control" id="company_id" name=company_id>
-									<c:forEach var="i" items="${listCompanyDTO}">
-										<option value="${i.id}">
-											<c:out value="${i.name}"></c:out>
+									<c:forEach var="company" items="${listCompanyDTO}">
+										<option value="${company.id}">
+											<c:out value="${company.name}"></c:out>
 										</option>
 									</c:forEach>
 								</select>

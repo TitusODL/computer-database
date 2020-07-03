@@ -14,5 +14,9 @@ public class ErrorController {
 	public String renderErrorPage(HttpServletRequest request) {
 		return String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value());
 	}
+	@ExceptionHandler(IllegalStateException.class)
+	public String renderErrorPage2(HttpServletRequest request) {
+		return String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value());
+	}
 
 }

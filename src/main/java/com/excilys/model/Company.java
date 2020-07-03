@@ -1,16 +1,33 @@
 package com.excilys.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
+@Entity
+@Table(name = "company")
 
 public class Company {
-	private long id;
+	@Id
+	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(name = "name")
 	private String name;
-
-	public Company(long id, String name) {
-		this.id = id;
-		this.name = name;
+	
+	public Company() {
+		
 	}
 
-	public Company() {
+	public Company(CompanyBuilder builder) {
+		this.id = builder.id;
+		this.name = builder.name;
 	}
 
 	public long getId() {
@@ -44,21 +61,22 @@ public class Company {
 		}
 
 		public Company build() {
-			return new Company(id,name);
+			return new Company(this);
 		}
 	}
 	@Override
 	public String toString() {
-		return "id=" + id + ", name=" + name;
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.DEFAULT_STYLE);
 		
 	}
+
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -71,12 +89,10 @@ public class Company {
 		if (getClass() != obj.getClass())
 			return false;
 		Company other = (Company) obj;
-		if (id != other.id)
-			return false;
-		if (name == null) {
-			if (other.name != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}

@@ -40,6 +40,7 @@ public class DTOComputer{
 		return result;
 	}
 
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -48,7 +49,7 @@ public class DTOComputer{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DTOComputerBuilder other = (DTOComputerBuilder) obj;
+		DTOComputer other = (DTOComputer) obj;
 		if (company_id == null) {
 			if (other.company_id != null)
 				return false;
@@ -81,9 +82,6 @@ public class DTOComputer{
 			return false;
 		return true;
 	}
-
-
-	
 
 	public String getId() {
 		return id;

@@ -6,11 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.excilys.dto.DTOComputer;
 import com.excilys.mapper.MapperDate;
 @Service
 public class Validators {
 
-	private final static Logger LOGGER = LoggerFactory.getLogger(Validators.class);
+	private final static Logger logger = LoggerFactory.getLogger(Validators.class);
 
 	public static boolean verifyDateUserInput(String date) {
 
@@ -22,7 +23,7 @@ public class Validators {
 		
 		} 
 		else if (date.contains("/")) {
-			LOGGER.info("Mauvais format de Date");
+			logger.info("Wrong Date format /// Use - instead of /");
 			return false;
 		} else {
 			try {
@@ -39,7 +40,7 @@ public class Validators {
 				return true;
 				
 			} catch (Exception e) {
-				LOGGER.error("Wrong format");
+				logger.error("Wrong format");
 				return false;
 			}
 
@@ -47,7 +48,7 @@ public class Validators {
 
 	}
 
-	public static boolean verifierDateOrdre(String dateIntroduction, String dateTermination) {
+	public static boolean verifyDateOrder(String dateIntroduction, String dateTermination) {
 		LocalDate intro = MapperDate.ConvertDateString(dateIntroduction);
 		LocalDate termine = MapperDate.ConvertDateString(dateTermination);
 
@@ -58,5 +59,27 @@ public class Validators {
 		return (termine.isAfter(intro));
 
 	}
-
+	public static boolean verifyDate(DTOComputer computerDto) {
+		boolean orderDate = false;
+		boolean dateIntroduced = verifyDateUserInput(computerDto.getIntroduced());
+		boolean dateDiscontinued = verifyDateUserInput(computerDto.getDiscontinued());
+		if (dateIntroduced && dateDiscontinued) {
+			orderDate = verifyDateOrder(computerDto.getIntroduced(), computerDto.getDiscontinued());
+			if (!orderDate) {
+				logger.info("No valid Date!");
+			}
+		}
+		if (dateIntroduced && dateDiscontinued && orderDate) {
+			return true;
+		} else return false;
+	}
+		
+	public static boolean verifyName(DTOComputer computerDto) {
+		boolean name = true;
+		if (computerDto.getName().isEmpty()) {
+			name = false;
+			logger.info("Name required!");
+		}
+		return name;
+	}
 }
