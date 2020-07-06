@@ -8,7 +8,7 @@
 	<groupId>com.excilys</groupId>
 	<artifactId>CDBMaven</artifactId>
 	<version>4.0.0</version>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 
 	<name>CDBMaven Maven</name>
 	<url>http://localhost:8080/CDBMaven</url>
@@ -25,11 +25,11 @@
 		<h2Version>1.4.200</h2Version>
 		<checkstylepluginVersion>3.1.1</checkstylepluginVersion>
 		<javaxservletjstlVersion>1.2</javaxservletjstlVersion>
-		<javaxservletapiVersion>4.0.1</javaxservletapiVersion>
+		<javaxservletapiVersion>3.1.0</javaxservletapiVersion>
 		<taglibVersion>1.1.2</taglibVersion>
 		<taglibimplVersion>1.2.5</taglibimplVersion>
 		<taglibspecVersion>1.2.5</taglibspecVersion>
-		<springVersion>5.2.5.RELEASE</springVersion>
+		<springVersion>5.2.7.RELEASE</springVersion>
 		<jpaVersion>2.3.1.RELEASE</jpaVersion>
 		<hibernateVersion>5.4.17.Final</hibernateVersion>
 	</properties>
@@ -131,6 +131,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${javaxservletapiVersion}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>taglibs</groupId>
@@ -220,7 +221,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.0.0</version>
-				<configuration>
+				<configuration><!-- 		<dependency>
+			<groupId>com.excilys</groupId>
+			<artifactId>service</artifactId>
+			<version>4.0.0</version>
+		</dependency> -->
 					<configLocation>config/checkstyle.xml</configLocation>
 					<suppressionsLocation>config/suppressions.xml</suppressionsLocation>
 					<suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
@@ -228,4 +233,12 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	<modules>
+        <module>core</module>
+        <module>binding</module>
+        <module>persistence</module>   
+        <module>service</module>
+        <module>console</module>
+        <module>webapp</module>     
+    </modules>
 </project>
