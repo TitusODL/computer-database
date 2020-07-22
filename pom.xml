@@ -7,18 +7,17 @@
 
 	<groupId>com.excilys</groupId>
 	<artifactId>CDBMaven</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-
-	<name>CDBMaven Maven Webapp</name>
-	<!-- FIXME change it to the project's website -->
-	<url>http://www.example.com</url>
+	<version>4.0.0</version>
+	<packaging>pom</packaging>
+<!-- 
+	<name>CDBMaven Maven</name>
+	<url>http://localhost:8080/CDBMaven</url> -->
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<junitVersion>4.11</junitVersion>
+		<junitVersion>4.12</junitVersion>
 		<slf4jVersion>1.7.30</slf4jVersion>
 		<mysqlVersion>8.0.20</mysqlVersion>
 		<mockitoVersion>2.10.0</mockitoVersion>
@@ -26,32 +25,72 @@
 		<h2Version>1.4.200</h2Version>
 		<checkstylepluginVersion>3.1.1</checkstylepluginVersion>
 		<javaxservletjstlVersion>1.2</javaxservletjstlVersion>
-		<javaxservletapiVersion>4.0.1</javaxservletapiVersion>
+		<javaxservletapiVersion>3.1.0</javaxservletapiVersion>
 		<taglibVersion>1.1.2</taglibVersion>
 		<taglibimplVersion>1.2.5</taglibimplVersion>
 		<taglibspecVersion>1.2.5</taglibspecVersion>
-		<hikaricpVersion>3.4.1</hikaricpVersion>
 		<springVersion>5.2.5.RELEASE</springVersion>
+		<jpaVersion>2.3.1.RELEASE</jpaVersion>
+		<hibernateVersion>5.4.17.Final</hibernateVersion>
 	</properties>
 
 	<dependencies>
 		<!-- Spring -->
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${springVersion}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
+			<artifactId>spring-jdbc</artifactId>
 			<version>${springVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>5.2.5.RELEASE</version>
+			<artifactId>spring-test</artifactId>
+			<version>${springVersion}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${jpaVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernateVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernateVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -63,22 +102,18 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4jVersion}</version>
-
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>${slf4jVersion}</version>
-
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysqlVersion}</version>
+			<scope>runtime</scope>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
@@ -91,7 +126,6 @@
 			<version>${tomcatVersion}</version>
 		</dependency>
 		<!-- H2 DB -->
-		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -108,11 +142,13 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${javaxservletjstlVersion}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${javaxservletapiVersion}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>taglibs</groupId>
@@ -129,13 +165,6 @@
 			<artifactId>taglibs-standard-spec</artifactId>
 			<version>${taglibspecVersion}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-			<version>${hikaricpVersion}</version>
-		</dependency>
-
-
 	</dependencies>
 
 	<build>
@@ -147,7 +176,6 @@
 					<artifactId>maven-clean-plugin</artifactId>
 					<version>3.1.0</version>
 				</plugin>
-				<!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
 				<plugin>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>3.0.2</version>
@@ -205,7 +233,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.0.0</version>
-				<configuration>
+				<configuration><!-- <dependency> <groupId>com.excilys</groupId> <artifactId>service</artifactId> 
+						<version>4.0.0</version> </dependency> -->
 					<configLocation>config/checkstyle.xml</configLocation>
 					<suppressionsLocation>config/suppressions.xml</suppressionsLocation>
 					<suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
@@ -213,4 +242,12 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	<modules>
+		<module>core</module>
+		<module>binding</module>
+		<module>persistence</module>
+		<module>service</module>
+		<module>console</module>
+		<module>webapp</module>
+	</modules>
 </project>

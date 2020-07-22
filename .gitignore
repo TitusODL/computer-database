@@ -1,6 +1,7 @@
 target/
 bin/
 tmp/
+config/
 *.tmp
 *.bak
 *.swp

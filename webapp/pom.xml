@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+    <artifactId>CDBMaven</artifactId>
+    <groupId>com.excilys</groupId>
+    <version>4.0.0</version>
+  </parent>
+	
+	<artifactId>webapp</artifactId>
+	<version>0.1</version>
+	<packaging>war</packaging>
+	<name>Axis2 Quickstart-webapp Sample</name>
+
+	<properties>
+		<axis2.version>1.7.9</axis2.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<javaxservletjstlVersion>1.2</javaxservletjstlVersion>
+		<javaxservletapiVersion>3.1.0</javaxservletapiVersion>
+		<taglibVersion>1.1.2</taglibVersion>
+		<taglibimplVersion>1.2.5</taglibimplVersion>
+		<taglibspecVersion>1.2.5</taglibspecVersion>
+		<springVersion>5.2.5.RELEASE</springVersion>
+		<jpaVersion>2.3.1.RELEASE</jpaVersion>
+		<hibernateVersion>5.4.17.Final</hibernateVersion>
+		<multimoduleVersion>4.0.0</multimoduleVersion>
+	</properties>
+
+	<dependencies>
+	<!-- Spring -->
+			<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${jpaVersion}</version>
+		</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernateVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernateVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junitVersion}</version>
+			<scope>test</scope>
+		</dependency>
+	<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>${taglibVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.taglibs</groupId>
+			<artifactId>taglibs-standard-impl</artifactId>
+			<version>${taglibimplVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.taglibs</groupId>
+			<artifactId>taglibs-standard-spec</artifactId>
+			<version>${taglibspecVersion}</version>
+		</dependency>
+	<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${javaxservletjstlVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javaxservletapiVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.excilys</groupId>
+			<artifactId>core</artifactId>
+			<version>${multimoduleVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.excilys</groupId>
+			<artifactId>service</artifactId>
+			<version>${multimoduleVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.excilys</groupId>
+			<artifactId>persistence</artifactId>
+			<version>${multimoduleVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.excilys</groupId>
+			<artifactId>binding</artifactId>
+			<version>${multimoduleVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.excilys</groupId>
+			<artifactId>console</artifactId>
+			<version>${multimoduleVersion}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
+				defaults (may be moved to parent pom) -->
+			<plugins>
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.0.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.0</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.22.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>3.2.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.5.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
