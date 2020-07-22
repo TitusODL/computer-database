@@ -87,7 +87,7 @@ public class DashboardController {
 		return computerListPage;
 	}
 
-	@PostMapping(value = "/deleteComputer")
+	@PostMapping(value = "/DeleteComputer")
 	public ModelAndView deleteComputer(@RequestParam(value = "selection") String selection) {
 
 		ModelAndView modelAndView = new ModelAndView("redirect:/Dashboard");

@@ -26,8 +26,8 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="Dashboard"> Application - Computer
-				Database </a>
+			<a class="navbar-brand" href="Dashboard"> Application - Computer Database </a>
+			<a class="navbar-brand" href="logout" >Logout</a> 
 		</div>
 		<script type="text/javascript">
 			function googleTranslateElementInit() {
@@ -70,7 +70,7 @@
 				</div>
 			</div>
 		</div>
-		<form id="deleteForm" action="deleteComputer" method="POST">
+		<form id="deleteForm" action="DeleteComputer" method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>
 		<div class="container" style="margin-top: 10px;">

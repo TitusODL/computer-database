@@ -17,38 +17,109 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		
+		<javaxservletjstlVersion>1.2</javaxservletjstlVersion>
+		<javaxservletapiVersion>3.1.0</javaxservletapiVersion>
+		<taglibVersion>1.1.2</taglibVersion>
+		<taglibimplVersion>1.2.5</taglibimplVersion>
+		<taglibspecVersion>1.2.5</taglibspecVersion>
+		<springVersion>5.2.5.RELEASE</springVersion>
+		<jpaVersion>2.3.1.RELEASE</jpaVersion>
+		<hibernateVersion>5.4.17.Final</hibernateVersion>
+		<multimoduleVersion>4.0.0</multimoduleVersion>
 	</properties>
 
 	<dependencies>
+	<!-- Spring -->
+			<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${jpaVersion}</version>
+		</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernateVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernateVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junitVersion}</version>
+			<scope>test</scope>
+		</dependency>
+	<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>${taglibVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.taglibs</groupId>
+			<artifactId>taglibs-standard-impl</artifactId>
+			<version>${taglibimplVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.taglibs</groupId>
+			<artifactId>taglibs-standard-spec</artifactId>
+			<version>${taglibspecVersion}</version>
+		</dependency>
+	<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${javaxservletjstlVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javaxservletapiVersion}</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.excilys</groupId>
 			<artifactId>core</artifactId>
-			<version>4.0.0</version>
+			<version>${multimoduleVersion}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.excilys</groupId>
 			<artifactId>service</artifactId>
-			<version>4.0.0</version>
+			<version>${multimoduleVersion}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.excilys</groupId>
 			<artifactId>persistence</artifactId>
-			<version>4.0.0</version>
+			<version>${multimoduleVersion}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.excilys</groupId>
 			<artifactId>binding</artifactId>
-			<version>4.0.0</version>
+			<version>${multimoduleVersion}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.excilys</groupId>
 			<artifactId>console</artifactId>
-			<version>4.0.0</version>
+			<version>${multimoduleVersion}</version>
 		</dependency>
 	</dependencies>
 

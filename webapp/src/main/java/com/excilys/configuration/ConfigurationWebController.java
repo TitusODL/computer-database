@@ -51,12 +51,12 @@ public class ConfigurationWebController implements WebApplicationInitializer,Web
 		@Override
 		public void onStartup(ServletContext servletContext) throws ServletException {
 			AnnotationConfigWebApplicationContext root =  new AnnotationConfigWebApplicationContext();
-			root.register(ConfigurationWebController.class, ConfigurationSpring.class);
+			root.register(ConfigurationWebController.class, ConfigurationSpring.class,ConfigurationWebSecurity.class,ConfigurationWebSecurityInitializer.class);
 			root.setServletContext(servletContext);
 
 
 			DispatcherServlet dv = new DispatcherServlet(root);
-			ServletRegistration.Dynamic appServlet = servletContext.addServlet("dashboard", dv);
+			ServletRegistration.Dynamic appServlet = servletContext.addServlet("Dashboard", dv);
 			appServlet.setLoadOnStartup(1);
 			appServlet.addMapping("/");
 			

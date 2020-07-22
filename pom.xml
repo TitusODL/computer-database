@@ -9,9 +9,9 @@
 	<artifactId>CDBMaven</artifactId>
 	<version>4.0.0</version>
 	<packaging>pom</packaging>
-
+<!-- 
 	<name>CDBMaven Maven</name>
-	<url>http://localhost:8080/CDBMaven</url>
+	<url>http://localhost:8080/CDBMaven</url> -->
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,7 +29,7 @@
 		<taglibVersion>1.1.2</taglibVersion>
 		<taglibimplVersion>1.2.5</taglibimplVersion>
 		<taglibspecVersion>1.2.5</taglibspecVersion>
-		<springVersion>5.2.7.RELEASE</springVersion>
+		<springVersion>5.2.5.RELEASE</springVersion>
 		<jpaVersion>2.3.1.RELEASE</jpaVersion>
 		<hibernateVersion>5.4.17.Final</hibernateVersion>
 	</properties>
@@ -63,7 +63,23 @@
 			<artifactId>spring-data-jpa</artifactId>
 			<version>${jpaVersion}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${springVersion}</version>
+		</dependency>
 		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -126,6 +142,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${javaxservletjstlVersion}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -147,11 +164,6 @@
 			<groupId>org.apache.taglibs</groupId>
 			<artifactId>taglibs-standard-spec</artifactId>
 			<version>${taglibspecVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20180813</version>
 		</dependency>
 	</dependencies>
 
@@ -221,11 +233,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.0.0</version>
-				<configuration><!-- 		<dependency>
-			<groupId>com.excilys</groupId>
-			<artifactId>service</artifactId>
-			<version>4.0.0</version>
-		</dependency> -->
+				<configuration><!-- <dependency> <groupId>com.excilys</groupId> <artifactId>service</artifactId> 
+						<version>4.0.0</version> </dependency> -->
 					<configLocation>config/checkstyle.xml</configLocation>
 					<suppressionsLocation>config/suppressions.xml</suppressionsLocation>
 					<suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
@@ -234,11 +243,11 @@
 		</plugins>
 	</reporting>
 	<modules>
-        <module>core</module>
-        <module>binding</module>
-        <module>persistence</module>   
-        <module>service</module>
-        <module>console</module>
-        <module>webapp</module>     
-    </modules>
+		<module>core</module>
+		<module>binding</module>
+		<module>persistence</module>
+		<module>service</module>
+		<module>console</module>
+		<module>webapp</module>
+	</modules>
 </project>

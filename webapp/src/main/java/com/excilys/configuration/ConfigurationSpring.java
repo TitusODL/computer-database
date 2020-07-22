@@ -51,7 +51,7 @@ public class ConfigurationSpring extends AbstractContextLoaderInitializer {
 	
 	protected WebApplicationContext createRootApplicationContext() {
 		AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-		rootContext.register(ConfigurationWebController.class,ConfigurationSpring.class);
+		rootContext.register(ConfigurationWebController.class,ConfigurationSpring.class,ConfigurationWebSecurity.class,ConfigurationWebSecurityInitializer.class);
 		return rootContext;
 
 	}
