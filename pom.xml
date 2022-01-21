@@ -22,7 +22,7 @@
 		<mysqlVersion>8.0.20</mysqlVersion>
 		<mockitoVersion>2.10.0</mockitoVersion>
 		<tomcatVersion>9.0.31</tomcatVersion>
-		<h2Version>1.4.200</h2Version>
+		<h2Version>2.1.210</h2Version>
 		<checkstylepluginVersion>3.1.1</checkstylepluginVersion>
 		<javaxservletjstlVersion>1.2</javaxservletjstlVersion>
 		<javaxservletapiVersion>3.1.0</javaxservletapiVersion>
