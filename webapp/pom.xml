@@ -24,7 +24,7 @@
 		<taglibspecVersion>1.2.5</taglibspecVersion>
 		<springVersion>5.2.5.RELEASE</springVersion>
 		<jpaVersion>2.3.1.RELEASE</jpaVersion>
-		<hibernateVersion>5.4.17.Final</hibernateVersion>
+		<hibernateVersion>5.4.24.Final</hibernateVersion>
 		<multimoduleVersion>4.0.0</multimoduleVersion>
 	</properties>
 
