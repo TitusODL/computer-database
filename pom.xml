@@ -29,7 +29,7 @@
 		<taglibVersion>1.1.2</taglibVersion>
 		<taglibimplVersion>1.2.5</taglibimplVersion>
 		<taglibspecVersion>1.2.5</taglibspecVersion>
-		<springVersion>5.2.5.RELEASE</springVersion>
+		<springVersion>5.3.18</springVersion>
 		<jpaVersion>2.3.1.RELEASE</jpaVersion>
 		<hibernateVersion>5.4.17.Final</hibernateVersion>
 	</properties>
