@@ -19,7 +19,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<junitVersion>4.12</junitVersion>
 		<slf4jVersion>1.7.30</slf4jVersion>
-		<mysqlVersion>8.0.20</mysqlVersion>
+		<mysqlVersion>8.0.28</mysqlVersion>
 		<mockitoVersion>2.10.0</mockitoVersion>
 		<tomcatVersion>9.0.31</tomcatVersion>
 		<h2Version>1.4.200</h2Version>
